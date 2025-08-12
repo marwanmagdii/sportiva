@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sportiva - Marketplace</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            background-color: #f8fafc; /* Tailwind gray-50 */
+        }
+        /* Custom active page button styling */
+        .page-active {
+            background-color: #059669; /* emerald-600 */
+            color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .filter-color-box {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 9999px; /* Tailwind's rounded-full */
+            border-width: 2px;
+            cursor: pointer;
+            transition-property: all;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 200ms;
+        }
+        .filter-color-box.selected {
+            border-color: #3b82f6; /* Tailwind's blue-500 */
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5); /* Tailwind's ring-2 ring-blue-300 equivalent */
+        }
+        .dropdown-checkbox-list {
+            max-height: 200px;
+            overflow-y: auto;
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+        .dropdown-checkbox-list::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, and Opera */
+        }
+        /* Custom style for the color circle */
+        .color-circle {
+            width: 1rem;
+            height: 1rem;
+            border-radius: 9999px;
+            border: 1px solid #d1d5db; /* gray-300 */
+            margin-right: 0.5rem;
+            flex-shrink: 0;
+        }
+        /* Custom checkbox style */
+        input[type="checkbox"] {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            display: inline-block;
+            height: 1rem;
+            width: 1rem;
+            background-color: #fff;
+            border: 1px solid #d1d5db;
+            border-radius: 0.25rem;
+            position: relative;
+            cursor: pointer;
+            flex-shrink: 0;
+            margin-right: 0.5rem;
+            transition: all 0.2s;
+        }
+        input[type="checkbox"]:checked {
+            background-color: #059669; /* emerald-600 */
+            border-color: #059669;
+        }
+        input[type="checkbox"]:checked::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 8px;
+            height: 8px;
+            border-bottom: 2px solid #fff;
+            border-right: 2px solid #fff;
+            transform: rotate(45deg);
+        }
+        .filter-item-label {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+            cursor: pointer;
+            border-radius: 0.375rem;
+            transition: background-color 0.15s;
+        }
+        .filter-item-label:hover {
+            background-color: #f3f4f6;
+        }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+
+    <script>
+        // --- MOCK DATA FOR MARKETPLACE PRODUCTS (UPDATED WITH NEW FIELDS) ---
+        const mockProducts = [
+            {
+                id: 'prod1',
+                productImages: [
+                    { color: '#FF0000', imageUrl: 'images/marketplace/red shoes.png' },
+                    { color: '#0000FF', imageUrl: 'images/marketplace/blue shoes.png' },
+                    { color: '#008000', imageUrl: 'images/marketplace/green shoes.png' },
+                ],
+                imageAlt: 'Football Cleats',
+                provider: 'Adidas',
+                title: 'Football Shoes',
+                description: 'Lightweight and durable cleats for optimal performance on the field.',
+                rating: 4.8,
+                reviews: 85,
+                offerStatus: 'Limited stock available!',
+                price: 89.99,
+                category: 'Shoes',
+                color: 'red'
+            },
+            {
+                id: 'prod2',
+                productImages: [
+                    { color: '#000000', imageUrl: 'images/marketplace/Goalkeeper Gloves black.png' },
+                    { color: '#A9A9A9', imageUrl: 'images/marketplace/Goalkeeper Gloves grey.png' },
+                ],
+                imageAlt: 'Goalkeeper Gloves',
+                provider: 'Nike',
+                title: 'Goalkeeper Gloves',
+                description: 'Superior grip and comfort for crucial saves. All-weather performance.',
+                rating: 4.5,
+                reviews: 120,
+                offerStatus: 'In stock',
+                price: 59.99,
+                category: 'Gloves',
+                color: 'black'
+            },
+            {
+                id: 'prod3',
+                productImages: [
+                    { color: '#FFFFFF', imageUrl: 'images/marketplace/Manchester City T-shirt white.png' },
+                    { color: '#000080', imageUrl: 'images/marketplace/Manchester City T-shirt navy.png' },
+                ],
+                imageAlt: 'Football Jersey',
+                provider: 'Puma',
+                title: 'Manchester City T-shirt',
+                description: 'Breathable fabric, perfect for training or match day. Customizable options available.',
+                rating: 4.2,
+                reviews: 60,
+                offerStatus: 'New arrival!',
+                price: 34.99,
+                category: 'T-shirt',
+                color: 'white'
+            },
+            {
+                id: 'prod4',
+                productImages: [
+                    { color: '#FFD700', imageUrl: 'images/marketplace/football yellow.png' },
+                    { color: '#C0C0C0', imageUrl: 'images/marketplace/football grey.png' },
+                ],
+                imageAlt: 'Official Match Ball',
+                provider: 'Sportiva',
+                title: 'Football',
+                description: 'FIFA approved, durable outer shell for consistent play and trajectory.',
+                rating: 4.9,
+                reviews: 200,
+                offerStatus: 'Best Seller',
+                price: 120.00,
+                category: 'Ball',
+                color: 'yellow'
+            },
+            {
+                id: 'prod5',
+                productImages: [
+                    { color: '#FF4500', imageUrl: 'images/marketplace/Shin Pads red.png' },
+                    { color: '#8A2BE2', imageUrl: 'images/marketplace/Shin Pads purple.png' },
+                ],
+                imageAlt: 'Football Shin Pads',
+                provider: 'Nike',
+                title: 'Shin Pads',
+                description: 'Lightweight and durable for maximum protection. Ergonomic fit for comfort.',
+                rating: 4.7,
+                reviews: 95,
+                offerStatus: 'Limited stock available!',
+                price: 25.50,
+                category: 'Shin Pads',
+                color: 'red'
+            },
+            {
+                id: 'prod6',
+                productImages: [
+                    { color: '#000080', imageUrl: 'images/marketplace/Training Tracksuit navy.png' },
+                    { color: '#36454F', imageUrl: 'images/marketplace/Training Tracksuit charcoal.png' },
+                ],
+                imageAlt: 'Football Tracksuit',
+                provider: 'Adidas',
+                title: 'Training Tracksuit',
+                description: 'Moisture-wicking material to keep you dry and comfortable during intense training sessions.',
+                rating: 4.6,
+                reviews: 110,
+                offerStatus: 'In stock',
+                price: 75.00,
+                category: 'Tracksuit',
+                color: 'navy'
+            },
+            {
+                id: 'prod7',
+                productImages: [
+                    { color: '#A52A2A', imageUrl: 'images/marketplace/Liverpool T-shirt red.png' },
+                    { color: '#808000', imageUrl: 'images/marketplace/Liverpool T-shirt olive.png' },
+                ],
+                imageAlt: 'Casual T-shirt',
+                provider: 'Liverpool FC',
+                title: 'Liverpool T-shirt',
+                description: 'Support your team with this official Liverpool FC merchandise.',
+                rating: 4.3,
+                reviews: 50,
+                offerStatus: 'New arrival!',
+                price: 19.99,
+                category: 'T-shirt',
+                color: 'red'
+            },
+            {
+                id: 'prod8',
+                productImages: [
+                    { color: '#87CEEB', imageUrl: 'images/marketplace/Water Bottle sky blue.png' },
+                    { color: '#FFC0CB', imageUrl: 'images/marketplace/Water Bottle pink.png' },
+                ],
+                imageAlt: 'Water Bottle',
+                provider: 'HydratePro',
+                title: 'Water Bottle',
+                description: 'BPA-free and insulated to keep your drinks cold. Leak-proof design.',
+                rating: 4.9,
+                reviews: 150,
+                offerStatus: 'Best Seller',
+                price: 14.99,
+                category: 'Bottle',
+                color: 'blue'
+            },
+            {
+                id: 'prod9',
+                productImages: [
+                    { color: '#D3D3D3', imageUrl: 'images/marketplace/Sports Bag light grey.png' },
+                    { color: '#800080', imageUrl: 'images/marketplace/Sports Bag light purple.png' },
+                ],
+                imageAlt: 'Sports Bag',
+                provider: 'VictoryGear',
+                title: 'Sports Bag',
+                description: 'Spacious and durable sports bag with separate shoe compartment.',
+                rating: 4.6,
+                reviews: 70,
+                offerStatus: 'In stock',
+                price: 49.99,
+                category: 'Bag',
+                color: 'grey'
+            }
+        ];
+
+        // --- GLOBAL STATE ---
+        let appState = {
+            currentPage: 1, // Start on the first page
+            productsPerPage: 6, // Show 6 products per page
+            modalContent: null,
+            searchTerm: '',
+            showAdvancedFilters: false,
+            showCategoryDropdown: false,
+            showColorDropdown: false,
+            filters: {
+                minPrice: '',
+                maxPrice: '',
+                minRating: '',
+                selectedCategories: [],
+                categorySearchTerm: '',
+                selectedColors: [],
+                colorSearchTerm: ''
+            },
+        };
+
+        // Mapping between hex codes and color names
+        const colorMap = {
+            '#FF0000': 'Red',
+            '#0000FF': 'Blue',
+            '#008000': 'Green',
+            '#000000': 'Black',
+            '#A9A9A9': 'Grey',
+            '#FFFFFF': 'White',
+            '#000080': 'Navy',
+            '#FFD700': 'Yellow',
+            '#C0C0C0': 'Silver',
+            '#FF4500': 'Orange',
+            '#8A2BE2': 'Purple',
+            '#36454F': 'Charcoal',
+            '#A52A2A': 'Brown',
+            '#808000': 'Olive',
+            '#87CEEB': 'Sky Blue',
+            '#FFC0CB': 'Pink',
+            '#D3D3D3': 'Light Grey',
+            '#800080': 'Light Purple',
+        };
+        
+        // Get unique categories and colors from the mock data
+        const allCategories = [...new Set(mockProducts.map(p => p.category))].sort();
+        const allColorNames = [...new Set(Object.values(colorMap))].sort();
+
+        // --- HELPER FUNCTIONS & UI RENDERING ---
+
+        function renderModal(title, message) {
+            return `
+                <div class="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50 p-4" onclick="closeModal()">
+                    <div class="bg-white rounded-lg shadow-xl max-w-md w-full relative p-8 text-center" onclick="event.stopPropagation()">
+                        <button onclick="closeModal()" class="absolute top-2 right-4 text-gray-500 hover:text-gray-800 text-3xl">×</button>
+                        <h2 class="text-2xl font-bold mb-4">${title}</h2>
+                        <p>${message}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function closeModal() {
+            appState.modalContent = null;
+            renderPage(); // Re-render to remove modal
+        }
+
+        function renderStars(rating) {
+            const fullStars = Math.floor(rating);
+            const halfStar = rating % 1 >= 0.5;
+            const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+
+            let starsHtml = '';
+            for (let i = 0; i < fullStars; i++) {
+                starsHtml += `<svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>`;
+            }
+            if (halfStar) {
+                starsHtml += `<svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 24 24"><path d="M12 2L9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27V2z"/></svg>`;
+            }
+            for (let i = 0; i < emptyStars; i++) {
+                starsHtml += `<svg class="w-5 h-5 text-gray-300 fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>`;
+            }
+            return `<div class="flex items-center">${starsHtml}</div>`;
+        }
+        
+        // --- GLOBAL PAGE RENDERING FUNCTIONS ---
+        function renderHeader() {
+            return `
+                <header class="bg-white shadow-sm sticky top-0 z-40">
+                    <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+                        <a href="index.html" class="text-3xl font-bold text-emerald-600">Sportiva</a>
+                        <div class="hidden md:flex items-center space-x-8">
+                            <a href="fields.html" class="relative text-gray-600 hover:text-emerald-600 transition group py-2">
+                                Fields
+                                <span class="absolute bottom-0 left-0 w-full h-0.5 bg-emerald-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                            </a>
+                            <a href="community.html" class="relative text-gray-600 hover:text-emerald-600 transition group py-2">
+                                Find
+                                <span class="absolute bottom-0 left-0 w-full h-0.5 bg-emerald-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                            </a>
+                            <a href="marketplace.html" class="relative text-gray-600 hover:text-emerald-600 transition group py-2">
+                                Marketplace
+                                <span class="absolute bottom-0 left-0 w-full h-0.5 bg-emerald-600 transform scale-x-100 transition-transform duration-300"></span>
+                            </a>
+                            <a href="dashboard.html" class="relative text-gray-600 hover:text-emerald-600 transition group py-2">
+                                Dashboard
+                                <span class="absolute bottom-0 left-0 w-full h-0.5 bg-emerald-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                            </a>
+                        </div>
+                        <div class="hidden md:flex items-center space-x-4">
+                            <a href="auth.html" class="bg-emerald-600 text-white font-semibold px-5 py-2 rounded-lg hover:bg-emerald-700 transition">Login</a>
+                        </div>
+                        <button id="mobile-menu-button" class="md:hidden text-gray-700 focus:outline-none">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                        </button>
+                    </nav>
+                </header>
+            `;
+        }
+
+        function renderFooter() {
+            return `
+                <footer class="bg-gray-900 text-white py-12">
+                    <div class="container mx-auto px-6">
+                        <div class="grid md:grid-cols-4 gap-8 text-center md:text-left">
+                            <div class="col-span-1">
+                                <h3 class="text-3xl font-bold text-emerald-500 mb-4">Sportiva</h3>
+                                <p class="text-gray-400 text-sm">Connecting players and venues across Egypt.</p>
+                            </div>
+                            <div class="col-span-1">
+                                <h3 class="text-lg font-semibold text-white mb-4">Quick Links</h3>
+                                <ul class="space-y-2 text-gray-400">
+                                    <li><a href="index.html" class="hover:text-emerald-400 transition">Home</a></li>
+                                    <li><a href="fields.html" class="hover:text-emerald-400 transition">Book a Field</a></li>
+                                    <li><a href="community.html" class="hover:text-emerald-400 transition">Community</a></li>
+                                    <li><a href="marketplace.html" class="hover:text-emerald-400 transition">Marketplace</a></li>
+                                    <li><a href="dashboard.html" class="hover:text-emerald-400 transition">Dashboard</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-span-1">
+                                <h3 class="text-lg font-semibold text-white mb-4">Support</h3>
+                                <ul class="space-y-2 text-gray-400">
+                                    <li><a href="#" class="hover:text-emerald-400 transition">FAQ</a></li>
+                                    <li><a href="#" class="hover:text-emerald-400 transition">Help Center</a></li>
+                                    <li><a href="#" class="hover:text-emerald-400 transition">Contact Us</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-span-1">
+                                <h3 class="text-lg font-semibold text-white mb-4">Follow Us</h3>
+                                <div class="flex justify-center md:justify-start space-x-4 text-2xl">
+                                    <a href="#" class="text-gray-400 hover:text-emerald-400 transition">📘</a> <!-- Facebook -->
+                                    <a href="#" class="text-gray-400 hover:text-emerald-400 transition">🐦</a> <!-- Twitter -->
+                                    <a href="#" class="text-gray-400 hover:text-emerald-400 transition">📸</a> <!-- Instagram -->
+                                    <a href="#" class="text-gray-400 hover:text-emerald-400 transition">🔗</a> <!-- LinkedIn -->
+                                </div>
+                                <h3 class="text-lg font-semibold text-white mt-6 mb-4">Legal</h3>
+                                <ul class="space-y-2 text-gray-400">
+                                    <li><a href="#" class="hover:text-emerald-400 transition">Privacy Policy</a></li>
+                                    <li><a href="#" class="hover:text-emerald-400 transition">Terms of Service</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="mt-10 border-t border-gray-700 pt-8 text-center text-gray-500 text-sm">
+                            <p>&copy; ${new Date().getFullYear()} Sportiva. All Rights Reserved.</p>
+                        </div>
+                    </div>
+                </footer>
+            `;
+        }
+
+        // --- CARD RENDERING FUNCTIONS ---
+        function renderProductCard(product) {
+            const initialImage = product.productImages && product.productImages.length > 0 ? product.productImages[0].imageUrl : '';
+            const initialColor = product.productImages && product.productImages.length > 0 ? product.productImages[0].color : '';
+
+            const colorChoicesHtml = product.productImages.map((image, index) => `
+                <div
+                    data-product-id="${product.id}"
+                    data-image-url="${image.imageUrl}"
+                    data-color="${image.color}"
+                    class="w-6 h-6 rounded-full border-2 cursor-pointer transition-transform duration-200 hover:scale-110
+                        ${initialColor === image.color ? 'border-blue-500 ring-2 ring-blue-300' : 'border-gray-300'}
+                        ${index < product.productImages.length - 1 ? 'mr-2' : ''}
+                    "
+                    style="background-color: ${image.color};"
+                    title="${colorMap[image.color] || 'Other'}"
+                    onclick="handleColorClick(event, '${product.id}')"
+                ></div>
+            `).join('');
+
+            return `
+                <div id="product-card-${product.id}" class="bg-white rounded-xl shadow-lg overflow-hidden max-w-sm w-full flex flex-col transform transition-all duration-300 hover:scale-[1.02]">
+                    <!-- Product Image Section -->
+                    <div class="relative h-48 sm:h-56 md:h-64 bg-gray-200 flex items-center justify-center overflow-hidden">
+                        <img
+                            id="product-image-${product.id}"
+                            src="${initialImage}"
+                            alt="${product.imageAlt}"
+                            class="object-cover w-full h-full transition-opacity duration-300 ease-in-out"
+                            onerror="this.onerror=null;this.src='https://placehold.co/600x400/E0E0E0/333333?text=Image+Not+Found';"
+                        />
+                    </div>
+
+                    <!-- Product Details Section -->
+                    <div class="p-4 sm:p-6 flex flex-col flex-grow">
+                        <!-- Provider Name -->
+                        <p class="text-xs font-medium text-gray-500 mb-1">by ${product.provider}</p>
+                        
+                        <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-2 leading-tight">
+                            ${product.title}
+                        </h2>
+                        <p class="text-gray-600 text-sm sm:text-base mb-3">
+                            ${product.description}
+                        </p>
+
+                        <!-- Rating and Reviews -->
+                        <div class="flex items-center mb-3">
+                            ${renderStars(product.rating)}
+                            <span class="ml-2 text-sm text-gray-500">
+                                ${product.reviews.toLocaleString()} reviews
+                            </span>
+                        </div>
+
+                        <!-- Color Choices -->
+                        ${product.productImages && product.productImages.length > 0 ? `
+                            <div class="flex items-center mb-3">
+                                <span class="text-gray-700 text-sm mr-2">Colors:</span>
+                                ${colorChoicesHtml}
+                            </div>
+                        ` : ''}
+
+                        <!-- Offer Status -->
+                        <p class="text-gray-700 text-sm mb-3 flex-grow">
+                            <span class="font-medium">${product.offerStatus}</span>
+                        </p>
+
+                        <!-- Price and Add to Cart -->
+                        <div class="flex items-center justify-between mt-4">
+                            <div class="text-3xl font-bold text-gray-900">
+                                $${product.price.toFixed(2)}
+                            </div>
+                        </div>
+                        <button
+                            class="mt-6 w-full bg-emerald-600 text-white py-3 px-4 rounded-lg font-semibold text-lg hover:bg-emerald-700 focus:outline-none focus:ring-4 focus:ring-emerald-300 transition duration-200 ease-in-out transform hover:-translate-y-0.5 shadow-md"
+                            onclick="showAddToCartModal('${product.title}')"
+                        >
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- NEW ADVANCED FILTERS SECTION RENDERING ---
+        function renderAdvancedFiltersSectionForMarketplace() {
+            // Filtered category list based on user search term
+            const filteredCategories = allCategories.filter(category => category.toLowerCase().includes(appState.filters.categorySearchTerm.toLowerCase()));
+
+            // Filtered color list based on user search term
+            const filteredColors = allColorNames.filter(colorName => colorName.toLowerCase().includes(appState.filters.colorSearchTerm.toLowerCase()));
+
+            const colorCheckboxesHtml = filteredColors.map(colorName => {
+                const hexCode = Object.keys(colorMap).find(key => colorMap[key] === colorName);
+                return `
+                    <label for="color-${colorName}" class="filter-item-label">
+                        <input type="checkbox" id="color-${colorName}" name="color" value="${colorName}" 
+                            ${appState.filters.selectedColors.includes(colorName) ? 'checked' : ''}
+                        >
+                        <span class="color-circle" style="background-color: ${hexCode};"></span>
+                        <span class="ml-2 text-sm text-gray-700">${colorName}</span>
+                    </label>
+                `;
+            }).join('');
+
+            const categoryCheckboxesHtml = filteredCategories.map(category => `
+                <label for="category-${category}" class="filter-item-label">
+                    <input type="checkbox" id="category-${category}" name="category" value="${category}" 
+                        ${appState.filters.selectedCategories.includes(category) ? 'checked' : ''}
+                    >
+                    <span class="ml-2 text-sm text-gray-700">${category}</span>
+                </label>
+            `).join('');
+
+            return `
+                <div class="bg-white rounded-lg shadow-md p-6 text-gray-700">
+                    <h3 class="text-xl font-bold mb-4">Advanced Filters</h3>
+                    <div class="space-y-6">
+                        <!-- Category Filter -->
+                        <div>
+                            <label class="font-semibold text-gray-700">Category</label>
+                            <div class="relative mt-2">
+                                <div id="category-dropdown-toggle" class="cursor-pointer p-2 border border-gray-300 rounded-md flex justify-between items-center bg-white hover:border-gray-400 focus-within:ring-2 focus-within:ring-emerald-500">
+                                    <span class="text-gray-500">${appState.filters.selectedCategories.length > 0 ? `${appState.filters.selectedCategories.length} selected` : 'Select categories...'}</span>
+                                    <svg class="w-5 h-5 text-gray-400 transition-transform ${appState.showCategoryDropdown ? 'rotate-180' : ''}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                </div>
+                                <div id="category-dropdown" class="absolute top-full left-0 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg z-10 ${appState.showCategoryDropdown ? '' : 'hidden'}">
+                                    <input type="text" id="category-search-input" placeholder="Search categories..." value="${appState.filters.categorySearchTerm}" class="w-full p-2 border-b border-gray-300 focus:outline-none focus:ring-0 rounded-t-md">
+                                    <div id="category-options-container" class="dropdown-checkbox-list p-2">
+                                        ${categoryCheckboxesHtml}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Color Filter -->
+                        <div>
+                            <label class="font-semibold text-gray-700">Color</label>
+                            <div class="relative mt-2">
+                                <div id="color-dropdown-toggle" class="cursor-pointer p-2 border border-gray-300 rounded-md flex justify-between items-center bg-white hover:border-gray-400 focus-within:ring-2 focus-within:ring-emerald-500">
+                                    <span class="text-gray-500">${appState.filters.selectedColors.length > 0 ? `${appState.filters.selectedColors.length} selected` : 'Select colors...'}</span>
+                                    <svg class="w-5 h-5 text-gray-400 transition-transform ${appState.showColorDropdown ? 'rotate-180' : ''}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                </div>
+                                <div id="color-dropdown" class="absolute top-full left-0 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg z-10 ${appState.showColorDropdown ? '' : 'hidden'}">
+                                    <input type="text" id="color-search-input" placeholder="Search colors..." value="${appState.filters.colorSearchTerm}" class="w-full p-2 border-b border-gray-300 focus:outline-none focus:ring-0 rounded-t-md">
+                                    <div id="color-options-container" class="dropdown-checkbox-list p-2">
+                                        ${colorCheckboxesHtml}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Price Range Filter -->
+                        <div>
+                            <label for="price-range-marketplace" class="font-semibold text-gray-700 mb-2 block">Price Range ($)</label>
+                            <div class="flex items-center gap-2">
+                                <input type="number" id="min-price-marketplace" placeholder="min $" value="${appState.filters.minPrice}" class="w-1/2 p-2 border border-gray-300 rounded-md focus:ring-emerald-500 focus:border-emerald-500">
+                                <span class="text-gray-500">-</span>
+                                <input type="number" id="max-price-marketplace" placeholder="max $" value="${appState.filters.maxPrice}" class="w-1/2 p-2 border border-gray-300 rounded-md focus:ring-emerald-500 focus:border-emerald-500">
+                            </div>
+                        </div>
+
+                        <!-- Rating Filter -->
+                        <div>
+                            <label for="min-rating-marketplace" class="font-semibold text-gray-700">Min Rating (out of 5)</label>
+                            <select id="min-rating-marketplace" class="w-full p-2 border border-gray-300 rounded-md mt-2 focus:ring-emerald-500 focus:border-emerald-500">
+                                <option value="">Any Rating</option>
+                                <option value="1" ${appState.filters.minRating === '1' ? 'selected' : ''}>1 Star & Up</option>
+                                <option value="2" ${appState.filters.minRating === '2' ? 'selected' : ''}>2 Stars & Up</option>
+                                <option value="3" ${appState.filters.minRating === '3' ? 'selected' : ''}>3 Stars & Up</option>
+                                <option value="4" ${appState.filters.minRating === '4' ? 'selected' : ''}>4 Stars & Up</option>
+                                <option value="5" ${appState.filters.minRating === '5' ? 'selected' : ''}>5 Stars</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-2 mt-6">
+                        <button id="reset-marketplace-filters" class="w-full bg-gray-200 text-gray-800 font-semibold py-2 rounded-lg hover:bg-gray-300 transition-colors">Reset</button>
+                        <button id="apply-marketplace-filters" class="w-full bg-emerald-600 text-white font-semibold py-2 rounded-lg hover:bg-emerald-700 transition-colors">Apply</button>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function renderPagination() {
+            const filteredProducts = getFilteredProducts();
+            const totalPages = Math.ceil(filteredProducts.length / appState.productsPerPage);
+            
+            if (totalPages <= 1) return '';
+
+            let paginationHtml = `<nav class="flex justify-center items-center space-x-2 mt-8" aria-label="Pagination">`;
+
+            paginationHtml += `
+                <button onclick="changePage(event, ${appState.currentPage - 1})"
+                    class="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-100 transition-colors duration-200 ${appState.currentPage === 1 ? 'pointer-events-none opacity-50' : ''}">
+                    <span class="sr-only">Previous</span>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                </button>
+            `;
+
+            for (let i = 1; i <= totalPages; i++) {
+                paginationHtml += `
+                    <button onclick="changePage(event, ${i})"
+                        class="w-10 h-10 flex items-center justify-center rounded-lg font-semibold border border-gray-300 transition-colors duration-200
+                        ${appState.currentPage === i ? 'page-active' : 'bg-white text-gray-700 hover:bg-gray-100'}"
+                        aria-current="${appState.currentPage === i ? 'page' : 'false'}">
+                        ${i}
+                    </button>
+                `;
+            }
+
+            paginationHtml += `
+                <button onclick="changePage(event, ${appState.currentPage + 1})"
+                    class="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-100 transition-colors duration-200 ${appState.currentPage === totalPages ? 'pointer-events-none opacity-50' : ''}">
+                    <span class="sr-only">Next</span>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </button>
+            `;
+            paginationHtml += `</nav>`;
+            return paginationHtml;
+        }
+
+        // Centralized filtering logic
+        function getFilteredProducts() {
+            return mockProducts.filter(product => {
+                const matchesSearchTerm = appState.searchTerm === '' || 
+                                          product.title.toLowerCase().includes(appState.searchTerm.toLowerCase()) ||
+                                          product.description.toLowerCase().includes(appState.searchTerm.toLowerCase()) ||
+                                          product.imageAlt.toLowerCase().includes(appState.searchTerm.toLowerCase()) ||
+                                          product.provider.toLowerCase().includes(appState.searchTerm.toLowerCase());
+
+                const productPrice = product.price;
+                const minPrice = parseFloat(appState.filters.minPrice);
+                const maxPrice = parseFloat(appState.filters.maxPrice);
+                const matchesMinPrice = isNaN(minPrice) || productPrice >= minPrice;
+                const matchesMaxPrice = isNaN(maxPrice) || productPrice <= maxPrice;
+                
+                const matchesMinRating = appState.filters.minRating === '' || product.rating >= parseFloat(appState.filters.minRating);
+                
+                const matchesCategory = appState.filters.selectedCategories.length === 0 || appState.filters.selectedCategories.includes(product.category);
+                
+                // Fixed color filter logic to correctly map hex code to name
+                const matchesColor = appState.filters.selectedColors.length === 0 || product.productImages.some(img => {
+                    const colorName = colorMap[img.color];
+                    return appState.filters.selectedColors.includes(colorName);
+                });
+
+                return matchesSearchTerm && matchesMinPrice && matchesMaxPrice && matchesMinRating && matchesCategory && matchesColor;
+            });
+        }
+
+        // --- MARKETPLACE PAGE RENDERING ---
+        function renderMarketplacePage() {
+            // Filter products based on searchTerm and advanced filters
+            const filteredProducts = getFilteredProducts();
+            
+            // Apply pagination to the filtered products
+            const startIndex = (appState.currentPage - 1) * appState.productsPerPage;
+            const endIndex = startIndex + appState.productsPerPage;
+            const paginatedProducts = filteredProducts.slice(startIndex, endIndex);
+
+            const productCardsHtml = paginatedProducts.map(product => renderProductCard(product)).join('');
+
+            return `
+                <div class="bg-gray-50">
+                    <div class="container mx-auto px-6 py-12">
+                        <div class="text-center mb-12">
+                            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900">Explore Our Marketplace</h1>
+                            <p class="text-lg text-gray-600 mt-2">Find the best gear for your game!</p>
+                        </div>
+
+                        <div class="grid lg:grid-cols-4 gap-8">
+                            <div class="hidden lg:block lg:col-span-1">
+                                ${renderAdvancedFiltersSectionForMarketplace()}
+                            </div>
+                            <div class="lg:col-span-3">
+                                <div class="flex flex-col md:flex-row gap-2 mb-4">
+                                    <input type="text" id="search-term-marketplace" value="${appState.searchTerm}" placeholder="Search products..." class="p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-emerald-500 shadow-sm" />
+                                    <button id="search-button-marketplace" class="bg-emerald-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-emerald-700 transition flex-shrink-0 flex items-center justify-center">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                                    </button>
+                                </div>
+
+                                <div class="lg:hidden col-span-4 mb-4">
+                                    <button id="toggle-advanced-filters-marketplace" class="w-full bg-white p-4 rounded-lg shadow-md flex justify-between items-center">
+                                        <span class="font-semibold">Advanced Filters</span>
+                                        <svg class="w-5 h-5 transition-transform ${appState.showAdvancedFilters ? 'transform rotate-180' : ''}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    </button>
+                                    ${appState.showAdvancedFilters ? `<div class="mt-4">${renderAdvancedFiltersSectionForMarketplace()}</div>` : ''}
+                                </div>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8">
+                                    ${paginatedProducts.length > 0 ? productCardsHtml : '<p class="col-span-full text-center text-gray-600">No products found matching your criteria.</p>'}
+                                </div>
+                                
+                                ${renderPagination()}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- NEW EVENT HANDLERS FOR ADVANCED FILTERS ---
+        function handleFilterColorClick(event) {
+            const color = event.currentTarget.dataset.color;
+            const index = appState.filters.selectedColors.indexOf(color);
+            if (index > -1) {
+                appState.filters.selectedColors.splice(index, 1);
+            } else {
+                appState.filters.selectedColors.push(color);
+            }
+            appState.currentPage = 1; // Reset to page 1 on filter change
+            renderPage();
+        }
+
+        function handleCategoryCheckboxChange(event) {
+            const category = event.target.value;
+            if (event.target.checked) {
+                if (!appState.filters.selectedCategories.includes(category)) {
+                    appState.filters.selectedCategories.push(category);
+                }
+            } else {
+                const index = appState.filters.selectedCategories.indexOf(category);
+                if (index > -1) {
+                    appState.filters.selectedCategories.splice(index, 1);
+                }
+            }
+            appState.currentPage = 1; // Reset to page 1 on filter change
+            renderPage();
+        }
+
+        function handleCategorySearchInput(event) {
+            appState.filters.categorySearchTerm = event.target.value;
+            renderPage();
+        }
+        
+        function handleColorCheckboxChange(event) {
+            const colorName = event.target.value;
+            if (event.target.checked) {
+                if (!appState.filters.selectedColors.includes(colorName)) {
+                    appState.filters.selectedColors.push(colorName);
+                }
+            } else {
+                const index = appState.filters.selectedColors.indexOf(colorName);
+                if (index > -1) {
+                    appState.filters.selectedColors.splice(index, 1);
+                }
+            }
+            appState.currentPage = 1;
+            renderPage();
+        }
+
+        function handleColorSearchInput(event) {
+            appState.filters.colorSearchTerm = event.target.value;
+            renderPage();
+        }
+
+        function toggleCategoryDropdown() {
+            appState.showCategoryDropdown = !appState.showCategoryDropdown;
+            renderPage();
+        }
+        
+        function toggleColorDropdown() {
+            appState.showColorDropdown = !appState.showColorDropdown;
+            renderPage();
+        }
+
+        // --- ORIGINAL EVENT HANDLERS (MODIFIED) ---
+        function handleColorClick(event, productId) {
+            const clickedColorDiv = event.currentTarget;
+            const newImageUrl = clickedColorDiv.dataset.imageUrl;
+            
+            const productCard = document.getElementById(`product-card-${productId}`);
+            const productImage = document.getElementById(`product-image-${productId}`);
+            const colorChoices = productCard.querySelectorAll(`[data-product-id="${productId}"][data-color]`);
+
+            if (productImage) {
+                productImage.src = newImageUrl;
+            }
+
+            colorChoices.forEach(div => {
+                div.classList.remove('border-blue-500', 'ring-2', 'ring-blue-300');
+                div.classList.add('border-gray-300');
+            });
+            clickedColorDiv.classList.add('border-blue-500', 'ring-2', 'ring-blue-300');
+            clickedColorDiv.classList.remove('border-gray-300');
+        }
+
+        function showAddToCartModal(productTitle) {
+            appState.modalContent = {
+                title: 'Item Added to Cart!',
+                message: `The ${productTitle} has been added to your cart.`
+            };
+            renderPage();
+        }
+
+        function applyMarketplaceFilters() {
+            // Read values from input fields before applying filters
+            const minPriceInput = document.getElementById('min-price-marketplace');
+            const maxPriceInput = document.getElementById('max-price-marketplace');
+            const minRatingSelect = document.getElementById('min-rating-marketplace');
+
+            if (minPriceInput) appState.filters.minPrice = minPriceInput.value;
+            if (maxPriceInput) appState.filters.maxPrice = maxPriceInput.value;
+            if (minRatingSelect) appState.filters.minRating = minRatingSelect.value;
+
+            // Close the advanced filter view on mobile devices after applying
+            if (window.innerWidth < 1024) {
+                appState.showAdvancedFilters = false;
+            }
+            appState.currentPage = 1; // Reset to page 1 when new filters are applied
+            renderPage();
+        }
+
+        function resetMarketplaceFilters() {
+            appState.searchTerm = '';
+            appState.filters = {
+                minPrice: '',
+                maxPrice: '',
+                minRating: '',
+                selectedCategories: [],
+                categorySearchTerm: '',
+                selectedColors: [],
+                colorSearchTerm: ''
+            };
+            appState.currentPage = 1;
+            if (window.innerWidth < 1024) {
+                appState.showAdvancedFilters = false;
+            }
+            renderPage();
+        }
+        
+        function changePage(event, pageNumber) {
+            const filteredProducts = getFilteredProducts();
+            const totalPages = Math.ceil(filteredProducts.length / appState.productsPerPage);
+
+            if (pageNumber >= 1 && pageNumber <= totalPages) {
+                appState.currentPage = pageNumber;
+                renderPage();
+            }
+        }
+        
+        function attachEventListeners() {
+            const searchButton = document.getElementById('search-button-marketplace');
+            if (searchButton) {
+                searchButton.addEventListener('click', () => {
+                    appState.currentPage = 1;
+                    renderPage();
+                });
+            }
+            const searchTermInput = document.getElementById('search-term-marketplace');
+            if (searchTermInput) {
+                searchTermInput.addEventListener('input', (e) => {
+                    appState.searchTerm = e.target.value;
+                });
+                searchTermInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        appState.currentPage = 1;
+                        renderPage();
+                    }
+                });
+            }
+            
+            const toggleAdvancedFiltersButton = document.getElementById('toggle-advanced-filters-marketplace');
+            if (toggleAdvancedFiltersButton) {
+                toggleAdvancedFiltersButton.addEventListener('click', () => {
+                    appState.showAdvancedFilters = !appState.showAdvancedFilters;
+                    renderPage();
+                });
+            }
+
+            const applyFiltersButton = document.getElementById('apply-marketplace-filters');
+            if (applyFiltersButton) {
+                applyFiltersButton.addEventListener('click', applyMarketplaceFilters);
+            }
+            const resetFiltersButton = document.getElementById('reset-marketplace-filters');
+            if (resetFiltersButton) {
+                resetFiltersButton.addEventListener('click', resetMarketplaceFilters);
+            }
+
+            const categoryDropdownToggle = document.getElementById('category-dropdown-toggle');
+            if (categoryDropdownToggle) {
+                categoryDropdownToggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    toggleCategoryDropdown();
+                });
+            }
+
+            const categorySearchInput = document.getElementById('category-search-input');
+            if (categorySearchInput) {
+                categorySearchInput.addEventListener('input', handleCategorySearchInput);
+                categorySearchInput.addEventListener('click', (e) => e.stopPropagation());
+            }
+
+            const categoryOptionsContainer = document.getElementById('category-options-container');
+            if (categoryOptionsContainer) {
+                categoryOptionsContainer.addEventListener('change', (e) => {
+                    if (e.target.type === 'checkbox') {
+                        handleCategoryCheckboxChange(e);
+                    }
+                });
+                categoryOptionsContainer.addEventListener('click', (e) => e.stopPropagation());
+            }
+
+            const colorDropdownToggle = document.getElementById('color-dropdown-toggle');
+            if (colorDropdownToggle) {
+                colorDropdownToggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    toggleColorDropdown();
+                });
+            }
+
+            const colorSearchInput = document.getElementById('color-search-input');
+            if (colorSearchInput) {
+                colorSearchInput.addEventListener('input', handleColorSearchInput);
+                colorSearchInput.addEventListener('click', (e) => e.stopPropagation());
+            }
+
+            const colorOptionsContainer = document.getElementById('color-options-container');
+            if (colorOptionsContainer) {
+                colorOptionsContainer.addEventListener('change', (e) => {
+                    if (e.target.type === 'checkbox') {
+                        handleColorCheckboxChange(e);
+                    }
+                });
+                colorOptionsContainer.addEventListener('click', (e) => e.stopPropagation());
+            }
+
+            document.addEventListener('click', function(event) {
+                const categoryDropdown = document.getElementById('category-dropdown');
+                const categoryToggle = document.getElementById('category-dropdown-toggle');
+                if (categoryDropdown && categoryToggle && !categoryToggle.contains(event.target) && !categoryDropdown.contains(event.target)) {
+                    if (appState.showCategoryDropdown) {
+                        appState.showCategoryDropdown = false;
+                        renderPage();
+                    }
+                }
+
+                const colorDropdown = document.getElementById('color-dropdown');
+                const colorToggle = document.getElementById('color-dropdown-toggle');
+                if (colorDropdown && colorToggle && !colorToggle.contains(event.target) && !colorDropdown.contains(event.target)) {
+                    if (appState.showColorDropdown) {
+                        appState.showColorDropdown = false;
+                        renderPage();
+                    }
+                }
+            });
+        }
+
+        // --- MAIN APPLICATION LOGIC ---
+        function renderPage() {
+            const appDiv = document.getElementById('app');
+            let contentHtml = '';
+
+            contentHtml += renderHeader();
+            contentHtml += renderMarketplacePage();
+            contentHtml += renderFooter();
+
+            if (appState.modalContent) {
+                contentHtml += renderModal(appState.modalContent.title, appState.modalContent.message);
+            }
+
+            appDiv.innerHTML = contentHtml;
+            attachEventListeners();
+        }
+
+        // Initial render when the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            renderPage();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sportiva - Book Fields</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            background-color: #f8fafc; /* Tailwind gray-50 */
+        }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+
+    <script>
+        // --- MOCK DATA ---
+        const mockFields = [
+            { id: 'f1', name: 'Nasr City Stadium', city: 'Cairo', district: 'Nasr City', price: 300, images: ['images/field/field 1.jpg', 'images/field/field 2.webp', 'images/field/field 3.jpeg'], rating: 4.8, description: 'State-of-the-art 5-a-side football pitches with premium turf. Perfect for evening matches.', reviews: [
+                {author: 'Ahmed Mohamed', rating: 5, text: 'Best pitch in Nasr City! Great turf and lights.', date: 'Jul 20, 2025', authorImage: 'images/people/people 1.png'},
+                {author: 'Sameh Karim', rating: 4, text: 'Good facilities, but a bit crowded sometimes.', date: 'Jul 18, 2025', authorImage: 'images/people/people 2.png'},
+                {author: 'Omar Said', rating: 5, text: 'Fantastic turf and lighting. Highly recommend!', date: 'Jul 15, 2025', authorImage: 'images/people/people 3.png'},
+                {author: 'Mohamed Ali', rating: 4, text: 'Always a good game here. Well-maintained.', date: 'Jul 12, 2025', authorImage: 'images/people/people 4.png'},
+                {author: 'Karim Farouk', rating: 5, text: 'The staff are friendly and the pitch is top-notch.', date: 'Jul 10, 2025', authorImage: 'images/people/people 5.png'}
+            ], amenities: { ball: 'rental', shirts: 'rental', water: true, showers: true, toilets: true }, ballPrice: 30, shirtsPrice: 50, company: 'Elite Sports Co.', deposit: true, bookedSlots: [18, 20] }, // Example booked slots for f1
+            { id: 'f2', name: 'Mohandessin Football Park', city: 'Giza', district: 'Mohandessin', price: 350, images: ['images/field/field 9.jpg', 'images/field/field 3.jpeg', 'images/field/field 4.jpg'], rating: 4.7, description: 'Historic club with well-maintained grounds. Ideal for both competitive games and casual kickabouts.', reviews: [
+                {author: 'Youssef Ahmed', rating: 5, text: 'Classic spot, always a great experience.', date: 'Jul 10, 2025', authorImage: 'images/people/people 6.png'},
+                {author: 'Nader Hassan', rating: 4, text: 'A bit old, but the atmosphere is great for a friendly match.', date: 'Jul 05, 2025', authorImage: 'images/people/people 7.png'},
+                {author: 'Mostafa Refaat', rating: 5, text: 'Love the history here. Pitches are always ready.', date: 'Jul 01, 2025', authorImage: 'images/people/people 8.png'},
+                {author: 'Amr Zaki', rating: 4, text: 'Good location, easy to get to. Can be busy.', date: 'Jun 28, 2025', authorImage: 'images/people/people 9.png'},
+                {author: 'Hassan Gamal', rating: 5, text: 'Played many games here, never disappointed.', date: 'Jun 25, 2025', authorImage: 'images/people/people 10.png'}
+            ], amenities: { ball: 'free', shirts: 'rental', water: true, showers: false, toilets: true }, ballPrice: 0, shirtsPrice: 50, company: 'Giza Fields Ltd.', deposit: false, bookedSlots: [17] }, // Example booked slots for f2
+            { id: 'f3', name: 'Maadi Sports Club', city: 'Cairo', district: 'Maadi', price: 320, images: ['images/field/field 3.jpeg', 'images/field/field 4.jpg', 'images/field/field 5.jpeg'], rating: 4.6, description: 'Family-friendly club with multiple football fields suitable for all ages. A great place for a weekend game.', reviews: [
+                {author: 'Ahmed Gamal', rating: 4, text: 'Courts are great, but can get busy.', date: 'Jun 28, 2025', authorImage: 'images/people/people 11.png'},
+                {author: 'Khaled Badr', rating: 5, text: 'Perfect for family outings and casual games. Love the vibe!', date: 'Jun 25, 2025', authorImage: 'images/people/people 1.png'},
+                {author: 'Mostafa Mostafa', rating: 4, text: 'Clean facilities and friendly staff. Recommended!', date: 'Jun 20, 2025', authorImage: 'images/people/people 2.png'},
+                {author: 'Tarek Hamdy', rating: 3, text: 'Decent pitches, but parking can be an issue.', date: 'Jun 18, 2025', authorImage: 'images/people/people 3.png'},
+                {author: 'Adel Said', rating: 5, text: 'Always enjoy playing here. Great for all skill levels.', date: 'Jun 15, 2025', authorImage: 'images/people/people 4.png'}
+            ], amenities: { ball: 'none', shirts: 'none', water: false, showers: true, toilets: true }, ballPrice: 0, shirtsPrice: 0, company: 'Maadi Recreation', deposit: true, bookedSlots: [] },
+            { id: 'f4', name: 'Zamalek Club Pitch 5', city: 'Giza', district: 'Zamalek', price: 400, images: ['images/field/field 4.jpg', 'images/field/field 5.jpeg', 'images/field/field 6.jpeg'], rating: 4.9, description: 'Professional grade pitch, home to many local league matches.', reviews: [
+                {author: 'Fady Adel', rating: 5, text: 'Best turf in Giza.', date: 'Jul 01, 2025', authorImage: 'images/people/people 5.png'},
+                {author: 'Maged Zaki', rating: 5, text: 'Top-notch facilities, worth every penny for serious players.', date: 'Jun 29, 2025', authorImage: 'images/people/people 6.png'},
+                {author: 'Sherif Elsayed', rating: 5, text: 'Professional environment, great for competitive matches.', date: 'Jun 27, 2025', authorImage: 'images/people/people 7.png'},
+                {author: 'Hossam Kamel', rating: 4, text: 'Excellent pitch, but can be a bit pricey.', date: 'Jun 25, 2025', authorImage: 'images/people/people 8.png'},
+                {author: 'Ahmed Ragab', rating: 5, text: 'Always a pleasure to play here. Impeccable.', date: 'Jun 20, 2025', authorImage: 'images/people/people 9.png'}
+            ], amenities: { ball: 'free', shirts: 'rental', water: true, showers: true, toilets: true }, ballPrice: 0, shirtsPrice: 60, company: 'Zamalek Premier', deposit: false, bookedSlots: [] },
+            { id: 'f5', name: 'Heliopolis Sports Arena', city: 'Cairo', district: 'Heliopolis', price: 380, images: ['images/field/field 5.jpeg', 'images/field/field 6.jpeg', 'images/field/field 7.jpeg'], rating: 4.5, description: 'Modern indoor facility with excellent lighting and air conditioning.', reviews: [
+                {author: 'Gamal Yassin', rating: 4, text: 'Great for summer games, AC is a lifesaver!', date: 'Jul 19, 2025', authorImage: 'images/people/people 10.png'},
+                {author: 'Tarek Tarek', rating: 5, text: 'Very clean and well-maintained. Highly recommend.', date: 'Jul 15, 2025', authorImage: 'images/people/people 11.png'}
+            ], amenities: { ball: 'rental', shirts: 'none', water: true, showers: true, toilets: true }, ballPrice: 35, shirtsPrice: 0, company: 'Heliopolis Sports', deposit: true, bookedSlots: [] },
+            { id: 'f6', name: '6th of October Green Field', city: 'Giza', district: '6th of October', price: 280, images: ['images/field/field 6.jpeg', 'images/field/field 7.jpeg', 'images/field/field 8.webp'], rating: 4.2, description: 'Spacious outdoor fields, perfect for larger groups and casual matches.', reviews: [
+                {author: 'Mohamed Ashraf', rating: 4, text: 'Good value for money, pitches are decent.', date: 'Jul 17, 2025', authorImage: 'images/people/people 1.png'},
+                {author: 'Ahmed Emad', rating: 3, text: 'A bit far, but good for a weekend game.', date: 'Jul 14, 2025', authorImage: 'images/people/people 2.png'}
+            ], amenities: { ball: 'free', shirts: 'none', water: false, showers: false, toilets: true }, ballPrice: 0, shirtsPrice: 0, company: 'October Fields', deposit: false, bookedSlots: [] },
+            { id: 'f7', name: 'New Cairo Football Hub', city: 'Cairo', district: 'New Cairo', price: 420, images: ['images/field/field 7.jpeg', 'images/field/field 8.webp', 'images/field/field 9.jpg'], rating: 4.9, description: 'Premium pitches with excellent amenities, popular for league matches.', reviews: [
+                {author: 'Ali Sherif', rating: 5, text: 'Best pitches in New Cairo, always a pleasure to play here.', date: 'Jul 22, 2025', authorImage: 'images/people/people 3.png'},
+                {author: 'Nader Fouad', rating: 5, text: 'Worth the price, top-quality experience.', date: 'Jul 20, 2025', authorImage: 'images/people/people 4.png'}
+            ], amenities: { ball: 'rental', shirts: 'rental', water: true, showers: true, toilets: true }, ballPrice: 40, shirtsPrice: 70, company: 'Cairo United', deposit: true, bookedSlots: [] },
+            { id: 'f8', name: 'Dokki Indoor Courts', city: 'Giza', district: 'Dokki', price: 330, images: ['images/field/field 8.webp', 'images/field/field 9.jpg', 'images/field/field 1.jpg'], rating: 4.4, description: 'Compact indoor courts, great for quick games and training sessions.', reviews: [
+                {author: 'Khaled Mansour', rating: 4, text: 'Convenient location, good for a quick game after work.', date: 'Jul 16, 2025', authorImage: 'images/people/people 5.png'},
+                {author: 'Sameh Ibrahim', rating: 4, text: 'A bit small but well-maintained.', date: 'Jul 13, 2025', authorImage: 'images/people/people 6.png'}
+            ], amenities: { ball: 'rental', shirts: 'none', water: true, showers: false, toilets: true }, ballPrice: 25, shirtsPrice: 0, company: 'Dokki Courts', deposit: false, bookedSlots: [] },
+            { id: 'f9', name: 'Shubra Community Pitch', city: 'Cairo', district: 'Shubra', price: 250, images: ['images/field/field 9.jpg', 'images/field/field 1.jpg', 'images/field/field 2.webp'], rating: 4.0, description: 'Local community pitch, always lively and affordable.', reviews: [
+                {author: 'Mostafa Said', rating: 4, text: 'Good for casual games, very accessible.', date: 'Jul 14, 2025', authorImage: 'images/people/people 7.png'},
+                {author: 'Ahmed Adel', rating: 3, text: 'Can get very crowded, but it\'s cheap.', date: 'Jul 11, 2025', authorImage: 'images/people/people 8.png'}
+            ], amenities: { ball: 'none', shirts: 'none', water: false, showers: false, toilets: true }, ballPrice: 0, shirtsPrice: 0, company: 'Shubra Fields', deposit: false, bookedSlots: [] },
+            { id: 'f10', name: 'Sheikh Zayed Stadium', city: 'Giza', district: 'Sheikh Zayed', price: 450, images: ['images/field/field 1.jpg', 'images/field/field 2.webp', 'images/field/field 3.jpeg'], rating: 4.8, description: 'High-end stadium facilities, perfect for serious training and matches.', reviews: [
+                {author: 'Omar Farouk', rating: 5, text: 'Professional setup, best pitches in Sheikh Zayed.', date: 'Jul 21, 2025', authorImage: 'images/people/people 9.png'},
+                {author: 'Mohamed Karim', rating: 5, text: 'Excellent turf and lighting, worth the drive.', date: 'Jul 18, 2025', authorImage: 'images/people/people 10.png'}
+            ], amenities: { ball: 'free', shirts: 'rental', water: true, showers: true, toilets: true }, ballPrice: 0, shirtsPrice: 80, company: 'Zayed Sports', deposit: true, bookedSlots: [] },
+            { id: 'f11', name: 'Downtown City Pitch', city: 'Cairo', district: 'Downtown', price: 310, images: ['images/field/field 4.jpg', 'images/field/field 5.jpeg', 'images/field/field 6.jpeg'], rating: 4.3, description: 'Centrally located pitch, convenient for quick games during lunch breaks.', reviews: [
+                {author: 'Ahmed Said', rating: 4, text: 'Very convenient location, decent pitch.', date: 'Jul 13, 2025', authorImage: 'images/people/people 11.png'},
+                {author: 'Ali Ali', rating: 4, text: 'Good for a quick game, can be a bit noisy.', date: 'Jul 10, 2025', authorImage: 'images/people/people 1.png'}
+            ], amenities: { ball: 'rental', shirts: 'none', water: true, showers: false, toilets: true }, ballPrice: 20, shirtsPrice: 0, company: 'Downtown Fields', deposit: false, bookedSlots: [] },
+            { id: 'f12', name: 'Haram Community Park', city: 'Giza', district: 'Haram', price: 290, images: ['images/field/field 7.jpeg', 'images/field/field 8.webp', 'images/field/field 9.jpg'], rating: 4.1, description: 'Spacious community park with multiple football pitches and recreational areas.', reviews: [
+                {author: 'Yassin Taha', rating: 4, text: 'Good for family outings and a casual game.', date: 'Jul 15, 2025', authorImage: 'images/people/people 2.png'},
+                {author: 'Mohamed Samir', rating: 3, text: 'Pitches could be better maintained, but overall okay.', date: 'Jul 12, 2025', authorImage: 'images/people/people 3.png'}
+            ], amenities: { ball: 'none', shirts: 'none', water: false, showers: false, toilets: true }, ballPrice: 0, shirtsPrice: 0, company: 'Haram Parks', deposit: false, bookedSlots: [] }
+        ];
+
+        const allDistrictsList = {
+            "Cairo": ["Nasr City", "Maadi", "Heliopolis", "New Cairo", "Downtown", "Shubra", "Ain Shams", "El Marg", "El Matareya", "Zeitoun", "Basateen"],
+            "Giza": ["Mohandessin", "Zamalek", "Dokki", "Agouza", "6th of October", "Sheikh Zayed", "Haram", "Faisal", "Imbaba", "Bulaq ad Dakrur"]
+        };
+
+        // --- GLOBAL STATE ---
+        let appState = {
+            currentPage: 'browse_fields',
+            currentPageData: null,
+            filters: {
+                term: '',
+                city: 'All',
+                districts: [],
+                minPrice: '', // New filter
+                maxPrice: '', // New filter
+                selectedDate: '' // New filter
+            },
+            districtSearch: '',
+            showFilters: false,
+            isDistrictDropdownOpen: false,
+            hasSearched: false,
+            modalContent: null,
+            selectedSlots: [],
+            rentBall: false,
+            rentShirts: false,
+            reviews: [], // Will be set from field.reviews when details page loads
+            selectedRating: 0, // For review form
+            processingPayment: false, // To control spinner on payment page
+            showAllReviews: false, // New state to control review visibility
+            selectedBookingDate: '', // New state for selected date on details page
+            currentImageIndex: 0, // New state for image carousel
+            pagination: { // New state for pagination
+                itemsPerPage: 6,
+                currentPage: 1
+            }
+        };
+
+        // --- HELPER FUNCTIONS & UI RENDERING ---
+
+        function renderSpinner() {
+            return `
+                <div class="flex justify-center items-center p-8">
+                    <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-emerald-600"></div>
+                </div>
+            `;
+        }
+
+        function renderStarRating(rating, canSetRating = false) {
+            let starsHtml = '';
+            for (let i = 0; i < 5; i++) {
+                starsHtml += `
+                    <svg class="w-5 h-5 ${i < rating ? 'text-yellow-400' : 'text-gray-300'} ${canSetRating ? 'cursor-pointer' : ''}"
+                         fill="currentColor" viewBox="0 0 20 20" ${canSetRating ? `onclick="appState.selectedRating = ${i + 1}; renderPage();"` : ''}>
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                    </svg>
+                `;
+            }
+            return `<div class="flex items-center">${starsHtml}</div>`;
+        }
+
+        function renderReviewForm() {
+            return `
+                <form id="review-form" class="border-t pt-6 mt-6">
+                    <h3 class="text-xl font-bold mb-4">Write a Review</h3>
+                    <div class="mb-4">
+                        <p class="font-semibold mb-2">Your Rating:</p>
+                        <div id="review-stars-container" class="flex items-center">
+                            ${renderStarRating(appState.selectedRating || 0, true)}
+                        </div>
+                    </div>
+                    <textarea id="review-text" placeholder="Share your experience..." class="w-full p-2 border rounded-lg h-24 mb-4"></textarea>
+                    <button type="submit" class="bg-emerald-600 text-white font-semibold px-6 py-2 rounded-lg hover:bg-emerald-700 transition">Submit Review</button>
+                </form>
+            `;
+        }
+
+        function renderModal(title, message) {
+            return `
+                <div class="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50 p-4" onclick="closeModal()">
+                    <div class="bg-white rounded-lg shadow-xl max-w-md w-full relative p-8 text-center" onclick="event.stopPropagation()">
+                        <button onclick="closeModal()" class="absolute top-2 right-4 text-gray-500 hover:text-gray-800 text-3xl">×</button>
+                        <h2 class="text-2xl font-bold mb-4">${title}</h2>
+                        <p>${message}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function closeModal() {
+            appState.modalContent = null;
+            renderPage(); // Re-render to remove modal
+        }
+
+        function renderAmenityListItem(text, available) {
+            if (!available) return '';
+            return `
+                <li class="flex items-center space-x-3">
+                    <svg class="w-6 h-6 flex-shrink-0 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="text-gray-800">${text}</span>
+                </li>
+            `;
+        }
+
+        // --- PAGE RENDERING FUNCTIONS ---
+        function renderHeader() {
+            return `
+                <header class="bg-white shadow-sm sticky top-0 z-40">
+                    <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+                        <a href="index.html" class="text-3xl font-bold text-emerald-600">Sportiva</a>
+                        <div class="hidden md:flex items-center space-x-8">
+                            <a href="fields.html" class="relative text-gray-600 hover:text-emerald-600 transition group py-2">
+                                Fields
+                                <span class="absolute bottom-0 left-0 w-full h-0.5 bg-emerald-600 transform scale-x-100 transition-transform duration-300"></span>
+                            </a>
+                            <a href="community.html" class="relative text-gray-600 hover:text-emerald-600 transition group py-2">
+                                Find
+                                <span class="absolute bottom-0 left-0 w-full h-0.5 bg-emerald-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                            </a>
+                            <a href="marketplace.html" class="relative text-gray-600 hover:text-emerald-600 transition group py-2">
+                                Marketplace
+                                <span class="absolute bottom-0 left-0 w-full h-0.5 bg-emerald-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                            </a>
+                            <a href="dashboard.html" class="relative text-gray-600 hover:text-emerald-600 transition group py-2">
+                                Dashboard
+                                <span class="absolute bottom-0 left-0 w-full h-0.5 bg-emerald-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                            </a>
+                        </div>
+                        <div class="hidden md:flex items-center space-x-4">
+                            <a href="auth.html" class="bg-emerald-600 text-white font-semibold px-5 py-2 rounded-lg hover:bg-emerald-700 transition">Login</a>
+                        </div>
+                        <button id="mobile-menu-button" class="md:hidden text-gray-700 focus:outline-none">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                        </button>
+                    </nav>
+                </header>
+            `;
+        }
+
+        function renderFooter() {
+            return `
+                <footer class="bg-gray-900 text-white py-12">
+                    <div class="container mx-auto px-6">
+                        <div class="grid md:grid-cols-4 gap-8 text-center md:text-left">
+                            <div class="col-span-1">
+                                <h3 class="text-3xl font-bold text-emerald-500 mb-4">Sportiva</h3>
+                                <p class="text-gray-400 text-sm">Connecting players and venues across Egypt.</p>
+                            </div>
+                            <div class="col-span-1">
+                                <h3 class="text-lg font-semibold text-white mb-4">Quick Links</h3>
+                                <ul class="space-y-2 text-gray-400">
+                                    <li><a href="index.html" class="hover:text-emerald-400 transition">Home</a></li>
+                                    <li><a href="fields.html" class="hover:text-emerald-400 transition">Book a Field</a></li>
+                                    <li><a href="community.html" class="hover:text-emerald-400 transition">Community</a></li>
+                                    <li><a href="marketplace.html" class="hover:text-emerald-400 transition">Marketplace</a></li>
+                                    <li><a href="dashboard.html" class="hover:text-emerald-400 transition">Dashboard</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-span-1">
+                                <h3 class="text-lg font-semibold text-white mb-4">Support</h3>
+                                <ul class="space-y-2 text-gray-400">
+                                    <li><a href="#" class="hover:text-emerald-400 transition">FAQ</a></li>
+                                    <li><a href="#" class="hover:text-emerald-400 transition">Help Center</a></li>
+                                    <li><a href="#" class="hover:text-emerald-400 transition">Contact Us</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-span-1">
+                                <h3 class="text-lg font-semibold text-white mb-4">Follow Us</h3>
+                                <div class="flex justify-center md:justify-start space-x-4 text-2xl">
+                                    <a href="#" class="text-gray-400 hover:text-emerald-400 transition">📘</a> <!-- Facebook -->
+                                    <a href="#" class="text-gray-400 hover:text-emerald-400 transition">🐦</a> <!-- Twitter -->
+                                    <a href="#" class="text-gray-400 hover:text-emerald-400 transition">📸</a> <!-- Instagram -->
+                                    <a href="#" class="text-gray-400 hover:text-emerald-400 transition">🔗</a> <!-- LinkedIn -->
+                                </div>
+                                <h3 class="text-lg font-semibold text-white mt-6 mb-4">Legal</h3>
+                                <ul class="space-y-2 text-gray-400">
+                                    <li><a href="#" class="hover:text-emerald-400 transition">Privacy Policy</a></li>
+                                    <li><a href="#" class="hover:text-emerald-400 transition">Terms of Service</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="mt-10 border-t border-gray-700 pt-8 text-center text-gray-500 text-sm">
+                            <p>&copy; ${new Date().getFullYear()} Sportiva. All Rights Reserved.</p>
+                        </div>
+                    </div>
+                </footer>
+            `;
+        }
+
+        function renderBrowseFieldsPage() {
+            const currentFilters = appState.filters;
+            let filteredFields = mockFields.filter(f => {
+                const matchesTerm = f.name.toLowerCase().includes(currentFilters.term.toLowerCase()) ||
+                                      f.district.toLowerCase().includes(currentFilters.term.toLowerCase());
+                const matchesCity = currentFilters.city === 'All' || f.city === currentFilters.city;
+                const matchesDistricts = currentFilters.districts.length === 0 || currentFilters.districts.includes(f.district);
+                const matchesMinPrice = currentFilters.minPrice === '' || f.price >= parseFloat(currentFilters.minPrice);
+                const matchesMaxPrice = currentFilters.maxPrice === '' || f.price <= parseFloat(currentFilters.maxPrice);
+
+                // Date filtering is more complex and would require actual date objects and comparison
+                // For now, we'll just pass it through if no date is selected.
+                const matchesDate = currentFilters.selectedDate === ''; // Placeholder logic
+
+                return matchesTerm && matchesCity && matchesDistricts && matchesMinPrice && matchesMaxPrice && matchesDate;
+            });
+
+            const allCities = [...new Set(mockFields.map(f => f.city))];
+            const allDistricts = allDistrictsList[currentFilters.city] || [];
+            const uniqueDistrictsFound = [...new Set(filteredFields.map(f => f.district))].length;
+
+            // Pagination logic
+            const startIndex = (appState.pagination.currentPage - 1) * appState.pagination.itemsPerPage;
+            const endIndex = startIndex + appState.pagination.itemsPerPage;
+            const paginatedFields = filteredFields.slice(startIndex, endIndex);
+            const totalPages = Math.ceil(filteredFields.length / appState.pagination.itemsPerPage);
+
+            let filterSidebarHtml = `
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-xl font-bold mb-4">Filters</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <label for="price-range" class="font-semibold text-gray-700">Price Range</label>
+                            <div class="flex gap-2 mt-2">
+                                <input type="number" id="min-price" placeholder="min $" value="${currentFilters.minPrice}" class="w-1/2 p-2 border rounded-md">
+                                <input type="number" id="max-price" placeholder="max $" value="${currentFilters.maxPrice}" class="w-1/2 p-2 border rounded-md">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="date-picker" class="font-semibold text-gray-700">Date</label>
+                            <input type="date" id="date-picker" value="${currentFilters.selectedDate}" class="w-full p-2 border rounded-md mt-2">
+                        </div>
+                        <div>
+                            <label for="city" class="font-semibold text-gray-700">City</label>
+                            <select id="city" name="city" class="w-full p-2 border rounded-md mt-2">
+                                <option value="All">All Cities</option>
+                                ${allCities.map(city => `<option value="${city}" ${currentFilters.city === city ? 'selected' : ''}>${city}</option>`).join('')}
+                            </select>
+                        </div>
+                        <div class="relative">
+                            <label class="font-semibold text-gray-700">District</label>
+                            <button id="district-dropdown-button" class="w-full text-left p-2 border rounded-md mt-2 flex justify-between items-center ${currentFilters.city === 'All' ? 'opacity-50 cursor-not-allowed' : ''}" ${currentFilters.city === 'All' ? 'disabled' : ''}>
+                                <span>${currentFilters.districts.length > 0 ? `${currentFilters.districts.length} selected` : 'Select districts...'}</span>
+                                <svg class="w-5 h-5 transition-transform ${appState.isDistrictDropdownOpen ? 'transform rotate-180' : ''}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                            ${appState.isDistrictDropdownOpen ? `
+                                <div class="absolute w-full bg-white border rounded-md shadow-lg mt-1 p-2 z-10">
+                                    <input type="text" id="district-search" placeholder="Search districts..." value="${appState.districtSearch}" class="w-full p-2 border rounded-md">
+                                    <div class="space-y-2 mt-2 max-h-40 overflow-y-auto">
+                                        ${allDistricts.filter(d => d.toLowerCase().includes(appState.districtSearch.toLowerCase())).map(district => `
+                                            <label class="flex items-center p-1 rounded hover:bg-gray-100">
+                                                <input type="checkbox" name="districts" value="${district}" ${currentFilters.districts.includes(district) ? 'checked' : ''} class="h-4 w-4 text-emerald-600 rounded">
+                                                <span class="ml-2">${district}</span>
+                                            </label>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            ` : ''}
+                        </div>
+                        <div class="flex gap-2">
+                            <button id="reset-filters" class="w-full bg-gray-200 text-gray-800 font-semibold py-2 rounded-lg hover:bg-gray-300">Reset</button>
+                            <button id="apply-filters" class="w-full bg-emerald-600 text-white font-semibold py-2 rounded-lg hover:bg-emerald-700">Apply</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            let fieldsListHtml = '';
+            if (paginatedFields.length > 0) {
+                fieldsListHtml = paginatedFields.map(field => `
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden group">
+                        <div class="overflow-hidden h-48 relative">
+                            <img src="${field.images[0]}" alt="${field.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                            <div class="absolute top-2 right-2 bg-emerald-600 text-white text-sm font-bold px-3 py-1 rounded-full">${field.district.toUpperCase()}</div>
+                        </div>
+                        <div class="p-6">
+                            <p class="text-gray-500 text-sm mb-1">by ${field.company || 'Sportiva Fields'}</p>
+                            <h3 class="text-xl font-bold text-gray-800 mb-2 truncate">${field.name}</h3>
+                            <p class="text-gray-600 text-sm mb-2">${field.district}, ${field.city}</p> <!-- Added district -->
+                            <div class="flex items-center mb-2">
+                                ${renderStarRating(field.rating)}
+                                <span class="ml-2 text-gray-600 text-sm">(${field.reviews.length} reviews)</span>
+                            </div>
+                            <div class="flex items-center text-gray-600 text-sm mt-2">
+                                ${field.deposit ? '<span class="flex items-center mr-3">$ Deposit Required</span>' : '<span class="flex items-center mr-3">No Deposit</span>'}
+                                ${field.amenities.ball === 'free' ? '<span class="flex items-center">⚽ Ball Included</span>' : ''}
+                                ${field.amenities.ball === 'rental' ? '<span class="flex items-center">⚽ Ball Rental</span>' : ''}
+                                ${field.amenities.ball === 'none' ? '<span class="flex items-center">✗ No Ball</span>' : ''}
+                            </div>
+                            <p class="text-lg font-semibold text-emerald-600 mt-4">EGP ${field.price} <span class="text-gray-500 text-sm">/hr</span></p>
+                            <button onclick="navigateTo('field_details', ${JSON.stringify(field).replace(/"/g, '&quot;')})" class="mt-4 w-full bg-emerald-600 text-white font-semibold px-4 py-2 rounded-lg hover:bg-emerald-700 transition">View Details</button>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                fieldsListHtml = `
+                    <div class="col-span-full text-center py-10 text-gray-600">
+                        <p class="text-xl font-semibold mb-4">No fields found matching your criteria.</p>
+                        <button onclick="resetFilters()" class="bg-emerald-600 text-white font-semibold px-6 py-2 rounded-lg hover:bg-emerald-700 transition">Reset Filters</button>
+                    </div>
+                `;
+            }
+
+            let paginationControlsHtml = '';
+            if (totalPages > 1) {
+                paginationControlsHtml = `
+                    <div class="flex justify-center items-center space-x-2 mt-8">
+                        <button id="prev-page" class="p-2 rounded-lg bg-white shadow-sm ${appState.pagination.currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-100'}" ${appState.pagination.currentPage === 1 ? 'disabled' : ''}>
+                            &lt;
+                        </button>
+                        ${Array.from({ length: totalPages }, (_, i) => i + 1).map(page => `
+                            <button class="p-2 px-4 rounded-lg font-semibold ${appState.pagination.currentPage === page ? 'bg-emerald-600 text-white' : 'bg-white text-gray-700 hover:bg-gray-100'}"
+                                    onclick="goToPage(${page})">
+                                ${page}
+                            </button>
+                        `).join('')}
+                        <button id="next-page" class="p-2 rounded-lg bg-white shadow-sm ${appState.pagination.currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-100'}" ${appState.pagination.currentPage === totalPages ? 'disabled' : ''}>
+                            &gt;
+                        </button>
+                    </div>
+                `;
+            }
+
+
+            return `
+                <div class="bg-gray-50">
+                    <div class="container mx-auto px-6 py-12">
+                        <div class="text-center mb-12">
+                            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900">Book a Field</h1>
+                            <p class="text-lg text-gray-600 mt-2">Find and reserve the perfect pitch for your game.</p>
+                        </div>
+                        <div class="grid lg:grid-cols-4 gap-8">
+                            <div class="hidden lg:block lg:col-span-1">
+                                ${filterSidebarHtml}
+                            </div>
+                            <div class="lg:col-span-3">
+                                <div class="flex flex-col md:flex-row gap-2 mb-4">
+                                    <input type="text" id="search-term" value="${currentFilters.term}" placeholder="Search by field name or district..." class="p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-emerald-500 shadow-sm" />
+                                    <button id="search-button" class="bg-emerald-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-emerald-700 transition flex-shrink-0 flex items-center justify-center">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                                    </button>
+                                </div>
+                                <div class="lg:hidden col-span-4">
+                                    <button id="toggle-filters-button" class="w-full bg-white p-4 rounded-lg shadow-md flex justify-between items-center"> <!-- Increased padding -->
+                                        <span class="font-semibold">Advanced Filters</span>
+                                        <svg class="w-5 h-5 transition-transform ${appState.showFilters ? 'transform rotate-180' : ''}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    </button>
+                                    ${appState.showFilters ? `<div class="mt-4">${filterSidebarHtml}</div>` : ''}
+                                </div>
+                                ${appState.hasSearched ? `<p class="text-gray-600 mb-4">Results: ${uniqueDistrictsFound} unique districts found</p>` : ''}
+                                <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">
+                                    ${fieldsListHtml}
+                                </div>
+                                ${paginationControlsHtml}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function attachBrowseFieldsEventListeners() {
+            document.getElementById('search-term').addEventListener('input', (e) => {
+                appState.filters.term = e.target.value;
+            });
+            document.getElementById('search-button').addEventListener('click', applyFilters);
+
+            const toggleFiltersButton = document.getElementById('toggle-filters-button');
+            if (toggleFiltersButton) {
+                toggleFiltersButton.addEventListener('click', () => {
+                    appState.showFilters = !appState.showFilters;
+                    renderPage();
+                });
+            }
+
+            const citySelect = document.getElementById('city');
+            if (citySelect) {
+                citySelect.addEventListener('change', (e) => {
+                    appState.filters.city = e.target.value;
+                    appState.filters.districts = []; // Reset districts when city changes
+                    appState.isDistrictDropdownOpen = false; // Close dropdown on city change
+                    renderPage(); // Re-render to update districts list
+                });
+            }
+
+            const districtDropdownButton = document.getElementById('district-dropdown-button');
+            if (districtDropdownButton) {
+                districtDropdownButton.addEventListener('click', () => {
+                    appState.isDistrictDropdownOpen = !appState.isDistrictDropdownOpen;
+                    renderPage();
+                });
+            }
+
+            const districtSearchInput = document.getElementById('district-search');
+            if (districtSearchInput) {
+                districtSearchInput.addEventListener('input', (e) => {
+                    appState.districtSearch = e.target.value;
+                    renderPage(); // Re-render to update filtered districts
+                });
+            }
+
+            const districtCheckboxes = document.querySelectorAll('input[name="districts"]');
+            districtCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', (e) => {
+                    const value = e.target.value;
+                    if (e.target.checked) {
+                        if (!appState.filters.districts.includes(value)) {
+                            appState.filters.districts.push(value);
+                        }
+                    } else {
+                        appState.filters.districts = appState.filters.districts.filter(d => d !== value);
+                    }
+                    // No need to re-render the whole page for checkbox changes, just update state
+                });
+            });
+
+            // New price range and date filters
+            const minPriceInput = document.getElementById('min-price');
+            if (minPriceInput) {
+                minPriceInput.addEventListener('input', (e) => {
+                    appState.filters.minPrice = e.target.value;
+                });
+            }
+
+            const maxPriceInput = document.getElementById('max-price');
+            if (maxPriceInput) {
+                maxPriceInput.addEventListener('input', (e) => {
+                    appState.filters.maxPrice = e.target.value;
+                });
+            }
+
+            const datePickerInput = document.getElementById('date-picker');
+            if (datePickerInput) {
+                datePickerInput.addEventListener('change', (e) => {
+                    appState.filters.selectedDate = e.target.value;
+                });
+            }
+
+            document.getElementById('reset-filters').addEventListener('click', resetFilters);
+            document.getElementById('apply-filters').addEventListener('click', applyFilters);
+
+            // Pagination event listeners
+            const prevPageButton = document.getElementById('prev-page');
+            const nextPageButton = document.getElementById('next-page');
+
+            if (prevPageButton) {
+                prevPageButton.addEventListener('click', () => goToPage(appState.pagination.currentPage - 1));
+            }
+            if (nextPageButton) {
+                nextPageButton.addEventListener('click', () => goToPage(appState.pagination.currentPage + 1));
+            }
+        }
+
+        function applyFilters() {
+            appState.hasSearched = true;
+            appState.pagination.currentPage = 1; // Reset to first page on filter apply
+            if (window.innerWidth < 1024) appState.showFilters = false;
+            renderPage();
+        }
+
+        function resetFilters() {
+            appState.filters = { term: '', city: 'All', districts: [], minPrice: '', maxPrice: '', selectedDate: '' };
+            appState.districtSearch = '';
+            appState.hasSearched = false;
+            appState.pagination.currentPage = 1; // Reset to first page on filter reset
+            if (window.innerWidth < 1024) appState.showFilters = false;
+            renderPage();
+        }
+
+        // Helper to parse date strings for sorting
+        function parseDate(dateString) {
+            // Assuming date format "Mon DD, YYYY" e.g., "Jul 20, 2025"
+            const parts = dateString.replace(',', '').split(' ');
+            const monthNames = {
+                Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
+                Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11
+            };
+            const month = monthNames[parts[0]];
+            const day = parseInt(parts[1]);
+            const year = parseInt(parts[2]);
+            return new Date(year, month, day);
+        }
+
+        function renderFieldDetailsPage() {
+            const field = appState.currentPageData;
+            if (!field) return `<p class="text-center text-red-500">Field data not found.</p>`;
+
+            const basePrice = appState.selectedSlots.length * field.price;
+            const ballCost = appState.rentBall && field.amenities.ball === 'rental' ? field.ballPrice : 0;
+            const shirtsCost = appState.rentShirts && field.amenities.shirts === 'rental' ? field.shirtsPrice : 0;
+            const totalPrice = basePrice + ballCost + shirtsCost;
+
+            const timeSlots = Array.from({ length: 6 }, (_, i) => i + 17).map(hour => ({ start: hour, display: `${hour % 12 === 0 ? 12 : hour % 12}:00 PM - ${(hour + 1) % 12 === 0 ? 12 : (hour + 1) % 12}:00 PM` }));
+
+            // Sort reviews by date in descending order (most recent first)
+            const sortedReviews = [...appState.reviews].sort((a, b) => {
+                const dateA = parseDate(a.date);
+                const dateB = parseDate(b.date);
+                return dateB - dateA; // Descending order
+            });
+
+            // Calculate average rating and total reviews from sortedReviews
+            const totalRating = sortedReviews.reduce((sum, r) => sum + r.rating, 0);
+            const averageRating = sortedReviews.length > 0 ? (totalRating / sortedReviews.length).toFixed(1) : 'N/A';
+            const totalReviews = sortedReviews.length;
+
+            // Determine which reviews to show
+            const reviewsToShow = appState.showAllReviews ? sortedReviews : sortedReviews.slice(0, 3);
+            const hasMoreReviews = sortedReviews.length > 3;
+
+            // Get today's date for default value in date picker
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            const minDate = `${year}-${month}-${day}`;
+
+            const currentImageUrl = field.images[appState.currentImageIndex];
+
+            return `
+                <div class="container mx-auto px-6 py-12">
+                    <button onclick="navigateTo('browse_fields')" class="mb-8 text-emerald-600 hover:text-emerald-800">← Back to Fields</button>
+                    <div class="grid md:grid-cols-5 gap-12">
+                        <div class="md:col-span-3">
+                            <div class="relative w-full h-96 rounded-lg shadow-lg overflow-hidden">
+                                <img src="${currentImageUrl}" alt="${field.name}" class="w-full h-full object-cover" />
+                                ${field.images.length > 1 ? `
+                                <button id="prev-image" class="absolute left-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full text-2xl focus:outline-none">
+                                    &lt;
+                                </button>
+                                <button id="next-image" class="absolute right-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full text-2xl focus:outline-none">
+                                    &gt;
+                                </button>
+                                ` : ''}
+                            </div>
+                            <div class="mt-8 bg-white p-6 rounded-lg shadow-md">
+                                <h2 class="text-2xl font-bold mb-4">We Offer</h2>
+                                <ul class="space-y-3 text-lg">
+                                    ${renderAmenityListItem("Toilets", field.amenities.toilets)}
+                                    ${renderAmenityListItem("Showers", field.amenities.showers)}
+                                    ${renderAmenityListItem("Water for Sale", field.amenities.water)}
+                                </ul>
+                            </div>
+                            <div class="mt-8 bg-white p-6 rounded-lg shadow-md">
+                                <h2 class="text-2xl font-bold mb-4">Reviews</h2>
+                                <div class="flex items-center mb-4">
+                                    <span class="text-4xl font-bold text-gray-800 mr-2">${averageRating}</span>
+                                    ${renderStarRating(parseFloat(averageRating))}
+                                    <span class="ml-4 text-gray-600 text-lg">${totalReviews} reviews</span>
+                                </div>
+                                <div class="space-y-6">
+                                    ${reviewsToShow.map((r, i) => `
+                                        <div class="pb-4 ${i < reviewsToShow.length - 1 ? 'border-b border-gray-200' : ''}">
+                                            <div class="flex items-center mb-2">
+                                                <img src="${r.authorImage}" alt="${r.author}" class="w-10 h-10 rounded-full object-cover mr-3" onerror="this.style.display='none'; this.nextSibling.style.display='flex'">
+                                                <div class="w-10 h-10 rounded-full bg-emerald-600 items-center justify-center text-white font-bold text-lg mr-3" style="display: none;">
+                                                     ${r.author.charAt(0).toUpperCase()}
+                                                </div>
+                                                <div>
+                                                    <p class="font-bold text-gray-800">${r.author}</p>
+                                                    <div class="flex items-center text-sm text-gray-500">
+                                                        ${renderStarRating(r.rating)}
+                                                        <span class="ml-2">${r.rating.toFixed(1)}</span>
+                                                        <span class="ml-2">• ${r.date}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <p class="text-gray-700 mt-2">${r.text}</p>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                                ${hasMoreReviews ? `
+                                    <button id="toggle-reviews-button" class="mt-6 w-full bg-gray-100 text-gray-800 font-semibold py-2 rounded-lg hover:bg-gray-200 transition">
+                                        ${appState.showAllReviews ? 'Show Less' : 'View All Reviews'}
+                                    </button>
+                                ` : ''}
+                                ${renderReviewForm()}
+                            </div>
+                        </div>
+                        <div class="md:col-span-2">
+                            <div class="bg-white p-6 rounded-lg shadow-lg sticky top-24">
+                                <h1 class="text-3xl font-bold mb-2">${field.name}</h1>
+                                <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(field.district + ", " + field.city)}" target="_blank" rel="noopener noreferrer" class="text-gray-600 text-lg mb-4 hover:text-emerald-600 transition flex items-center">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                    ${field.district}, ${field.city}
+                                </a>
+                                <div class="my-4">${renderStarRating(field.rating)}</div>
+                                <p class="text-lg font-semibold text-emerald-600 mt-4">EGP ${field.price} <span class="text-gray-500 text-sm">/hr</span></p>
+                                <div class="space-y-2 my-4">
+                                    ${field.amenities.ball === 'free' ? `<p class="text-emerald-600 font-semibold">⚽ Ball for free</p>` : ''}
+                                    ${field.amenities.ball === 'rental' ? `
+                                        <div class="flex items-center">
+                                            <input type="checkbox" id="rentBall" ${appState.rentBall ? 'checked' : ''} class="h-4 w-4 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500">
+                                            <label for="rentBall" class="ml-2 text-gray-700">Rent a ball (+${field.ballPrice} EGP)</label>
+                                        </div>
+                                    ` : ''}
+                                    ${field.amenities.ball === 'none' ? `<p class="text-gray-500">✗ No ball available</p>` : ''}
+                                    ${field.amenities.shirts === 'rental' ? `
+                                        <div class="flex items-center">
+                                            <input type="checkbox" id="rentShirts" ${appState.rentShirts ? 'checked' : ''} class="h-4 w-4 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500">
+                                            <label for="rentShirts" class="ml-2 text-gray-700">Rent shirts (+${field.shirtsPrice} EGP)</label>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                                <p class="font-semibold mb-2 mt-4">Select Date:</p>
+                                <input type="date" id="booking-date-picker" value="${appState.selectedBookingDate || minDate}" min="${minDate}" class="w-full p-2 border rounded-lg mb-4">
+                                <p class="font-semibold mb-2 mt-4">Select Hours:</p>
+                                <div class="grid grid-cols-2 gap-2 mb-4">
+                                    ${timeSlots.map(slot => {
+                                        const isBooked = field.bookedSlots && field.bookedSlots.includes(slot.start);
+                                        const isSelected = appState.selectedSlots.some(s => s.start === slot.start);
+                                        return `
+                                            <button class="p-2 rounded-lg border-2 text-sm
+                                                ${isBooked ? 'bg-gray-200 text-gray-500 cursor-not-allowed' :
+                                                    isSelected ? 'bg-emerald-600 text-white border-emerald-600' :
+                                                    'bg-white hover:border-emerald-500'}"
+                                                ${isBooked ? 'disabled' : ''}
+                                                onclick="${isBooked ? '' : `handleSlotClick(${slot.start}, '${slot.display}')`}">
+                                                ${slot.display}
+                                            </button>
+                                        `;
+                                    }).join('')}
+                                </div>
+                                <div class="border-t pt-4 mt-4">
+                                    <div class="flex justify-between items-center text-xl font-bold">
+                                        <p>Total Price:</p>
+                                        <p>EGP ${totalPrice}</p>
+                                    </div>
+                                    <button id="book-now-button" class="mt-4 w-full bg-emerald-600 text-white font-bold py-3 rounded-lg hover:bg-emerald-700 transition disabled:opacity-50" ${appState.selectedSlots.length === 0 || !appState.selectedBookingDate ? 'disabled' : ''}>
+                                        Book Now (${appState.selectedSlots.length} hr)
+                                    </button>
+                                    <p class="text-center text-sm text-gray-500 mt-2">You can pay a 25% deposit now and the rest at the venue.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function attachFieldDetailsEventListeners() {
+            const field = appState.currentPageData;
+
+            const rentBallCheckbox = document.getElementById('rentBall');
+            if (rentBallCheckbox) {
+                rentBallCheckbox.addEventListener('change', (e) => {
+                    appState.rentBall = e.target.checked;
+                    renderPage(); // Re-render to update total price
+                });
+            }
+
+            const rentShirtsCheckbox = document.getElementById('rentShirts');
+            if (rentShirtsCheckbox) {
+                rentShirtsCheckbox.addEventListener('change', (e) => {
+                    appState.rentShirts = e.target.checked;
+                    renderPage(); // Re-render to update total price
+                });
+            }
+
+            const bookingDatePicker = document.getElementById('booking-date-picker');
+            if (bookingDatePicker) {
+                // Set initial selectedBookingDate when the page loads for the first time or navigates to a new field
+                if (!appState.selectedBookingDate) {
+                    const today = new Date();
+                    const year = today.getFullYear();
+                    const month = String(today.getMonth() + 1).padStart(2, '0');
+                    const day = String(today.getDate()).padStart(2, '0');
+                    appState.selectedBookingDate = `${year}-${month}-${day}`;
+                }
+                bookingDatePicker.value = appState.selectedBookingDate; // Ensure the input reflects the state
+                bookingDatePicker.addEventListener('change', (e) => {
+                    appState.selectedBookingDate = e.target.value;
+                    renderPage(); // Re-render to update book button disabled state
+                });
+            }
+
+
+            const bookNowButton = document.getElementById('book-now-button');
+            if (bookNowButton) {
+                bookNowButton.addEventListener('click', () => {
+                    const bookingData = {
+                        field: field,
+                        selectedSlots: appState.selectedSlots,
+                        selectedBookingDate: appState.selectedBookingDate, // Pass selected date
+                        totalPrice: (appState.selectedSlots.length * field.price) + (appState.rentBall && field.amenities.ball === 'rental' ? field.ballPrice : 0) + (appState.rentShirts && field.amenities.shirts === 'rental' ? field.shirtsPrice : 0),
+                        hours: appState.selectedSlots.length
+                    };
+                    navigateTo('payment', bookingData);
+                });
+            }
+
+            const reviewForm = document.getElementById('review-form');
+            if (reviewForm) {
+                reviewForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const reviewText = document.getElementById('review-text').value.trim(); // Trim whitespace
+                    const reviewDate = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+                    if (appState.selectedRating > 0 && reviewText) {
+                        // Prepend the new review to the beginning of the reviews array
+                        appState.reviews.unshift({ rating: appState.selectedRating, text: reviewText, author: 'You', date: reviewDate, authorImage: 'images/people/people 11.png' }); // Added a default image for the new review
+                        appState.selectedRating = 0; // Reset rating
+                        document.getElementById('review-text').value = ''; // Clear text
+                        renderPage(); // Re-render to show new review
+                    } else {
+                        // Show a modal if validation fails
+                        appState.modalContent = {
+                            title: 'Review Submission Failed',
+                            message: 'Please select a rating (stars) and enter your review text before submitting.'
+                        };
+                        renderPage(); // Re-render to show the modal
+                    }
+                });
+
+                const starContainers = document.querySelectorAll('#review-stars-container svg');
+                starContainers.forEach((star, index) => {
+                    star.addEventListener('click', () => {
+                        appState.selectedRating = index + 1;
+                        renderPage(); // Re-render to update star display
+                    });
+                });
+            }
+
+            const toggleReviewsButton = document.getElementById('toggle-reviews-button');
+            if (toggleReviewsButton) {
+                toggleReviewsButton.addEventListener('click', () => {
+                    appState.showAllReviews = !appState.showAllReviews;
+                    renderPage();
+                });
+            }
+
+            // Image carousel navigation
+            const prevImageButton = document.getElementById('prev-image');
+            const nextImageButton = document.getElementById('next-image');
+
+            if (prevImageButton) {
+                prevImageButton.addEventListener('click', () => {
+                    appState.currentImageIndex = (appState.currentImageIndex - 1 + field.images.length) % field.images.length;
+                    renderPage();
+                });
+            }
+            if (nextImageButton) {
+                nextImageButton.addEventListener('click', () => {
+                    appState.currentImageIndex = (appState.currentImageIndex + 1) % field.images.length;
+                    renderPage();
+                });
+            }
+        }
+
+        function handleSlotClick(startHour, display) {
+            const field = appState.currentPageData;
+            // Prevent selecting booked slots
+            if (field.bookedSlots && field.bookedSlots.includes(startHour)) {
+                return;
+            }
+
+            const existingSlotIndex = appState.selectedSlots.findIndex(s => s.start === startHour);
+            if (existingSlotIndex !== -1) {
+                appState.selectedSlots.splice(existingSlotIndex, 1);
+            } else {
+                appState.selectedSlots.push({ start: startHour, display: display });
+            }
+            appState.selectedSlots.sort((a, b) => a.start - b.start); // Keep sorted
+            renderPage(); // Re-render to update selected slots and total price
+        }
+
+        function renderPaymentPage() {
+            const data = appState.currentPageData;
+            if (!data) return `<p class="text-center text-red-500">Booking data not found.</p>`;
+
+            const depositAmount = Math.ceil(data.totalPrice * 0.25);
+            const amountToPay = appState.paymentOption === 'full' ? data.totalPrice : depositAmount;
+            const paymentTypeMessage = appState.paymentOption === 'full' ? `full amount (EGP ${amountToPay})` : `25% deposit (EGP ${amountToPay})`;
+
+            return `
+                <div class="container mx-auto max-w-2xl px-6 py-12">
+                    <button onclick="navigateTo('field_details', appState.currentPageData.field)" class="mb-8 text-emerald-600 hover:text-emerald-800">← Back to Field Details</button>
+                    <div class="bg-white rounded-lg shadow-xl p-8">
+                        <h1 class="text-3xl font-bold text-center mb-2">Complete Your Booking</h1>
+                        <p class="text-gray-600 text-center mb-8">Confirm your details and choose a payment method.</p>
+                        <div class="bg-gray-50 rounded-lg p-6 mb-8 border">
+                            <h2 class="text-xl font-bold mb-4">Order Summary</h2>
+                            <div class="space-y-2">
+                                <div class="flex justify-between"><span>Field:</span> <span class="font-semibold">${data.field.name}</span></div>
+                                <div class="flex justify-between"><span>Location:</span> <span class="font-semibold">${data.field.district}, ${data.field.city}</span></div>
+                                <div class="flex justify-between"><span>Selected Date:</span> <span class="font-semibold">${data.selectedBookingDate || 'Not selected'}</span></div>
+                                <div class="flex justify-between"><span>Selected Hours:</span> <span class="font-semibold">${data.selectedSlots.map(slot => slot.display).join(', ')}</span></div>
+                                <div class="flex justify-between"><span>Hours Booked:</span> <span class="font-semibold">${data.hours}</span></div>
+                                <div class="flex justify-between"><span>Total Price:</span> <span class="font-semibold">EGP ${data.totalPrice}</span></div>
+                                <div class="border-t my-2"></div>
+                                <div class="flex justify-between text-xl"><span class="font-bold">Amount to Pay:</span> <span class="font-bold text-emerald-600">EGP ${amountToPay}</span></div>
+                                ${appState.paymentOption === 'deposit' && data.totalPrice > 0 ? `
+                                    <p class="text-right text-sm text-gray-500 mt-1">Remaining balance of EGP ${data.totalPrice - depositAmount} due at the venue.</p>
+                                ` : ''}
+                            </div>
+                        </div>
+                        <h2 class="text-xl font-bold text-center mb-4">Select Payment Option</h2>
+                        <div class="flex justify-center mb-6 border border-gray-200 rounded-lg p-1 bg-gray-100">
+                            <button id="pay-full-button" class="w-1/2 py-2 rounded-md font-semibold transition ${appState.paymentOption === 'full' ? 'bg-emerald-600 text-white shadow' : 'bg-transparent text-gray-600'}">Pay Full Amount</button>
+                            <button id="pay-deposit-button" class="w-1/2 py-2 rounded-md font-semibold transition ${appState.paymentOption === 'deposit' ? 'bg-emerald-600 text-white shadow' : 'bg-transparent text-gray-600'}">Pay 25% Deposit</button>
+                        </div>
+                        <h2 class="text-xl font-bold text-center mb-4">Select Payment Method</h2>
+                        <div class="space-y-4">
+                            <button id="pay-instapay" class="w-full flex items-center justify-center p-4 border-2 border-transparent rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition font-bold text-lg" ${amountToPay <= 0 ? 'disabled' : ''}>
+                                <svg class="w-8 h-8 mr-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-12h2v6h-2zm0 8h2v2h-2z"></path></svg>
+                                Pay with Instapay
+                            </button>
+                            <button id="pay-vodafone-cash" class="w-full flex items-center justify-center p-4 border-2 border-transparent rounded-lg bg-red-600 text-white hover:bg-red-700 transition font-bold text-lg" ${amountToPay <= 0 ? 'disabled' : ''}>
+                                <svg class="w-8 h-8 mr-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-12h2v6h-2zm0 8h2v2h-2z"></path></svg>
+                                Pay with Vodafone Cash
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function attachPaymentPageEventListeners() {
+            document.getElementById('pay-full-button').addEventListener('click', () => {
+                appState.paymentOption = 'full';
+                renderPage();
+            });
+            document.getElementById('pay-deposit-button').addEventListener('click', () => {
+                appState.paymentOption = 'deposit';
+                renderPage();
+            });
+
+            const data = appState.currentPageData;
+            const paymentTypeMessage = appState.paymentOption === 'full' ? `full amount (EGP ${appState.paymentOption === 'full' ? data.totalPrice : Math.ceil(data.totalPrice * 0.25)})` : `25% deposit (EGP ${Math.ceil(data.totalPrice * 0.25)})`;
+
+            document.getElementById('pay-instapay').addEventListener('click', () => handlePayment('Instapay', paymentTypeMessage));
+            document.getElementById('pay-vodafone-cash').addEventListener('click', () => handlePayment('Vodafone Cash', paymentTypeMessage));
+        }
+
+        function handlePayment(method, paymentTypeMessage) {
+            appState.processingPayment = true;
+            renderPage(); // Show spinner
+
+            setTimeout(() => {
+                // First, set the modal content and render it
+                appState.modalContent = {
+                    title: 'Booking Confirmed!',
+                    message: `Your booking for ${appState.currentPageData.field.name} for ${appState.currentPageData.hours} hour(s) on ${appState.currentPageData.selectedBookingDate} has been confirmed. You paid the ${paymentTypeMessage} via ${method}. Check your dashboard for details.`
+                };
+                appState.processingPayment = false; // Stop showing spinner
+                renderPage(); // Render the page with the success modal
+
+                // After a short delay, close the modal and navigate back to browse fields
+                setTimeout(() => {
+                    appState.modalContent = null; // Clear modal content
+                    navigateTo('browse_fields'); // Navigate to browse fields
+                }, 3000); // Show modal for 3 seconds
+            }, 2000); // Simulate API call processing time
+        }
+
+
+        // --- MAIN APPLICATION LOGIC ---
+
+        function navigateTo(page, data = null) {
+            appState.currentPage = page;
+            appState.currentPageData = data;
+            // Reset page-specific state when navigating
+            if (page === 'field_details') {
+                appState.selectedSlots = [];
+                appState.rentBall = false;
+                appState.rentShirts = false;
+                // Ensure reviews are copied and sorted when entering details page
+                appState.reviews = data ? [...data.reviews].sort((a, b) => parseDate(b.date) - parseDate(a.date)) : [];
+                appState.selectedRating = 0; // Reset review rating
+                appState.showAllReviews = false; // Reset review visibility when entering details page
+                // Set selectedBookingDate to today's date by default when navigating to field details
+                const today = new Date();
+                const year = today.getFullYear();
+                const month = String(today.getMonth() + 1).padStart(2, '0');
+                const day = String(today.getDate()).padStart(2, '0');
+                appState.selectedBookingDate = `${year}-${month}-${day}`;
+                appState.currentImageIndex = 0; // Reset image index
+            } else if (page === 'payment') {
+                appState.paymentOption = 'full'; // Default to full payment
+                appState.processingPayment = false;
+            } else if (page === 'browse_fields') {
+                // Keep filters, but reset dropdown states
+                appState.showFilters = false;
+                appState.isDistrictDropdownOpen = false;
+            }
+            renderPage();
+        }
+
+        function goToPage(pageNumber) {
+            appState.pagination.currentPage = pageNumber;
+            renderPage();
+        }
+
+        function renderPage() {
+            const appDiv = document.getElementById('app');
+            let contentHtml = '';
+            let pageToAttachListenersFor = appState.currentPage; // Store current page for listener attachment
+
+            // Always render header and footer
+            contentHtml += renderHeader();
+
+            switch (appState.currentPage) {
+                case 'browse_fields':
+                    contentHtml += renderBrowseFieldsPage();
+                    break;
+                case 'field_details':
+                    contentHtml += renderFieldDetailsPage();
+                    break;
+                case 'payment':
+                    contentHtml += renderPaymentPage();
+                    break;
+                case 'payment_success':
+                    // When payment is successful, we want to show the modal over the browse fields page
+                    // and then navigate back to browse fields after the modal closes automatically.
+                    contentHtml += renderBrowseFieldsPage();
+                    pageToAttachListenersFor = 'browse_fields'; // Attach browse fields listeners
+                    break;
+                default:
+                    contentHtml += renderBrowseFieldsPage();
+                    pageToAttachListenersFor = 'browse_fields';
+            }
+
+            contentHtml += renderFooter();
+
+            // Render modal if content exists
+            if (appState.modalContent) {
+                contentHtml += renderModal(appState.modalContent.title, appState.modalContent.message);
+            }
+
+            appDiv.innerHTML = contentHtml;
+
+            // Attach event listeners after rendering based on the page that was actually rendered
+            if (pageToAttachListenersFor === 'browse_fields') {
+                attachBrowseFieldsEventListeners();
+            } else if (pageToAttachListenersFor === 'field_details') {
+                attachFieldDetailsEventListeners();
+            } else if (pageToAttachListenersFor === 'payment') {
+                attachPaymentPageEventListeners();
+            }
+        }
+
+        // Initial render when the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            renderPage();
+        });
+    </script>
+</body>
+</html>

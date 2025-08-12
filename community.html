@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sportiva - Find Players & Challenges</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            background-color: #f8fafc; /* Tailwind gray-50 */
+        }
+        /* Custom active tab styling */
+        .tab-active {
+            background-color: #059669; /* emerald-600 */
+            color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        /* Custom styling for the district badge */
+        .district-badge {
+            background-color: #047857; /* Darker emerald-700 for badge */
+            color: white;
+            font-weight: 600; /* font-semibold */
+            padding: 0.25rem 0.75rem; /* px-3 py-1 */
+            border-radius: 9999px; /* rounded-full */
+            font-size: 0.75rem; /* text-xs */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* shadow-md */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 2.5rem;
+            height: 1.75rem;
+            letter-spacing: 0.05em; /* Add slight letter spacing */
+        }
+        .pagination-btn {
+            min-width: 40px;
+            height: 40px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: all 0.2s ease-in-out;
+        }
+        .pagination-btn.active {
+            background-color: #059669;
+            color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .pagination-btn:not(.active) {
+            background-color: white;
+            color: #374151;
+            border: 1px solid #e5e7eb;
+        }
+         .pagination-btn:not(.active):hover {
+            background-color: #f3f4f6;
+         }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+
+    <script>
+        // --- MOCK DATA ---
+        const mockPlayers = [
+            { id: 'p1', name: 'Ali Hassan', position: 'Forward', skillLevel: 'Intermediate', location: 'Nasr City', image: 'images/people/people 1.png' },
+            { id: 'p2', name: 'Omar Sherif', position: 'Midfielder', skillLevel: 'Intermediate', location: 'Maadi', image: 'images/people/people 2.png' },
+            { id: 'p3', name: 'Karim Ahmed', position: 'Defender', skillLevel: 'Beginner', location: 'Heliopolis', image: 'images/people/people 3.png' },
+            { id: 'p4', name: 'Nour El-Sayed', position: 'Goalkeeper', skillLevel: 'Intermediate', location: 'Zamalek', image: 'images/people/people 4.png' },
+            { id: 'p5', name: 'Youssef Tarek', position: 'Forward', skillLevel: 'Advanced', location: 'New Cairo', image: 'images/people/people 5.png' },
+            { id: 'p6', name: 'Amr Mostafa', position: 'Midfielder', skillLevel: 'Beginner', location: 'Dokki', image: 'images/people/people 6.png' },
+            { id: 'p7', name: 'Hana Gamal', position: 'Forward', skillLevel: 'Beginner', location: 'Maadi', image: 'images/people/people 7.png' },
+            { id: 'p8', name: 'Fares Adel', position: 'Defender', skillLevel: 'Advanced', location: 'Heliopolis', image: 'images/people/people 8.png' },
+            { id: 'p9', name: 'Layla Hesham', position: 'Midfielder', skillLevel: 'Intermediate', location: 'Nasr City', image: 'images/people/people 9.png' },
+        ];
+
+        const mockTeams = [
+            { id: 't1', name: 'Al Ahly Fans', skillLevel: 'Advanced', location: 'Nasr City', members: 10, image: 'https://placehold.co/100x100/E0F2F7/000?text=Team1' },
+            { id: 't2', name: 'Zamalek Legends', skillLevel: 'Intermediate', location: 'Mohandessin', members: 8, image: 'https://placehold.co/100x100/E0F2F7/000?text=Team2' },
+            { id: 't3', name: 'Maadi Warriors', skillLevel: 'Beginner', location: 'Maadi', members: 7, image: 'https://placehold.co/100x100/E0F2F7/000?text=Team3' },
+            { id: 't4', name: 'Heliopolis United', skillLevel: 'Advanced', location: 'Heliopolis', members: 11, image: 'https://placehold.co/100x100/E0F2F7/000?text=Team4' },
+            { id: 't5', name: 'Cairo Pyramids', skillLevel: 'Intermediate', location: 'New Cairo', members: 9, image: 'https://placehold.co/100x100/E0F2F7/000?text=Team5' },
+            { id: 't6', name: 'Giza Lions', skillLevel: 'Beginner', location: 'Dokki', members: 12, image: 'https://placehold.co/100x100/E0F2F7/000?text=Team6' },
+            { id: 't7', name: 'Nile Kings', skillLevel: 'Advanced', location: 'Zamalek', members: 10, image: 'https://placehold.co/100x100/E0F2F7/000?text=Team7' },
+            { id: 't8', name: 'Desert Snakes', skillLevel: 'Intermediate', location: '6th of October', members: 8, image: 'https://placehold.co/100x100/E0F2F7/000?text=Team8' },
+            { id: 't9', name: 'Red Sea Sharks', skillLevel: 'Beginner', location: 'Maadi', members: 9, image: 'https://placehold.co/100x100/E0F2F7/000?text=Team9' },
+        ];
+
+        const mockChallenges = [
+            { id: 'c1', name: 'Friendly Match', type: '5-a-side', club: 'Nasr City Stadium', district: 'Nasr City', date: 'Aug 10, 2025', time: '7:00 PM - 8:00 PM', clubPrice: 'EGP 300/hr', teamPrice: 'EGP 100/team', teamsRequired: 2, teams: 1, prize: 'Bragging Rights', description: 'Looking for another team of 5 for a friendly match!' },
+            { id: 'c2', name: 'Tournament', type: '7-a-side', club: 'Mohandessin Football Park', district: 'Mohandessin', date: 'Sep 1, 2025', time: '6:00 PM - 10:00 PM', clubPrice: 'N/A', teamPrice: 'EGP 500/team', teamsRequired: 8, teams: 3, prize: 'EGP 1000 Cash Prize', description: 'Knockout tournament for 7-a-side teams. Compete for the grand prize!' },
+            { id: 'c3', name: 'Friendly Match', type: '3-a-side', club: 'Maadi Sports Club', district: 'Maadi', date: 'Aug 8, 2025', time: '5:00 PM - 6:00 PM', clubPrice: 'EGP 150/hr', teamPrice: 'N/A', teamsRequired: 2, teams: 1, prize: 'Free Drinks', description: 'Casual 3-a-side game. Just show up and play!' },
+            { id: 'c4', name: 'Friendly Match', type: '11-a-side', club: 'Zamalek Club Pitch 5', district: 'Zamalek', date: 'Aug 25, 2025', time: '8:00 PM - 10:00 PM', clubPrice: 'N/A', teamPrice: 'EGP 800/match', teamsRequired: 2, teams: 1, prize: 'League Trophy', description: 'Official league match. Seeking a challenging opponent!' },
+            { id: 'c5', name: 'Friendly Match', type: '5-a-side', club: 'Heliopolis SC', district: 'Heliopolis', date: 'Aug 16, 2025', time: '4:00 PM - 5:00 PM', clubPrice: 'EGP 250/hr', teamPrice: 'N/A', teamsRequired: 2, teams: 1, prize: 'Fun!', description: 'A relaxed weekend game for anyone to join.' },
+            { id: 'c6', name: 'Tournament', type: '7-a-side', club: 'New Cairo Fields', district: 'New Cairo', date: 'Sep 5, 2025', time: '7:00 PM - 9:00 PM', clubPrice: 'N/A', teamPrice: 'EGP 600/team', teamsRequired: 4, teams: 1, prize: 'Company Trophy', description: 'Inter-company football challenge.' },
+            { id: 'c7', name: 'Friendly Match', type: '5-a-side', club: 'Dokki Pitch', district: 'Dokki', date: 'Aug 22, 2025', time: '11:00 PM - 12:00 AM', clubPrice: 'EGP 400/hr', teamPrice: 'EGP 150/team', teamsRequired: 2, teams: 0, prize: 'Glory', description: 'Late-night football action under the lights.' },
+            { id: 'c8', name: 'Tournament', type: '11-a-side', club: 'Maadi Youth Academy', district: 'Maadi', date: 'Aug 30, 2025', time: '10:00 AM - 4:00 PM', clubPrice: 'N/A', teamPrice: 'EGP 300/team', teamsRequired: 8, teams: 2, prize: 'Medals and Trophy', description: 'A tournament for the next generation of football stars.' },
+            { id: 'c9', name: 'Tournament', type: '7-a-side', club: 'Zamalek Vets Club', district: 'Zamalek', date: 'Aug 15, 2025', time: '8:00 PM - 9:00 PM', clubPrice: 'N/A', teamPrice: 'EGP 100/team', teamsRequired: 4, teams: 3, prize: 'Respect', description: 'A league for players over 35.' }
+        ];
+
+        const mockCoaches = [
+            { id: 'coach1', name: 'Coach Tarek', specialization: 'Striker Training', skillLevel: 'Advanced', location: 'Nasr City', bio: 'Experienced coach specializing in offensive play and goal-scoring techniques.', trainingClubs: [{name: 'Nasr City Club', days: ['Monday', 'Wednesday', 'Friday']}, {name: 'Heliopolis SC', days: ['Tuesday', 'Thursday']}], image: 'images/coachs/coach 1.png', yearsOfExperience: 10 },
+            { id: 'coach2', name: 'Coach Hany', specialization: 'Goalkeeper Drills', skillLevel: 'Intermediate', location: 'Maadi', bio: 'Dedicated to improving goalkeeper reflexes, positioning, and shot-stopping abilities.', trainingClubs: [{name: 'Maadi Youth Academy', days: ['Saturday']}, {name: 'Giza Training Center', days: ['Sunday', 'Wednesday']}], image: 'images/coachs/coach 2.png', yearsOfExperience: 7 },
+            { id: 'coach3', name: 'Coach Samy', specialization: 'Defensive Tactics', skillLevel: 'Advanced', location: 'Zamalek', bio: 'Focuses on building solid defensive structures and tactical awareness for teams.', trainingClubs: [{name: 'Zamalek FC Training Ground', days: ['Monday', 'Tuesday']}, {name: 'Cairo Defenders Club', days: ['Friday']}], image: 'images/coachs/coach 3.jpeg', yearsOfExperience: 12 },
+            { id: 'coach4', name: 'Coach Mona', specialization: 'Fitness & Conditioning', skillLevel: 'Intermediate', location: 'Heliopolis', bio: 'Certified fitness coach helping players enhance their stamina and physical performance.', trainingClubs: [{name: 'Heliopolis Sports Complex', days: ['Thursday', 'Saturday']}], image: 'images/coachs/coach 4.jpeg', yearsOfExperience: 5 },
+            { id: 'coach5', name: 'Coach Sherif', specialization: 'Youth Development', skillLevel: 'Beginner', location: 'New Cairo', bio: 'Passionate about nurturing young talent and building fundamental football skills in children.', trainingClubs: [{name: 'New Cairo Juniors Club', days: ['Monday', 'Wednesday']}, {name: 'Future Stars Academy', days: ['Saturday']}], image: 'images/coachs/coach 5.jpeg', yearsOfExperience: 3 },
+            { id: 'coach6', name: 'Coach Adel', specialization: 'Midfield Control', skillLevel: 'Advanced', location: 'Dokki', bio: 'Expert in midfield strategy, passing, and possession-based football.', trainingClubs: [{name: 'Dokki Sporting Club', days: ['Tuesday', 'Thursday']}], image: 'images/coachs/coach 6.png', yearsOfExperience: 15 },
+            { id: 'coach7', name: 'Coach Dina', specialization: 'Youth Agility', skillLevel: 'Beginner', location: 'Nasr City', bio: 'Specializes in agility and coordination drills for young players.', trainingClubs: [{name: 'Nasr City Youth Center', days: ['Saturday', 'Sunday']}], image: 'images/coachs/coach 7.jpeg', yearsOfExperience: 4 },
+            { id: 'coach8', name: 'Coach Wael', specialization: 'Set Piece Mastery', skillLevel: 'Intermediate', location: 'Mohandessin', bio: 'Teaches the art of free-kicks, corners, and other set-piece situations.', trainingClubs: [{name: 'Mohandessin FC', days: ['Friday']}], image: 'images/coachs/coach 8.jpeg', yearsOfExperience: 8 },
+            { id: 'coach9', name: 'Coach Sara', specialization: 'Team Chemistry', skillLevel: 'Advanced', location: 'Maadi', bio: 'Focuses on improving team dynamics, communication, and on-field chemistry.', trainingClubs: [{name: 'Maadi Community Club', days: ['Monday', 'Wednesday']}], image: 'https://placehold.co/100x100/E0F2F7/000?text=CS9', yearsOfExperience: 9 },
+        ];
+
+        const allDistrictsList = {
+            "Cairo": ["Nasr City", "Maadi", "Heliopolis", "New Cairo", "Downtown", "Shubra", "Ain Shams", "El Marg", "El Matareya", "Zeitoun", "Basateen"],
+            "Giza": ["Mohandessin", "Zamalek", "Dokki", "Agouza", "6th of October", "Sheikh Zayed", "Haram", "Faisal", "Imbaba", "Bulaq ad Dakrur"]
+        };
+
+
+        // --- GLOBAL STATE ---
+        let appState = {
+            currentPage: 'community_challenges',
+            currentSubPage: 'challenges', // 'players', 'teams', 'advanced_filters', 'challenges', 'coaches'
+            modalContent: null,
+            searchTerm: '',
+            showAdvancedFilters: false,
+            filters: {
+                skillLevel: '',
+                position: '',
+                location: '',
+                minPrice: '',
+                maxPrice: '',
+                selectedDate: ''
+            },
+            districtSearch: '',
+            isDistrictDropdownOpen: false,
+            itemsPerPage: 6,
+            playersPage: 1,
+            teamsPage: 1,
+            coachesPage: 1,
+            challengesPage: 1,
+        };
+
+        // --- HELPER FUNCTIONS & UI RENDERING ---
+
+        function changePage(pageType, pageNumber) {
+            appState[pageType + 'Page'] = pageNumber;
+            renderPage();
+        }
+
+        function renderPaginationControls(totalPages, currentPage, pageType) {
+            if (totalPages <= 1) return '';
+
+            let buttonsHtml = '';
+            for (let i = 1; i <= totalPages; i++) {
+                buttonsHtml += `<button class="pagination-btn ${i === currentPage ? 'active' : ''}" onclick="changePage('${pageType}', ${i})">${i}</button>`;
+            }
+
+            const prevDisabled = currentPage === 1;
+            const nextDisabled = currentPage === totalPages;
+
+            return `
+                <div class="flex justify-center items-center gap-2 mt-8">
+                    <button class="pagination-btn" onclick="changePage('${pageType}', ${currentPage - 1})" ${prevDisabled ? 'disabled' : ''}>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                    </button>
+                    ${buttonsHtml}
+                    <button class="pagination-btn" onclick="changePage('${pageType}', ${currentPage + 1})" ${nextDisabled ? 'disabled' : ''}>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </button>
+                </div>
+            `;
+        }
+
+
+        function renderSpinner() {
+            return `
+                <div class="flex justify-center items-center p-8">
+                    <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-emerald-600"></div>
+                </div>
+            `;
+        }
+
+        function renderModal(title, message) {
+            return `
+                <div class="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50 p-4" onclick="closeModal()">
+                    <div class="bg-white rounded-lg shadow-xl max-w-md w-full relative p-8 text-center" onclick="event.stopPropagation()">
+                        <button onclick="closeModal()" class="absolute top-2 right-4 text-gray-500 hover:text-gray-800 text-3xl">×</button>
+                        <h2 class="text-2xl font-bold mb-4">${title}</h2>
+                        <p>${message}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function closeModal() {
+            appState.modalContent = null;
+            renderPage(); // Re-render to remove modal
+        }
+
+        // Helper to parse date strings for sorting and comparison
+        function parseDate(dateString) {
+            // Assuming date format "Mon DD, YYYY" e.g., "Jul 20, 2025"
+            const parts = dateString.replace(',', '').split(' ');
+            const monthNames = {
+                Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
+                Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11
+            };
+            const month = monthNames[parts[0]];
+            const day = parseInt(parts[1]);
+            const year = parseInt(parts[2]);
+            return new Date(year, month, day);
+        }
+
+        // --- GLOBAL PAGE RENDERING FUNCTIONS ---
+        function renderHeader() {
+            return `
+                <header class="bg-white shadow-sm sticky top-0 z-40">
+                    <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+                        <a href="index.html" class="text-3xl font-bold text-emerald-600">Sportiva</a>
+                        <div class="hidden md:flex items-center space-x-8">
+                            <a href="fields.html" class="relative text-gray-600 hover:text-emerald-600 transition group py-2">
+                                Fields
+                                <span class="absolute bottom-0 left-0 w-full h-0.5 bg-emerald-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                            </a>
+                            <a href="community.html" class="relative text-gray-600 hover:text-emerald-600 transition group py-2">
+                                Find
+                                <span class="absolute bottom-0 left-0 w-full h-0.5 bg-emerald-600 transform scale-x-100 transition-transform duration-300"></span>
+                            </a>
+                            <a href="marketplace.html" class="relative text-gray-600 hover:text-emerald-600 transition group py-2">
+                                Marketplace
+                                <span class="absolute bottom-0 left-0 w-full h-0.5 bg-emerald-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                            </a>
+                            <a href="dashboard.html" class="relative text-gray-600 hover:text-emerald-600 transition group py-2">
+                                Dashboard
+                                <span class="absolute bottom-0 left-0 w-full h-0.5 bg-emerald-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                            </a>
+                        </div>
+                        <div class="hidden md:flex items-center space-x-4">
+                            <a href="auth.html" class="bg-emerald-600 text-white font-semibold px-5 py-2 rounded-lg hover:bg-emerald-700 transition">Login</a>
+                        </div>
+                        <button id="mobile-menu-button" class="md:hidden text-gray-700 focus:outline-none">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                        </button>
+                    </nav>
+                </header>
+            `;
+        }
+
+        function renderFooter() {
+            return `
+                <footer class="bg-gray-800 text-white">
+                    <div class="container mx-auto px-6 py-12">
+                        <div class="grid md:grid-cols-3 gap-8 text-center md:text-left">
+                            <div>
+                                <h3 class="text-2xl font-bold text-white mb-2">Sportiva</h3>
+                                <p class="text-gray-400">Connecting players and venues across Egypt.</p>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-white mb-4">Quick Links</h3>
+                                <ul class="space-y-2">
+                                    <li><a href="index.html" class="text-gray-400 hover:text-white">Home</a></li>
+                                    <li><a href="fields.html" class="text-gray-400 hover:text-white">Book a Field</a></li>
+                                    <li><a href="community.html" class="text-gray-400 hover:text-white">Community</a></li>
+                                    <li><a href="aboutus.html" class="text-gray-400 hover:text-white">About Us</a></li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-white mb-4">Follow Us</h3>
+                                <!-- Add social media icons here -->
+                            </div>
+                        </div>
+                        <div class="mt-8 border-t border-gray-700 pt-6 text-center text-gray-500 text-sm">
+                            <p>&copy; ${new Date().getFullYear()} Sportiva. All Rights Reserved.</p>
+                        </div>
+                    </div>
+                </footer>
+            `;
+        }
+
+        // --- CARD RENDERING FUNCTIONS ---
+        function renderPlayerCard(player) {
+            let skillColorClass = '';
+            switch (player.skillLevel) {
+                case 'Beginner':
+                    skillColorClass = 'bg-blue-100 text-blue-800';
+                    break;
+                case 'Intermediate':
+                    skillColorClass = 'bg-orange-100 text-orange-800';
+                    break;
+                case 'Advanced':
+                    skillColorClass = 'bg-red-100 text-red-800';
+                    break;
+                default:
+                    skillColorClass = 'bg-gray-100 text-gray-800';
+            }
+
+            return `
+                <div class="bg-white rounded-lg shadow-md p-6 text-center relative transform transition-transform duration-200 hover:scale-105">
+                    <div class="absolute top-2 right-2 bg-emerald-600 text-white text-xs font-bold px-2 py-1 rounded-full">${player.location.toUpperCase()}</div>
+                    <img src="${player.image}" alt="${player.name}" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-4 border-emerald-500 p-1" onerror="this.onerror=null;this.src='https://placehold.co/100x100/E0F2F7/000?text=Not+Found';">
+                    <h3 class="text-xl font-bold text-gray-800 mb-1">${player.name}</h3>
+                    <p class="text-gray-600 text-sm mb-2">${player.position}</p>
+                    <span class="inline-block ${skillColorClass} text-xs font-semibold px-2.5 py-0.5 rounded-full mb-4">${player.skillLevel}</span>
+                    <button class="w-full bg-emerald-600 text-white font-semibold px-6 py-2 rounded-lg hover:bg-emerald-700 transition transform hover:scale-105">Contact</button>
+                </div>
+            `;
+        }
+
+        function renderTeamCard(team) {
+            let skillColorClass = '';
+            switch (team.skillLevel) {
+                case 'Beginner':
+                    skillColorClass = 'bg-blue-100 text-blue-800';
+                    break;
+                case 'Intermediate':
+                    skillColorClass = 'bg-orange-100 text-orange-800';
+                    break;
+                case 'Advanced':
+                    skillColorClass = 'bg-red-100 text-red-800';
+                    break;
+                default:
+                    skillColorClass = 'bg-gray-100 text-gray-800';
+            }
+            return `
+                <div class="bg-white rounded-lg shadow-md p-6 text-center relative transform transition-transform duration-200 hover:scale-105">
+                    <div class="absolute top-2 right-2 bg-emerald-600 text-white text-xs font-bold px-2 py-1 rounded-full">${team.location.toUpperCase()}</div>
+                    <img src="${team.image}" alt="${team.name}" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-4 border-emerald-500 p-1">
+                    <h3 class="text-xl font-bold text-gray-800 mb-1">${team.name}</h3>
+                    <p class="text-gray-600 text-sm mb-2">${team.members} Members</p>
+                    <span class="inline-block ${skillColorClass} text-xs font-semibold px-2.5 py-0.5 rounded-full mb-4">${team.skillLevel}</span>
+                    <button class="w-full bg-emerald-600 text-white font-semibold px-6 py-2 rounded-lg hover:bg-emerald-700 transition transform hover:scale-105">View Team</button>
+                </div>
+            `;
+        }
+
+        function renderCoachCard(coach) {
+            // Dynamically generate club list with days
+            const clubsHtml = coach.trainingClubs.map(club => `
+                <div class="border border-emerald-200 p-2 rounded-md bg-emerald-50 flex flex-col items-start">
+                    <p class="font-semibold text-emerald-800 mb-1 text-sm">${club.name}</p>
+                    <div class="flex flex-wrap gap-1">
+                        ${club.days.map(day => `<span class="bg-emerald-200 text-emerald-800 text-xs font-medium px-2 py-0.5 rounded-full">${day}</span>`).join('')}
+                    </div>
+                </div>
+            `).join('');
+
+            return `
+                <div class="w-full bg-white rounded-2xl shadow-xl overflow-hidden transform transition-all duration-300 hover:scale-105 flex flex-col">
+                    <!-- Top Header with Coach Image and Solid Color -->
+                    <div class="relative bg-emerald-700 h-32 flex items-center justify-center rounded-t-2xl">
+                        <!-- City Tag in Top Right -->
+                        <div class="absolute top-3 right-3 bg-white text-emerald-700 text-xs font-bold px-2.5 py-0.5 rounded-full shadow-md uppercase">
+                            ${coach.location.toUpperCase()}
+                        </div>
+                        <!-- Years of Experience in Top Left -->
+                        <div class="absolute top-3 left-3 bg-white text-emerald-700 text-xs font-bold px-2.5 py-0.5 rounded-full shadow-md">
+                            ${coach.yearsOfExperience || 'N/A'} YRS EXP
+                        </div>
+                        <img class="w-28 h-28 rounded-full border-4 border-white shadow-lg object-cover absolute -bottom-10" src="${coach.image}" alt="${coach.name} Profile" onerror="this.onerror=null;this.src='https://placehold.co/100x100/E0F2F7/000?text=Not+Found';">
+                    </div>
+
+                    <!-- Coach Main Info Section -->
+                    <div class="pt-14 pb-2 px-4 text-center">
+                        <p class="text-xs font-semibold text-gray-500 uppercase mb-0.5">Coach</p>
+                        <h1 class="text-xl font-extrabold text-gray-900 mb-1">${coach.name}</h1>
+                    </div>
+
+                    <!-- Clubs Section -->
+                    <div class="px-4 pb-4 flex-1">
+                        <div class="border-t border-gray-200 pt-3 mt-3">
+                            <h3 class="text-lg font-bold text-gray-800 mb-2 text-center">Clubs:</h3>
+                            <div class="space-y-2 text-gray-700 text-base">
+                                ${clubsHtml}
+                            </div>
+                        </div>
+
+                        <!-- Call to action button -->
+                        <div class="mt-3">
+                            <button class="block w-full bg-emerald-600 hover:bg-emerald-700 text-white text-center font-bold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-opacity-75">
+                                View Coach Profile
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderChallengeCard(challenge) {
+            return `
+                <div class="w-full bg-white rounded-2xl shadow-xl p-8 relative transform transition-transform duration-200 hover:scale-[1.02] border border-gray-100 flex flex-col">
+                    <div class="flex-grow">
+                        <!-- Header: Title and District Badge -->
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-2xl font-extrabold text-gray-900 flex-grow mr-2">${challenge.name}</h3>
+                            <div class="district-badge flex-shrink-0">
+                                ${challenge.district.toUpperCase()}
+                            </div>
+                        </div>
+
+                        <!-- Match Details -->
+                        <div class="space-y-4 text-gray-800">
+                            <div class="flex items-center">
+                                <span class="text-lg mr-2">⚽</span>
+                                <span class="font-semibold text-gray-700">Format:</span>
+                                <span class="ml-2">${challenge.type}</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-lg mr-2">📍</span>
+                                <span class="font-semibold text-gray-700">Club:</span>
+                                <span class="ml-2">${challenge.club}</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-lg mr-2">💸</span>
+                                <span class="font-semibold text-gray-700">Club Price:</span>
+                                <span class="ml-2">${challenge.clubPrice || 'N/A'}</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-lg mr-2">💰</span>
+                                <span class="font-semibold text-gray-700">Team Price:</span>
+                                <span class="ml-2">${challenge.teamPrice || 'N/A'}</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-lg mr-2">🗓️</span>
+                                <span class="font-semibold text-gray-700">Date:</span>
+                                <span class="ml-2">${challenge.date}</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-lg mr-2">🕒</span>
+                                <span class="font-semibold text-gray-700">Time:</span>
+                                <span class="ml-2">${challenge.time}</span>
+                            </div>
+                        </div>
+
+                        <p class="text-gray-600 mt-6 text-base leading-relaxed">
+                            ${JSON.stringify(challenge.description).slice(1, -1)}
+                        </p>
+                    </div>
+
+                    <!-- Footer: Teams Joined and Action Button -->
+                    <div class="flex justify-between items-center mt-6 pt-4 border-t border-gray-100">
+                        <span class="text-emerald-700 font-bold text-base">Teams Joined: ${challenge.teams} / ${challenge.teamsRequired}</span>
+                        <button class="bg-emerald-600 text-white font-bold px-6 py-3 rounded-xl shadow-lg hover:bg-emerald-700 transition transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-opacity-50">
+                            Join
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- SECTION RENDERING FUNCTIONS ---
+        function renderPlayersSection() {
+            const filteredPlayers = mockPlayers.filter(player => {
+                const matchesSearchTerm = player.name.toLowerCase().includes(appState.searchTerm.toLowerCase()) ||
+                                          player.position.toLowerCase().includes(appState.searchTerm.toLowerCase()) ||
+                                          player.location.toLowerCase().includes(appState.searchTerm.toLowerCase());
+                const matchesSkillLevel = appState.filters.skillLevel === '' || player.skillLevel === appState.filters.skillLevel;
+                const matchesPosition = appState.filters.position === '' || player.position === appState.filters.position;
+                const matchesLocation = appState.filters.location === '' || player.location.toLowerCase().includes(appState.filters.location.toLowerCase());
+                return matchesSearchTerm && matchesSkillLevel && matchesPosition && matchesLocation;
+            });
+
+            const currentPage = appState.playersPage;
+            const totalPages = Math.ceil(filteredPlayers.length / appState.itemsPerPage);
+            const startIndex = (currentPage - 1) * appState.itemsPerPage;
+            const endIndex = startIndex + appState.itemsPerPage;
+            const paginatedPlayers = filteredPlayers.slice(startIndex, endIndex);
+
+            return `
+                <section class="mb-12">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8">
+                        ${paginatedPlayers.length > 0 ? paginatedPlayers.map(player => renderPlayerCard(player)).join('') : '<p class="col-span-full text-center text-gray-600">No players found matching your criteria.</p>'}
+                    </div>
+                    ${renderPaginationControls(totalPages, currentPage, 'players')}
+                </section>
+            `;
+        }
+
+        function renderTeamsSection() {
+            const filteredTeams = mockTeams.filter(team => {
+                const matchesSearchTerm = team.name.toLowerCase().includes(appState.searchTerm.toLowerCase()) ||
+                                          team.location.toLowerCase().includes(appState.searchTerm.toLowerCase());
+                const matchesSkillLevel = appState.filters.skillLevel === '' || team.skillLevel === appState.filters.skillLevel;
+                const matchesLocation = appState.filters.location === '' || team.location.toLowerCase().includes(appState.filters.location.toLowerCase());
+                return matchesSearchTerm && matchesSkillLevel && matchesLocation;
+            });
+
+            const currentPage = appState.teamsPage;
+            const totalPages = Math.ceil(filteredTeams.length / appState.itemsPerPage);
+            const startIndex = (currentPage - 1) * appState.itemsPerPage;
+            const endIndex = startIndex + appState.itemsPerPage;
+            const paginatedTeams = filteredTeams.slice(startIndex, endIndex);
+
+            return `
+                <section class="mb-12">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8">
+                        ${paginatedTeams.length > 0 ? paginatedTeams.map(team => renderTeamCard(team)).join('') : '<p class="col-span-full text-center text-gray-600">No teams found matching your criteria.</p>'}
+                    </div>
+                    ${renderPaginationControls(totalPages, currentPage, 'teams')}
+                </section>
+            `;
+        }
+
+        function renderCoachesSection() {
+            const filteredCoaches = mockCoaches.filter(coach => {
+                const matchesSearchTerm = coach.name.toLowerCase().includes(appState.searchTerm.toLowerCase()) ||
+                                          coach.specialization.toLowerCase().includes(appState.searchTerm.toLowerCase()) ||
+                                          coach.bio.toLowerCase().includes(appState.searchTerm.toLowerCase()) ||
+                                          coach.trainingClubs.some(club => club.name.toLowerCase().includes(appState.searchTerm.toLowerCase()));
+                const matchesSkillLevel = appState.filters.skillLevel === '' || coach.skillLevel === appState.filters.skillLevel;
+                const matchesLocation = appState.filters.location === '' || coach.location.toLowerCase().includes(appState.filters.location.toLowerCase());
+                return matchesSearchTerm && matchesSkillLevel && matchesLocation;
+            });
+
+            const currentPage = appState.coachesPage;
+            const totalPages = Math.ceil(filteredCoaches.length / appState.itemsPerPage);
+            const startIndex = (currentPage - 1) * appState.itemsPerPage;
+            const endIndex = startIndex + appState.itemsPerPage;
+            const paginatedCoaches = filteredCoaches.slice(startIndex, endIndex);
+
+            return `
+                <section class="mb-12">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8">
+                        ${paginatedCoaches.length > 0 ? paginatedCoaches.map(coach => renderCoachCard(coach)).join('') : '<p class="col-span-full text-center text-gray-600">No coaches found matching your criteria.</p>'}
+                    </div>
+                    ${renderPaginationControls(totalPages, currentPage, 'coaches')}
+                </section>
+            `;
+        }
+
+        function renderAdvancedFiltersSection() {
+            // Get today's date for default value in date picker
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            const minDate = `${year}-${month}-${day}`;
+
+            return `
+                <div class="bg-white rounded-lg shadow-md p-6 text-gray-700">
+                    <h3 class="text-xl font-bold mb-4">Advanced Filters</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label for="skill-level" class="font-semibold text-gray-700">Skill Level</label>
+                            <select id="skill-level" class="w-full p-2 border rounded-md mt-2">
+                                <option value="">All Levels</option>
+                                <option value="Beginner" ${appState.filters.skillLevel === 'Beginner' ? 'selected' : ''}>Beginner</option>
+                                <option value="Intermediate" ${appState.filters.skillLevel === 'Intermediate' ? 'selected' : ''}>Intermediate</option>
+                                <option value="Advanced" ${appState.filters.skillLevel === 'Advanced' ? 'selected' : ''}>Advanced</option>
+                            </select>
+                        </div>
+                        <!-- Position filter only relevant for Players -->
+                        ${appState.currentSubPage === 'players' ? `
+                        <div>
+                            <label for="position" class="font-semibold text-gray-700">Position</label>
+                            <select id="position" class="w-full p-2 border rounded-md mt-2">
+                                <option value="">All Positions</option>
+                                <option value="Forward" ${appState.filters.position === 'Forward' ? 'selected' : ''}>Forward</option>
+                                <option value="Midfielder" ${appState.filters.position === 'Midfielder' ? 'selected' : ''}>Midfielder</option>
+                                <option value="Defender" ${appState.filters.position === 'Defender' ? 'selected' : ''}>Defender</option>
+                                <option value="Goalkeeper" ${appState.filters.position === 'Goalkeeper' ? 'selected' : ''}>Goalkeeper</option>
+                            </select>
+                        </div>
+                        ` : ''}
+                        <div>
+                            <label for="location" class="font-semibold text-gray-700">Location</label>
+                            <input type="text" id="location" placeholder="e.g., Nasr City" value="${appState.filters.location}" class="w-full p-2 border rounded-md mt-2">
+                        </div>
+
+                        <!-- Price and Date filters only relevant for Challenges -->
+                        ${appState.currentSubPage === 'challenges' ? `
+                        <div>
+                            <label for="min-price" class="font-semibold text-gray-700">Min Price (EGP)</label>
+                            <input type="number" id="min-price" placeholder="min" value="${appState.filters.minPrice}" class="w-full p-2 border rounded-md mt-2">
+                        </div>
+                        <div>
+                            <label for="max-price" class="font-semibold text-gray-700">Max Price (EGP)</label>
+                            <input type="number" id="max-price" placeholder="max" value="${appState.filters.maxPrice}" class="w-full p-2 border rounded-md mt-2">
+                        </div>
+                        <div>
+                            <label for="date-picker" class="font-semibold text-gray-700">Date</label>
+                            <input type="date" id="date-picker" value="${appState.filters.selectedDate || minDate}" min="${minDate}" class="w-full p-2 border rounded-md mt-2">
+                        </div>
+                        ` : ''}
+                    </div>
+                    <div class="flex gap-2 mt-6">
+                        <button id="reset-advanced-filters" class="w-full bg-gray-200 text-gray-800 font-semibold py-2 rounded-lg hover:bg-gray-300">Reset</button>
+                        <button id="apply-advanced-filters" class="w-full bg-emerald-600 text-white font-semibold py-2 rounded-lg hover:bg-emerald-700">Apply</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderChallengesSection() {
+            const filteredChallenges = mockChallenges.filter(challenge => {
+                const matchesSearchTerm = challenge.name.toLowerCase().includes(appState.searchTerm.toLowerCase()) ||
+                                          challenge.description.toLowerCase().includes(appState.searchTerm.toLowerCase()) ||
+                                          challenge.club.toLowerCase().includes(appState.searchTerm.toLowerCase()) ||
+                                          challenge.district.toLowerCase().includes(appState.searchTerm.toLowerCase());
+
+                const clubPriceValue = parseFloat(challenge.clubPrice.replace('EGP ', '').replace('/hr', '')) || 0;
+                const teamPriceValue = parseFloat(challenge.teamPrice.replace('EGP ', '').replace('/team', '')) || 0;
+                const challengePrice = Math.max(clubPriceValue, teamPriceValue);
+
+                const matchesMinPrice = appState.filters.minPrice === '' || challengePrice >= parseFloat(appState.filters.minPrice);
+                const matchesMaxPrice = appState.filters.maxPrice === '' || challengePrice <= parseFloat(appState.filters.maxPrice);
+
+                const matchesDate = appState.filters.selectedDate === '' ||
+                                      (challenge.date && parseDate(challenge.date).toDateString() === new Date(appState.filters.selectedDate).toDateString());
+                
+                const matchesLocation = appState.filters.location === '' || challenge.district.toLowerCase().includes(appState.filters.location.toLowerCase());
+
+                return matchesSearchTerm && matchesMinPrice && matchesMaxPrice && matchesDate && matchesLocation;
+            });
+
+            const currentPage = appState.challengesPage;
+            const totalPages = Math.ceil(filteredChallenges.length / appState.itemsPerPage);
+            const startIndex = (currentPage - 1) * appState.itemsPerPage;
+            const endIndex = startIndex + appState.itemsPerPage;
+            const paginatedChallenges = filteredChallenges.slice(startIndex, endIndex);
+
+            return `
+                <section>
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        ${paginatedChallenges.length > 0 ? paginatedChallenges.map(challenge => renderChallengeCard(challenge)).join('') : '<p class="col-span-full text-center text-gray-600">No challenges found matching your criteria.</p>'}
+                    </div>
+                    ${renderPaginationControls(totalPages, currentPage, 'challenges')}
+                </section>
+            `;
+        }
+
+
+        function renderCommunityChallengesPage() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            const minDate = `${year}-${month}-${day}`;
+
+            const tabsHtml = `
+                <div class="flex justify-center mt-8 mb-12">
+                    <div class="inline-flex rounded-lg shadow-sm bg-white p-1.5 space-x-1">
+                        <button id="tab-players" class="px-5 py-2 text-sm font-semibold rounded-md transition ${appState.currentSubPage === 'players' ? 'bg-emerald-600 text-white shadow' : 'text-gray-600 hover:bg-gray-100'}">Players</button>
+                        <button id="tab-teams" class="px-5 py-2 text-sm font-semibold rounded-md transition ${appState.currentSubPage === 'teams' ? 'bg-emerald-600 text-white shadow' : 'text-gray-600 hover:bg-gray-100'}">Teams</button>
+                        <button id="tab-coaches" class="px-5 py-2 text-sm font-semibold rounded-md transition ${appState.currentSubPage === 'coaches' ? 'bg-emerald-600 text-white shadow' : 'text-gray-600 hover:bg-gray-100'}">Coaches</button>
+                        <button id="tab-challenges" class="px-5 py-2 text-sm font-semibold rounded-md transition ${appState.currentSubPage === 'challenges' ? 'bg-emerald-600 text-white shadow' : 'text-gray-600 hover:bg-gray-100'}">Challenges</button>
+                    </div>
+                </div>
+            `;
+
+            return `
+                <div class="bg-gray-50">
+                    <div class="container mx-auto px-6 py-12">
+                        <div class="text-center">
+                            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900">Find Players & Challenges</h1>
+                            <p class="text-lg text-gray-600 mt-2">Connect with players, join teams, and test your skills!</p>
+                        </div>
+                        ${tabsHtml}
+
+                        <div class="grid lg:grid-cols-4 gap-8">
+                            <div class="hidden lg:block lg:col-span-1">
+                                ${renderAdvancedFiltersSection()}
+                            </div>
+                            <div class="lg:col-span-3">
+                                <div class="flex flex-col md:flex-row gap-2 mb-4">
+                                    <input type="text" id="search-term" value="${appState.searchTerm}" placeholder="Search by name, location, etc..." class="p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-emerald-500 shadow-sm" />
+                                    <button id="search-button" class="bg-emerald-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-emerald-700 transition flex-shrink-0 flex items-center justify-center">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                                    </button>
+                                </div>
+
+                                <div class="lg:hidden col-span-4 mb-4">
+                                    <button id="toggle-advanced-filters" class="w-full bg-white p-4 rounded-lg shadow-md flex justify-between items-center">
+                                        <span class="font-semibold">Advanced Filters</span>
+                                        <svg class="w-5 h-5 transition-transform ${appState.showAdvancedFilters ? 'transform rotate-180' : ''}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    </button>
+                                    ${appState.showAdvancedFilters ? `<div class="mt-4">${renderAdvancedFiltersSection()}</div>` : ''}
+                                </div>
+
+                                <div id="subpage-content">
+                                    ${appState.currentSubPage === 'players' ? renderPlayersSection() : ''}
+                                    ${appState.currentSubPage === 'teams' ? renderTeamsSection() : ''}
+                                    ${appState.currentSubPage === 'coaches' ? renderCoachesSection() : ''}
+                                    ${appState.currentSubPage === 'challenges' ? renderChallengesSection() : ''}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function applyCommunityFilters() {
+            // Reset page numbers to 1 when applying new filters
+            appState.playersPage = 1;
+            appState.teamsPage = 1;
+            appState.coachesPage = 1;
+            appState.challengesPage = 1;
+
+            if (window.innerWidth < 1024) {
+                appState.showAdvancedFilters = false;
+            }
+            renderPage();
+        }
+
+        function resetCommunityFilters() {
+            appState.searchTerm = '';
+            appState.filters = { skillLevel: '', position: '', location: '', minPrice: '', maxPrice: '', selectedDate: '' };
+            appState.playersPage = 1;
+            appState.teamsPage = 1;
+            appState.coachesPage = 1;
+            appState.challengesPage = 1;
+            
+            if (window.innerWidth < 1024) {
+                appState.showAdvancedFilters = false;
+            }
+            renderPage();
+        }
+
+        function attachEventListeners() {
+            // Tab navigation
+            document.getElementById('tab-players').addEventListener('click', () => { appState.currentSubPage = 'players'; renderPage(); });
+            document.getElementById('tab-teams').addEventListener('click', () => { appState.currentSubPage = 'teams'; renderPage(); });
+            document.getElementById('tab-coaches').addEventListener('click', () => { appState.currentSubPage = 'coaches'; renderPage(); });
+            document.getElementById('tab-challenges').addEventListener('click', () => { appState.currentSubPage = 'challenges'; renderPage(); });
+
+            // Search functionality
+            document.getElementById('search-button').addEventListener('click', applyCommunityFilters);
+            document.getElementById('search-term').addEventListener('input', (e) => {
+                appState.searchTerm = e.target.value;
+            });
+            document.getElementById('search-term').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    applyCommunityFilters();
+                }
+            });
+
+
+            // Advanced filters toggle (only visible on smaller screens)
+            const toggleAdvancedFiltersButton = document.getElementById('toggle-advanced-filters');
+            if (toggleAdvancedFiltersButton) {
+                toggleAdvancedFiltersButton.addEventListener('click', () => {
+                    appState.showAdvancedFilters = !appState.showAdvancedFilters;
+                    renderPage();
+                });
+            }
+
+
+            // Advanced filter inputs - check if elements exist before attaching listeners
+            const skillLevelSelect = document.getElementById('skill-level');
+            if (skillLevelSelect) {
+                skillLevelSelect.addEventListener('change', (e) => {
+                    appState.filters.skillLevel = e.target.value;
+                });
+            }
+            const positionSelect = document.getElementById('position');
+            if (positionSelect) {
+                positionSelect.addEventListener('change', (e) => {
+                    appState.filters.position = e.target.value;
+                });
+            }
+            const locationInput = document.getElementById('location');
+            if (locationInput) {
+                locationInput.addEventListener('input', (e) => {
+                    appState.filters.location = e.target.value;
+                });
+            }
+
+            // Price and Date filters for Challenges
+            const minPriceInput = document.getElementById('min-price');
+            if (minPriceInput) {
+                minPriceInput.addEventListener('input', (e) => {
+                    appState.filters.minPrice = e.target.value;
+                });
+            }
+            const maxPriceInput = document.getElementById('max-price');
+            if (maxPriceInput) {
+                maxPriceInput.addEventListener('input', (e) => {
+                    appState.filters.maxPrice = e.target.value;
+                });
+            }
+            const datePickerInput = document.getElementById('date-picker');
+            if (datePickerInput) {
+                datePickerInput.addEventListener('change', (e) => {
+                    appState.filters.selectedDate = e.target.value;
+                });
+            }
+
+            // Advanced filter apply/reset buttons
+            const applyAdvancedFiltersButton = document.getElementById('apply-advanced-filters');
+            if (applyAdvancedFiltersButton) {
+                applyAdvancedFiltersButton.addEventListener('click', applyCommunityFilters);
+            }
+            const resetAdvancedFiltersButton = document.getElementById('reset-advanced-filters');
+            if (resetAdvancedFiltersButton) {
+                resetAdvancedFiltersButton.addEventListener('click', resetCommunityFilters);
+            }
+        }
+
+
+        // --- MAIN APPLICATION LOGIC ---
+
+        function renderPage() {
+            const appDiv = document.getElementById('app');
+            let contentHtml = '';
+
+            // Always render header and footer
+            contentHtml += renderHeader();
+
+            // Render the main content based on currentPage
+            switch (appState.currentPage) {
+                case 'community_challenges':
+                    contentHtml += renderCommunityChallengesPage();
+                    break;
+                default:
+                    contentHtml += renderCommunityChallengesPage(); // Default to community page
+            }
+
+            contentHtml += renderFooter();
+
+            // Render modal if content exists
+            if (appState.modalContent) {
+                contentHtml += renderModal(appState.modalContent.title, appState.modalContent.message);
+            }
+
+            appDiv.innerHTML = contentHtml;
+
+            // Attach event listeners after rendering
+            attachEventListeners();
+        }
+
+        // Initial render when the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            renderPage();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sportiva - Marketplace Dashboard</title>
+    <link rel="icon" href="images/logo/favicon.ico" type="image/x-icon">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        .sidebar-link-active {
+            background-color: #dbeafe; /* blue-100 */
+            color: #2563eb; /* blue-600 */
+            border-right: 3px solid #2563eb;
+        }
+        .bottom-nav-link-active {
+            color: #2563eb; /* blue-600 */
+        }
+        .card-shadow {
+             box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07);
+        }
+        .card-shadow:hover {
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.07), 0 4px 6px -4px rgb(0 0 0 / 0.07);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 flex flex-col min-h-screen">
+
+    <div id="marketplace-app-container" class="flex-grow pb-20 md:pb-0">
+        <!-- Marketplace Dashboard content will be rendered here -->
+    </div>
+
+    <footer class="bg-gray-800 text-white">
+        <div class="container mx-auto py-12 px-4 sm:px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h2 class="text-2xl font-bold">Sportiva</h2>
+                    <p class="text-gray-400 mt-2">Your one-stop shop for sports gear.</p>
+                </div>
+                <div>
+                    <h3 class="font-semibold tracking-wider">Dashboards</h3>
+                    <ul class="mt-4 space-y-2">
+                        <li><a href="player-dashboard.html" class="text-gray-400 hover:text-white">Player Dashboard</a></li>
+                        <li><a href="field-owner-dashboard.html" class="text-gray-400 hover:text-white">Field Owner Dashboard</a></li>
+                        <li><a href="coach-dashboard.html" class="text-gray-400 hover:text-white">Coach Dashboard</a></li>
+                        <li><a href="marketplace-dashboard.html" class="text-gray-400 hover:text-white">Marketplace Dashboard</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-semibold tracking-wider">Support</h3>
+                    <ul class="mt-4 space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">FAQ</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Help Center</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                     <h3 class="font-semibold tracking-wider">Follow Us</h3>
+                     <div class="flex space-x-4 mt-4">
+                         <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
+                         <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
+                         <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
+                     </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-6 text-center text-gray-500">
+                <p>&copy; 2025 Sportiva. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- APP STATE ---
+        const marketplaceAppState = {
+            activePage: 'overview',
+            isProfileDropdownOpen: false,
+            isSidebarOpen: false,
+            modalContent: null, // To hold modal HTML
+        };
+
+        // --- MOCK DATA ---
+        const marketplaceMockData = {
+            vendor: {
+                name: "Sportiva Gear",
+                owner: "Hassan Omar",
+                profileImage: "images/people/people 8.png",
+            },
+            stats: {
+                totalRevenue: "75,400 EGP",
+                totalOrders: 312,
+                newOrders: 15,
+                productsListed: 48,
+            },
+            products: [
+                { id: 1, name: "Official Match Ball", image: "images/marketplace/football grey.png", price: 1200, stock: 50, status: "Active" },
+                { id: 2, name: "Pro Football Shoes", image: "images/marketplace/blue shoes.png", price: 1800, stock: 25, status: "Active" },
+                { id: 3, name: "Goalkeeper Gloves", image: "images/marketplace/Goalkeeper Gloves black.png", price: 750, stock: 0, status: "Out of Stock" },
+                { id: 4, name: "Training Cones (Set of 20)", image: "images/marketplace/Training Cones.png", price: 450, stock: 120, status: "Active" },
+                { id: 5, name: "Team Jersey (Red)", image: "images/marketplace/red T-shirt.png", price: 600, stock: 80, status: "Archived" },
+            ],
+            orders: [
+                { id: 1, orderId: "#98712", customer: "Karim Ahmed", date: "2025-08-07", total: 1200, status: "Shipped" },
+                { id: 2, orderId: "#98711", customer: "Ali Hassan", date: "2025-08-07", total: 1800, status: "Processing" },
+                { id: 3, orderId: "#98710", customer: "Youssef El-Sayed", date: "2025-08-06", total: 450, status: "Delivered" },
+                { id: 4, orderId: "#98709", customer: "Omar Sherif", date: "2025-08-06", total: 750, status: "Delivered" },
+                { id: 5, orderId: "#98708", customer: "Tarek Fathy", date: "2025-08-05", total: 2400, status: "Cancelled" },
+            ]
+        };
+
+        // --- RENDER FUNCTIONS ---
+
+        function renderMarketplaceHeader() {
+            return `
+                <header class="bg-white shadow-sm sticky top-0 z-50">
+                    <nav class="container mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
+                        <div class="flex items-center">
+                            <button id="mobile-menu-button" class="md:hidden text-gray-600 hover:text-blue-600 focus:outline-none mr-4">
+                                <i class="fas fa-bars fa-lg"></i>
+                            </button>
+                            <a href="index.html" class="flex items-center space-x-2">
+                                <img src="images/logo/Sportiva logo.png" alt="Sportiva Logo" class="h-10 w-10" onerror="this.onerror=null;this.src='https://placehold.co/40x40/10b981/FFFFFF?text=S';">
+                                <span class="text-3xl font-bold text-emerald-600">Sportiva</span>
+                            </a>
+                        </div>
+                        <div class="hidden md:flex items-center space-x-8">
+                             <a href="fields.html" class="text-gray-600 hover:text-emerald-600 transition">Fields</a>
+                             <a href="community.html" class="text-gray-600 hover:text-emerald-600 transition">Community</a>
+                             <a href="marketplace.html" class="text-gray-600 hover:text-emerald-600 transition">Marketplace</a>
+                             <a href="about-us.html" class="text-gray-600 hover:text-emerald-600 transition">About Us</a>
+                        </div>
+                        <div class="relative">
+                            <button id="profile-button" class="flex items-center space-x-2">
+                                <img src="${marketplaceMockData.vendor.profileImage}" alt="Vendor Profile" class="w-10 h-10 rounded-full object-cover border-2 border-blue-500" onerror="this.onerror=null;this.src='https://placehold.co/40x40/3b82f6/FFFFFF?text=HO';">
+                            </button>
+                            <div id="profile-dropdown" class="${marketplaceAppState.isProfileDropdownOpen ? '' : 'hidden'} absolute right-0 mt-2 w-56 bg-white rounded-md shadow-xl z-50 overflow-hidden">
+                                <div class="p-4 border-b">
+                                    <p class="font-semibold text-gray-800">${marketplaceMockData.vendor.owner}</p>
+                                    <p class="text-sm text-gray-500">Marketplace Vendor</p>
+                                </div>
+                                <a href="#" class="marketplace-nav-link flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-100" data-page="overview">
+                                    <i class="fas fa-store w-6 text-center mr-2"></i>
+                                    <span>My Store</span>
+                                </a>
+                                <a href="player-dashboard.html" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-100">
+                                    <i class="fas fa-user w-6 text-center mr-2"></i>
+                                    <span>Player View</span>
+                                </a>
+                            </div>
+                        </div>
+                    </nav>
+                </header>
+            `;
+        }
+
+        function renderMarketplaceSidebar() {
+            const links = [
+                { id: 'overview', icon: 'fa-tachometer-alt', text: 'Overview' },
+                { id: 'products', icon: 'fa-box-open', text: 'Products' },
+                { id: 'orders', icon: 'fa-receipt', text: 'Orders' },
+                { id: 'reports', icon: 'fa-chart-pie', text: 'Reports' },
+                { id: 'settings', icon: 'fa-cog', text: 'Settings' },
+            ];
+            return `
+                <aside id="sidebar" class="fixed top-0 left-0 w-64 bg-white h-full shadow-lg transform ${marketplaceAppState.isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out z-40 md:sticky md:top-0 md:h-screen md:translate-x-0">
+                    <div class="p-6 text-center border-b h-[72px] flex items-center justify-center">
+                        <h3 class="text-xl font-bold text-gray-800">${marketplaceMockData.vendor.name}</h3>
+                    </div>
+                    <nav class="mt-6">
+                        ${links.map(link => `
+                            <a href="#" data-page="${link.id}" class="marketplace-nav-link flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 ${marketplaceAppState.activePage === link.id ? 'sidebar-link-active' : ''}">
+                                <i class="fas ${link.icon} w-6 text-center mr-3"></i>
+                                <span>${link.text}</span>
+                            </a>
+                        `).join('')}
+                    </nav>
+                </aside>
+            `;
+        }
+
+        function renderMarketplaceBottomNav() {
+            const navItems = [
+                { id: 'overview', icon: 'fa-home', text: 'Home' },
+                { id: 'products', icon: 'fa-box-open', text: 'Products' },
+                { id: 'orders', icon: 'fa-receipt', text: 'Orders' },
+                { id: 'reports', icon: 'fa-chart-pie', text: 'Reports' },
+            ];
+            return `
+                <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white shadow-t-md z-30 border-t border-gray-200">
+                    <div class="flex justify-around">
+                        ${navItems.map(item => `
+                            <a href="#" data-page="${item.id}" class="marketplace-nav-link flex-1 flex flex-col items-center justify-center py-2 text-gray-500 hover:text-blue-600 transition-colors ${marketplaceAppState.activePage === item.id ? 'bottom-nav-link-active' : ''}">
+                                <i class="fas ${item.icon} fa-lg mb-1"></i>
+                                <span class="text-xs font-medium">${item.text}</span>
+                            </a>
+                        `).join('')}
+                    </div>
+                </nav>
+            `;
+        }
+        
+        function renderMarketplaceOverview() {
+             return `
+                <h1 class="text-3xl font-extrabold text-gray-900 mb-8">Marketplace Overview</h1>
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white p-6 rounded-xl card-shadow transition-shadow"><p class="text-sm font-medium text-gray-500">Total Revenue</p><p class="text-3xl font-bold text-gray-900">${marketplaceMockData.stats.totalRevenue}</p></div>
+                    <div class="bg-white p-6 rounded-xl card-shadow transition-shadow"><p class="text-sm font-medium text-gray-500">Total Orders</p><p class="text-3xl font-bold text-gray-900">${marketplaceMockData.stats.totalOrders}</p></div>
+                    <div class="bg-white p-6 rounded-xl card-shadow transition-shadow"><p class="text-sm font-medium text-gray-500">New Orders</p><p class="text-3xl font-bold text-blue-600">${marketplaceMockData.stats.newOrders}</p></div>
+                    <div class="bg-white p-6 rounded-xl card-shadow transition-shadow"><p class="text-sm font-medium text-gray-500">Products Listed</p><p class="text-3xl font-bold text-gray-900">${marketplaceMockData.stats.productsListed}</p></div>
+                </div>
+                <div class="bg-white p-6 rounded-xl card-shadow">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4">Recent Orders</h2>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                           <thead><tr class="border-b"><th class="p-3">Order ID</th><th class="p-3">Customer</th><th class="p-3">Date</th><th class="p-3">Total</th><th class="p-3">Status</th></tr></thead>
+                           <tbody>
+                           ${marketplaceMockData.orders.slice(0, 5).map(o => `
+                               <tr class="border-b">
+                                   <td class="p-3 font-semibold text-blue-600">${o.orderId}</td>
+                                   <td class="p-3">${o.customer}</td>
+                                   <td class="p-3">${o.date}</td>
+                                   <td class="p-3">${o.total} EGP</td>
+                                   <td class="p-3"><span class="px-2 py-1 text-xs font-semibold rounded-full ${ o.status === 'Shipped' ? 'bg-blue-100 text-blue-800' : o.status === 'Processing' ? 'bg-yellow-100 text-yellow-800' : o.status === 'Delivered' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">${o.status}</span></td>
+                               </tr>
+                           `).join('')}
+                           </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderMarketplaceProducts() {
+            return `
+                <div class="flex justify-between items-center mb-8">
+                    <h1 class="text-3xl font-extrabold text-gray-900">Products</h1>
+                    <button data-action="add-product" class="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition-transform hover:scale-105 flex items-center"><i class="fas fa-plus mr-2"></i> Add Product</button>
+                </div>
+                <div class="bg-white p-6 rounded-xl card-shadow">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead><tr class="border-b"><th class="p-3">Product</th><th class="p-3">Price</th><th class="p-3">Stock</th><th class="p-3">Status</th><th class="p-3">Actions</th></tr></thead>
+                            <tbody>
+                            ${marketplaceMockData.products.map(p => `
+                                <tr class="border-b">
+                                    <td class="p-3 flex items-center"><img src="${p.image}" class="w-12 h-12 rounded-md mr-4 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/48x48/E0E0E0/333333?text=Item';"><span>${p.name}</span></td>
+                                    <td class="p-3">${p.price} EGP</td>
+                                    <td class="p-3 ${p.stock === 0 ? 'text-red-600 font-semibold' : ''}">${p.stock}</td>
+                                    <td class="p-3"><span class="px-2 py-1 text-xs font-semibold rounded-full ${p.status === 'Active' ? 'bg-green-100 text-green-800' : p.status === 'Out of Stock' ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-800'}">${p.status}</span></td>
+                                    <td class="p-3"><button class="text-blue-600 hover:underline">Edit</button></td>
+                                </tr>
+                            `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function renderMarketplaceOrders() {
+            return `
+                <h1 class="text-3xl font-extrabold text-gray-900 mb-8">Orders</h1>
+                <div class="bg-white p-6 rounded-xl card-shadow">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                           <thead><tr class="border-b"><th class="p-3">Order ID</th><th class="p-3">Customer</th><th class="p-3">Date</th><th class="p-3">Total</th><th class="p-3">Status</th><th class="p-3">Action</th></tr></thead>
+                           <tbody>
+                           ${marketplaceMockData.orders.map(o => `
+                               <tr class="border-b">
+                                   <td class="p-3 font-semibold text-blue-600">${o.orderId}</td>
+                                   <td class="p-3">${o.customer}</td>
+                                   <td class="p-3">${o.date}</td>
+                                   <td class="p-3">${o.total} EGP</td>
+                                   <td class="p-3"><span class="px-2 py-1 text-xs font-semibold rounded-full ${ o.status === 'Shipped' ? 'bg-blue-100 text-blue-800' : o.status === 'Processing' ? 'bg-yellow-100 text-yellow-800' : o.status === 'Delivered' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">${o.status}</span></td>
+                                   <td class="p-3"><button data-action="view-order" data-order-id="${o.id}" class="text-blue-600 hover:underline">View</button></td>
+                               </tr>
+                           `).join('')}
+                           </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderMarketplaceReports() {
+            return `
+                <h1 class="text-3xl font-extrabold text-gray-900 mb-8">Sales Reports</h1>
+                <div class="bg-white p-6 rounded-xl card-shadow">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4">Revenue Over Time</h2>
+                    <canvas id="revenueChart"></canvas>
+                </div>
+            `;
+        }
+
+        function renderMarketplaceSettings() {
+             return `
+                <h1 class="text-3xl font-extrabold text-gray-900 mb-8">Store Settings</h1>
+                <div class="bg-white p-8 rounded-xl card-shadow max-w-2xl mx-auto">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6">Store Information</h2>
+                    <div class="space-y-4">
+                        <div><label class="block text-sm font-medium text-gray-600">Store Name</label><input type="text" value="${marketplaceMockData.vendor.name}" class="mt-1 p-2 w-full border rounded-md"></div>
+                        <div><label class="block text-sm font-medium text-gray-600">Owner Name</label><input type="text" value="${marketplaceMockData.vendor.owner}" class="mt-1 p-2 w-full border rounded-md"></div>
+                        <div><label class="block text-sm font-medium text-gray-600">Store Logo</label><input type="file" class="mt-1 p-2 w-full border rounded-md text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"></div>
+                    </div>
+                    <button class="mt-8 bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-blue-700 transition-transform hover:scale-105">Save Changes</button>
+                </div>
+            `;
+        }
+        
+        function renderModal() {
+            if (!marketplaceAppState.modalContent) return '';
+            return `
+                <div id="modal-overlay" class="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50 p-4">
+                    <div class="bg-white rounded-lg shadow-xl max-w-md w-full relative p-6" onclick="event.stopPropagation()">
+                        <button onclick="closeModal()" class="absolute top-2 right-4 text-gray-500 hover:text-gray-800 text-3xl">&times;</button>
+                        ${marketplaceAppState.modalContent}
+                    </div>
+                </div>
+            `;
+        }
+        
+        function showOrderDetailsModal(orderId) {
+            const order = marketplaceMockData.orders.find(o => o.id === orderId);
+            if (!order) return;
+            marketplaceAppState.modalContent = `
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Order Details</h2>
+                <div class="space-y-2 text-left">
+                    <p><strong class="font-semibold text-gray-600">Order ID:</strong> ${order.orderId}</p>
+                    <p><strong class="font-semibold text-gray-600">Customer:</strong> ${order.customer}</p>
+                    <p><strong class="font-semibold text-gray-600">Date:</strong> ${order.date}</p>
+                    <p><strong class="font-semibold text-gray-600">Total:</strong> ${order.total} EGP</p>
+                    <p><strong class="font-semibold text-gray-600">Status:</strong> <span class="px-2 py-1 text-xs font-semibold rounded-full ${ order.status === 'Shipped' ? 'bg-blue-100 text-blue-800' : o.status === 'Processing' ? 'bg-yellow-100 text-yellow-800' : o.status === 'Delivered' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">${order.status}</span></p>
+                </div>
+                <button onclick="closeModal()" class="mt-6 w-full bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 transition">Close</button>
+            `;
+            renderMarketplacePage();
+        }
+
+        function showAddProductModal() {
+            marketplaceAppState.modalContent = `
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Add New Product</h2>
+                <form onsubmit="event.preventDefault(); alert('Product would be added in a real app.'); closeModal();">
+                    <div class="space-y-4">
+                        <div><label class="block text-sm font-medium text-gray-600">Product Name</label><input type="text" class="mt-1 p-2 w-full border rounded-md" required></div>
+                        <div><label class="block text-sm font-medium text-gray-600">Price (EGP)</label><input type="number" class="mt-1 p-2 w-full border rounded-md" required></div>
+                        <div><label class="block text-sm font-medium text-gray-600">Stock</label><input type="number" class="mt-1 p-2 w-full border rounded-md" required></div>
+                        <div><label class="block text-sm font-medium text-gray-600">Image</label><input type="file" class="mt-1 p-2 w-full border rounded-md text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"></div>
+                    </div>
+                    <div class="mt-6 flex justify-end space-x-3">
+                        <button type="button" onclick="closeModal()" class="bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300">Cancel</button>
+                        <button type="submit" class="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700">Add Product</button>
+                    </div>
+                </form>
+            `;
+            renderMarketplacePage();
+        }
+
+        function closeModal() {
+            marketplaceAppState.modalContent = null;
+            renderMarketplacePage();
+        }
+
+        function renderMainMarketplaceContent() {
+            const container = document.getElementById('marketplace-dashboard-content');
+            if (!container) return;
+
+            switch (marketplaceAppState.activePage) {
+                case 'overview': container.innerHTML = renderMarketplaceOverview(); break;
+                case 'products': container.innerHTML = renderMarketplaceProducts(); break;
+                case 'orders': container.innerHTML = renderMarketplaceOrders(); break;
+                case 'reports': container.innerHTML = renderMarketplaceReports(); break;
+                case 'settings': container.innerHTML = renderMarketplaceSettings(); break;
+                default: container.innerHTML = renderMarketplaceOverview();
+            }
+        }
+
+        function attachMarketplaceEventListeners() {
+            // Mobile menu toggle
+            document.getElementById('mobile-menu-button')?.addEventListener('click', (e) => {
+                e.stopPropagation();
+                marketplaceAppState.isSidebarOpen = !marketplaceAppState.isSidebarOpen;
+                renderMarketplacePage();
+            });
+
+            // Profile dropdown
+            document.getElementById('profile-button')?.addEventListener('click', (e) => {
+                e.stopPropagation();
+                marketplaceAppState.isProfileDropdownOpen = !marketplaceAppState.isProfileDropdownOpen;
+                renderMarketplacePage();
+            });
+
+            document.body.addEventListener('click', (e) => {
+                let changed = false;
+                if (marketplaceAppState.isProfileDropdownOpen) {
+                    marketplaceAppState.isProfileDropdownOpen = false;
+                    changed = true;
+                }
+                if (marketplaceAppState.isSidebarOpen && !e.target.closest('#sidebar')) {
+                    marketplaceAppState.isSidebarOpen = false;
+                    changed = true;
+                }
+                if (changed) renderMarketplacePage();
+            });
+
+            // Nav links
+            document.querySelectorAll('.marketplace-nav-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    marketplaceAppState.activePage = e.currentTarget.dataset.page;
+                    marketplaceAppState.isProfileDropdownOpen = false;
+                    marketplaceAppState.isSidebarOpen = false;
+                    window.scrollTo(0, 0);
+                    renderMarketplacePage();
+                });
+            });
+
+            // Event delegation for action buttons
+            const contentContainer = document.getElementById('marketplace-dashboard-content');
+            contentContainer?.addEventListener('click', (e) => {
+                const target = e.target.closest('button');
+                if (!target || !target.dataset.action) return;
+
+                const { action, orderId } = target.dataset;
+                
+                if (action === 'view-order') {
+                    showOrderDetailsModal(parseInt(orderId));
+                }
+                if (action === 'add-product') {
+                    showAddProductModal();
+                }
+            });
+            
+             const modalOverlay = document.getElementById('modal-overlay');
+            if(modalOverlay) {
+                modalOverlay.addEventListener('click', closeModal);
+            }
+        }
+
+        function renderMarketplacePage() {
+            const appContainer = document.getElementById('marketplace-app-container');
+            appContainer.innerHTML = `
+                ${renderMarketplaceHeader()}
+                <div class="flex flex-1">
+                    ${renderMarketplaceSidebar()}
+                    <main class="flex-1 p-4 sm:p-6 md:p-10 bg-gray-50">
+                        <div class="container mx-auto" id="marketplace-dashboard-content">
+                            <!-- Main content is injected here -->
+                        </div>
+                    </main>
+                </div>
+                ${renderMarketplaceBottomNav()}
+                ${renderModal()}
+            `;
+            renderMainMarketplaceContent();
+            attachMarketplaceEventListeners();
+
+            if (marketplaceAppState.activePage === 'reports') {
+                const ctx = document.getElementById('revenueChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                        datasets: [{
+                            label: 'Monthly Revenue (EGP)',
+                            data: [12000, 19000, 15000, 21000, 18000, 24000, 28000],
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            borderColor: 'rgb(59, 130, 246)',
+                            borderWidth: 2,
+                            tension: 0.4,
+                            fill: true,
+                        }]
+                    },
+                    options: {
+                        scales: { y: { beginAtZero: true } },
+                        plugins: { legend: { display: false } },
+                    }
+                });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', renderMarketplacePage);
+    </script>
+
+</body>
+</html>

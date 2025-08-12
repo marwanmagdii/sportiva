@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sportiva - Coach Dashboard</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        .sidebar-link-active {
+            background-color: #e0f2fe; /* sky-100 */
+            color: #0284c7; /* sky-600 */
+            border-right: 3px solid #0284c7;
+        }
+         .toggle-checkbox:checked + .toggle-label {
+            background-color: #0284c7;
+        }
+        .toggle-checkbox:checked + .toggle-label .dot {
+            transform: translateX(100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+    <div id="coach-app-container">
+        <!-- Coach App content will be rendered here -->
+    </div>
+     <footer class="bg-gray-800 text-white">
+        <div class="container mx-auto py-12 px-4 sm:px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h2 class="text-2xl font-bold">Sportiva</h2>
+                    <p class="text-gray-400 mt-2">Connecting players and venues across Egypt.</p>
+                </div>
+                <div>
+                    <h3 class="font-semibold tracking-wider">Quick Links</h3>
+                    <ul class="mt-4 space-y-2">
+                        <li><a href="index.html" class="text-gray-400 hover:text-white">Home</a></li>
+                        <li><a href="fields.html" class="text-gray-400 hover:text-white">Book a Field</a></li>
+                        <li><a href="community.html" class="text-gray-400 hover:text-white">Community</a></li>
+                        <li><a href="marketplace.html" class="text-gray-400 hover:text-white">Marketplace</a></li>
+                         <li><a href="index.html" class="text-gray-400 hover:text-white">Dashboard</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-semibold tracking-wider">Support</h3>
+                    <ul class="mt-4 space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">FAQ</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Help Center</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                     <h3 class="font-semibold tracking-wider">Follow Us</h3>
+                     <div class="flex space-x-4 mt-4">
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fas fa-link"></i></a>
+                     </div>
+                     <h3 class="font-semibold tracking-wider mt-6">Legal</h3>
+                     <ul class="mt-4 space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-6 text-center text-gray-500">
+                <p>&copy; 2025 Sportiva. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- COACH APP STATE ---
+        const coachAppState = {
+            activePage: 'overview',
+            isProfileDropdownOpen: false,
+        };
+
+        // --- COACH MOCK DATA ---
+        const coachMockData = {
+            coach: {
+                name: "Coach Omar",
+                specialty: "Football Tactics & Fitness",
+                profileImage: "images/coachs/coach 6.png",
+                email: "omar.coach@sportiva.com",
+                phone: "011-9876-5432"
+            },
+            stats: {
+                upcomingSessions: 4,
+                clients: 12,
+                pendingRequests: 2,
+                monthlyRevenue: "15,000 EGP"
+            },
+            schedule: [
+                { id: 1, client: "Ali Hassan", time: "Aug 8, 2025, 5:00 PM", status: "Confirmed", clientImg: "images/people/people 2.png" },
+                { id: 2, client: "Omar Sherif", time: "Aug 8, 2025, 7:00 PM", status: "Confirmed", clientImg: "images/people/people 3.png" },
+                { id: 3, client: "Youssef Ali", time: "Aug 9, 2025, 6:00 PM", status: "Confirmed", clientImg: "images/people/people 6.png" },
+            ],
+            requests: [
+                { id: 4, client: "Mohamed Adel", time: "Aug 11, 2025, 8:00 PM", status: "Pending", clientImg: "images/people/people 8.png" },
+                { id: 5, client: "Ahmed Zaki", time: "Aug 12, 2025, 7:00 PM", status: "Pending", clientImg: "images/people/people 10.png" }
+            ],
+            clients: [
+                 { name: "Ali Hassan", joined: "Jan 2025", sessions: 15, img: "images/people/people 2.png" },
+                 { name: "Omar Sherif", joined: "Mar 2025", sessions: 8, img: "images/people/people 3.png" },
+                 { name: "Youssef Ali", joined: "May 2025", sessions: 5, img: "images/people/people 6.png" },
+                 { name: "Mohamed Adel", joined: "Jun 2025", sessions: 3, img: "images/people/people 8.png" },
+            ]
+        };
+
+        // --- RENDER FUNCTIONS ---
+
+        function renderCoachHeader() {
+            return `
+                <header class="bg-white shadow-sm sticky top-0 z-40">
+                    <nav class="container mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
+                        <a href="index.html" class="text-3xl font-bold text-emerald-600">Sportiva</a>
+                         <div class="hidden md:flex items-center space-x-8">
+                            <a href="fields.html" class="text-gray-600 hover:text-emerald-600 transition">Fields</a>
+                            <a href="community.html" class="text-gray-600 hover:text-emerald-600 transition">Community</a>
+                            <a href="marketplace.html" class="text-gray-600 hover:text-emerald-600 transition">Marketplace</a>
+                            <a href="about-us.html" class="text-gray-600 hover:text-emerald-600 transition">About Us</a>
+                        </div>
+                        <div class="relative">
+                            <button id="profile-button" class="flex items-center space-x-2">
+                                <img src="${coachMockData.coach.profileImage}" alt="Coach Profile" class="w-10 h-10 rounded-full object-cover border-2 border-emerald-500" onerror="this.onerror=null;this.src='https://placehold.co/40x40/0284c7/FFFFFF?text=CO';">
+                            </button>
+                             <div id="profile-dropdown" class="${coachAppState.isProfileDropdownOpen ? '' : 'hidden'} absolute right-0 mt-2 w-56 bg-white rounded-md shadow-xl z-50">
+                                <div class="p-4 border-b">
+                                    <p class="font-semibold text-gray-800">${coachMockData.coach.name}</p>
+                                    <p class="text-sm text-gray-500">Coach</p>
+                                </div>
+                                <a href="player-dashboard.html" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-100">
+                                    <i class="fas fa-user w-6 text-center mr-2"></i>
+                                    <span>Player Dashboard</span>
+                                </a>
+                                <a href="field-owner-dashboard.html" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-100">
+                                     <i class="fas fa-futbol w-6 text-center mr-2"></i>
+                                    <span>Field Owner Dashboard</span>
+                                </a>
+                            </div>
+                        </div>
+                    </nav>
+                </header>
+            `;
+        }
+        
+        function renderCoachSidebar() {
+             const links = [
+                { id: 'overview', icon: 'fa-tachometer-alt', text: 'Overview' },
+                { id: 'schedule', icon: 'fa-calendar-alt', text: 'My Schedule' },
+                { id: 'clients', icon: 'fa-users', text: 'My Clients' },
+                { id: 'requests', icon: 'fa-inbox', text: 'Session Requests' },
+                { id: 'settings', icon: 'fa-cog', text: 'Settings' },
+            ];
+            return `
+                 <aside class="w-64 bg-white h-screen sticky top-[72px] shadow-lg">
+                    <div class="p-6 text-center border-b">
+                        <img src="${coachMockData.coach.profileImage}" alt="Coach Profile" class="w-24 h-24 rounded-full mx-auto mb-3 border-4 border-sky-200 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/96x96/0284c7/FFFFFF?text=CO';">
+                        <h3 class="text-xl font-bold text-gray-800">${coachMockData.coach.name}</h3>
+                        <p class="text-sm text-gray-500">${coachMockData.coach.specialty}</p>
+                    </div>
+                    <nav class="mt-6">
+                        ${links.map(link => `
+                            <a href="#" data-page="${link.id}" class="coach-nav-link flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 ${coachAppState.activePage === link.id ? 'sidebar-link-active' : ''}">
+                                <i class="fas ${link.icon} w-6 text-center mr-3"></i>
+                                <span>${link.text}</span>
+                            </a>
+                        `).join('')}
+                    </nav>
+                </aside>
+            `;
+        }
+
+        function renderCoachOverview() {
+            return `
+                <h1 class="text-3xl font-extrabold text-gray-900 mb-8">Coach Dashboard</h1>
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white p-6 rounded-xl shadow-md"><p class="text-sm font-medium text-gray-500">Upcoming Sessions</p><p class="text-3xl font-bold text-gray-900">${coachMockData.stats.upcomingSessions}</p></div>
+                    <div class="bg-white p-6 rounded-xl shadow-md"><p class="text-sm font-medium text-gray-500">Total Clients</p><p class="text-3xl font-bold text-gray-900">${coachMockData.stats.clients}</p></div>
+                    <div class="bg-white p-6 rounded-xl shadow-md"><p class="text-sm font-medium text-gray-500">Pending Requests</p><p class="text-3xl font-bold text-gray-900">${coachMockData.stats.pendingRequests}</p></div>
+                    <div class="bg-white p-6 rounded-xl shadow-md"><p class="text-sm font-medium text-gray-500">This Month's Revenue</p><p class="text-3xl font-bold text-gray-900">${coachMockData.stats.monthlyRevenue}</p></div>
+                </div>
+                 <div class="bg-white p-6 rounded-xl shadow-md">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4">Today's Schedule</h2>
+                    <div class="space-y-4">
+                        ${coachMockData.schedule.slice(0, 2).map(s => `
+                            <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                <div class="flex items-center">
+                                    <img src="${s.clientImg}" class="w-10 h-10 rounded-full object-cover mr-4" onerror="this.onerror=null;this.src='https://placehold.co/40x40/E0E0E0/333333?text=P';">
+                                    <div><p class="font-bold text-gray-800">${s.client}</p><p class="text-sm text-gray-500">${s.time}</p></div>
+                                </div>
+                                <span class="text-sm font-medium text-green-600">Confirmed</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderCoachSchedule() {
+            return `
+                <h1 class="text-3xl font-extrabold text-gray-900 mb-8">My Schedule</h1>
+                 <div class="bg-white p-6 rounded-xl shadow-md">
+                     <div class="space-y-4">
+                        ${[...coachMockData.schedule, ...coachMockData.requests].map(s => `
+                            <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                <div class="flex items-center">
+                                    <img src="${s.clientImg}" class="w-10 h-10 rounded-full object-cover mr-4" onerror="this.onerror=null;this.src='https://placehold.co/40x40/E0E0E0/333333?text=P';">
+                                    <div><p class="font-bold text-gray-800">${s.client}</p><p class="text-sm text-gray-500">${s.time}</p></div>
+                                </div>
+                                <span class="text-sm font-medium ${s.status === 'Confirmed' ? 'text-green-600' : 'text-orange-500'}">${s.status}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderCoachClients() {
+            return `
+                 <h1 class="text-3xl font-extrabold text-gray-900 mb-8">My Clients</h1>
+                 <div class="bg-white p-6 rounded-xl shadow-md">
+                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        ${coachMockData.clients.map(c => `
+                            <div class="flex items-center p-4 bg-gray-50 rounded-lg">
+                                <img src="${c.img}" class="w-12 h-12 rounded-full object-cover mr-4" onerror="this.onerror=null;this.src='https://placehold.co/48x48/E0E0E0/333333?text=P';">
+                                <div>
+                                    <p class="font-bold text-gray-800">${c.name}</p>
+                                    <p class="text-sm text-gray-500">Total Sessions: ${c.sessions}</p>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+        
+        function renderCoachRequests() {
+             return `
+                <h1 class="text-3xl font-extrabold text-gray-900 mb-8">Session Requests</h1>
+                 <div class="bg-white p-6 rounded-xl shadow-md">
+                     <div class="space-y-4">
+                        ${coachMockData.requests.map(r => `
+                             <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                <div class="flex items-center mb-3 sm:mb-0">
+                                    <img src="${r.clientImg}" class="w-10 h-10 rounded-full object-cover mr-4" onerror="this.onerror=null;this.src='https://placehold.co/40x40/E0E0E0/333333?text=P';">
+                                    <div><p class="font-bold text-gray-800">${r.client}</p><p class="text-sm text-gray-500">${r.time}</p></div>
+                                </div>
+                                <div class="flex items-center space-x-2 self-end sm:self-center">
+                                    <button class="text-sm bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg transition">Decline</button>
+                                    <button class="text-sm bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg transition">Accept</button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderCoachSettings() {
+            return `
+                <h1 class="text-3xl font-extrabold text-gray-900 mb-8">Settings</h1>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="lg:col-span-2 space-y-8">
+                        <div class="bg-white p-6 rounded-xl shadow-md">
+                            <h2 class="text-xl font-bold text-gray-800 mb-4">My Profile</h2>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div><label class="block text-sm font-medium text-gray-600">Full Name</label><input type="text" value="${coachMockData.coach.name}" class="mt-1 p-2 w-full border rounded-md"></div>
+                                <div><label class="block text-sm font-medium text-gray-600">Specialty</label><input type="text" value="${coachMockData.coach.specialty}" class="mt-1 p-2 w-full border rounded-md"></div>
+                                <div><label class="block text-sm font-medium text-gray-600">Email Address</label><input type="email" value="${coachMockData.coach.email}" class="mt-1 p-2 w-full border rounded-md"></div>
+                                <div><label class="block text-sm font-medium text-gray-600">Phone Number</label><input type="tel" value="${coachMockData.coach.phone}" class="mt-1 p-2 w-full border rounded-md"></div>
+                            </div>
+                            <button class="mt-6 bg-sky-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-sky-700 transition">Save Changes</button>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-md">
+                             <h2 class="text-xl font-bold text-gray-800 mb-4">Change Password</h2>
+                             <div class="space-y-4">
+                                 <div><label class="block text-sm font-medium text-gray-600">Current Password</label><input type="password" placeholder="••••••••" class="mt-1 p-2 w-full border rounded-md"></div>
+                                 <div><label class="block text-sm font-medium text-gray-600">New Password</label><input type="password" placeholder="••••••••" class="mt-1 p-2 w-full border rounded-md"></div>
+                                 <div><label class="block text-sm font-medium text-gray-600">Confirm New Password</label><input type="password" placeholder="••••••••" class="mt-1 p-2 w-full border rounded-md"></div>
+                             </div>
+                             <button class="mt-6 bg-sky-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-sky-700 transition">Update Password</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderMainCoachContent() {
+            const container = document.getElementById('coach-dashboard-content');
+            if (!container) return;
+
+            switch (coachAppState.activePage) {
+                case 'overview': container.innerHTML = renderCoachOverview(); break;
+                case 'schedule': container.innerHTML = renderCoachSchedule(); break;
+                case 'clients': container.innerHTML = renderCoachClients(); break;
+                case 'requests': container.innerHTML = renderCoachRequests(); break;
+                case 'settings': container.innerHTML = renderCoachSettings(); break;
+                default: container.innerHTML = renderCoachOverview();
+            }
+        }
+
+        function attachCoachEventListeners() {
+            const navLinks = document.querySelectorAll('.coach-nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    coachAppState.activePage = e.currentTarget.dataset.page;
+                    renderCoachPage();
+                });
+            });
+
+            const profileButton = document.getElementById('profile-button');
+            if (profileButton) {
+                profileButton.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    coachAppState.isProfileDropdownOpen = !coachAppState.isProfileDropdownOpen;
+                    renderCoachPage();
+                });
+            }
+
+            document.body.addEventListener('click', () => {
+                if (coachAppState.isProfileDropdownOpen) {
+                    coachAppState.isProfileDropdownOpen = false;
+                    renderCoachPage();
+                }
+            });
+        }
+
+        function renderCoachPage() {
+            const appContainer = document.getElementById('coach-app-container');
+            appContainer.innerHTML = `
+                ${renderCoachHeader()}
+                <div class="flex">
+                    ${renderCoachSidebar()}
+                    <main class="flex-1 p-6 md:p-10">
+                        <div class="container mx-auto" id="coach-dashboard-content">
+                            <!-- Main content is injected here -->
+                        </div>
+                    </main>
+                </div>
+            `;
+            renderMainCoachContent();
+            attachCoachEventListeners();
+        }
+
+        document.addEventListener('DOMContentLoaded', renderCoachPage);
+    </script>
+
+</body>
+</html>

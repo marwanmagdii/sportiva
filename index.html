@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sportiva - Book Football Fields in Egypt</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            background-color: #f8fafc; /* Tailwind gray-50 */
+        }
+        /* Custom animations for the hero section */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-down {
+            animation: fadeInDown 1s ease-out forwards;
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 1s ease-out forwards;
+            animation-delay: 0.3s; /* Delay for a staggered effect */
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="bg-white shadow-sm sticky top-0 z-40">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-3xl font-bold text-emerald-600">Sportiva</a>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="fields.html" class="relative text-gray-600 hover:text-emerald-600 transition group py-2">
+                    Fields
+                    <span class="absolute bottom-0 left-0 w-full h-0.5 bg-emerald-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                </a>
+                <a href="community.html" class="relative text-gray-600 hover:text-emerald-600 transition group py-2">
+                    Community
+                    <span class="absolute bottom-0 left-0 w-full h-0.5 bg-emerald-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                </a>
+                <a href="challenges.html" class="relative text-gray-600 hover:text-emerald-600 transition group py-2">
+                    Challenges
+                    <span class="absolute bottom-0 left-0 w-full h-0.5 bg-emerald-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                </a>
+                <a href="marketplace.html" class="relative text-gray-600 hover:text-emerald-600 transition group py-2">
+                    Marketplace
+                    <span class="absolute bottom-0 left-0 w-full h-0.5 bg-emerald-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                </a>
+                <a href="aboutus.html" class="relative text-gray-600 hover:text-emerald-600 transition group py-2">
+                    About Us
+                    <span class="absolute bottom-0 left-0 w-full h-0.5 bg-emerald-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                </a>
+                <!-- Assuming dashboard is for logged-in users, might link to a dashboard.html -->
+                <a href="dashboard.html" class="relative text-gray-600 hover:text-emerald-600 transition group py-2">
+                    Dashboard
+                    <span class="absolute bottom-0 left-0 w-full h-0.5 bg-emerald-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                </a>
+            </div>
+            <div class="hidden md:flex items-center space-x-4">
+                <!-- Login/Sign Out buttons - these would typically link to an auth.html or similar -->
+                <a href="auth.html" class="bg-emerald-600 text-white font-semibold px-5 py-2 rounded-lg hover:bg-emerald-700 transition">Login</a>
+            </div>
+            <button class="md:hidden text-gray-700 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </nav>
+        <!-- Mobile menu placeholder -->
+        <!-- <div class="md:hidden px-6 pb-4">...mobile menu logic...</div> -->
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="relative text-white bg-cover bg-center h-[60vh] md:h-[80vh] flex items-center justify-center" style="background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1551955139-01c353b0d37c?q=80&w=2070&auto=format&fit=crop')">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-4 animate-fade-in-down">The Easiest Way to Book Football Fields in Egypt</h1>
+                <p class="text-lg md:text-xl text-gray-200 max-w-3xl mx-auto mb-8 animate-fade-in-up">Find available fields, challenge teams, and join the community.</p>
+                <div class="mt-8 max-w-2xl mx-auto">
+                    <div class="flex flex-col md:flex-row gap-2 bg-white/20 backdrop-blur-sm p-2 rounded-lg">
+                        <input type="text" placeholder="Search by field name or district..." class="w-full p-3 text-gray-800 rounded-md focus:ring-2 focus:ring-emerald-400 outline-none" />
+                        <a href="fields.html" class="bg-emerald-600 text-white font-bold px-8 py-3 rounded-md text-lg hover:bg-emerald-700 transition-transform transform hover:scale-105 flex items-center justify-center">Search</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- What is Sportiva Section -->
+        <section class="py-20 bg-white">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">What is Sportiva?</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                    Sportiva is a SportsTech company operating in the digital sports services and marketplace domain. We offer a comprehensive platform that connects players and sports facility owners across Egypt, simplifying the process of booking, managing, and engaging with the sports community.
+                </p>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mt-12">
+                    <div class="p-6 bg-gray-50 rounded-lg">
+                        <h3 class="text-xl font-semibold text-emerald-600 mb-2">Instant Booking</h3>
+                        <p class="text-gray-600">Find and reserve sports fields with real-time slot visibility.</p>
+                    </div>
+                    <div class="p-6 bg-gray-50 rounded-lg">
+                        <h3 class="text-xl font-semibold text-emerald-600 mb-2">Player Community</h3>
+                        <p class="text-gray-600">Connect with others to find games, join teams, or create tournaments.</p>
+                    </div>
+                    <div class="p-6 bg-gray-50 rounded-lg">
+                        <h3 class="text-xl font-semibold text-emerald-600 mb-2">Field Management</h3>
+                        <p class="text-gray-600">A dashboard for owners to list availability, handle bookings, and run promotions.</p>
+                    </div>
+                    <div class="p-6 bg-gray-50 rounded-lg">
+                        <h3 class="text-xl font-semibold text-emerald-600 mb-2">Sports Marketplace</h3>
+                        <p class="text-gray-600">An in-app shop for gear, offering a targeted sales channel for local vendors.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section class="py-20 bg-gray-50">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">How It Works</h2>
+                    <p class="text-lg text-gray-500 mt-2">Your game is just a few clicks away.</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-10 text-center">
+                    <div class="p-6">
+                        <div class="flex items-center justify-center h-20 w-20 rounded-full bg-emerald-100 text-emerald-600 mx-auto mb-4">
+                            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">1. Find Your Pitch</h3>
+                        <p class="text-gray-600">Use our advanced filters to find the perfect field based on location, price, and rating.</p>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-center h-20 w-20 rounded-full bg-emerald-100 text-emerald-600 mx-auto mb-4">
+                            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">2. Book Instantly</h3>
+                        <p class="text-gray-600">Select your desired time slot and confirm your booking with secure online payment.</p>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-center h-20 w-20 rounded-full bg-emerald-100 text-emerald-600 mx-auto mb-4">
+                            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.834 9.168-4.418"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">3. Just Play!</h3>
+                        <p class="text-gray-600">Show up at the field at your booked time. We handle the rest. It's that simple.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Fields Section (Static for landing page) -->
+        <section class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Featured Fields</h2>
+                    <p class="text-lg text-gray-500 mt-2">Check out some of our top-rated pitches.</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Example Static Field Card 1 -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden group">
+                        <div class="overflow-hidden h-48 relative">
+                            <img src="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?q=80&w=1935&auto=format&fit=crop" alt="Nasr City Stadium" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                            <div class="absolute top-2 right-2 bg-emerald-600 text-white text-sm font-bold px-3 py-1 rounded-full">4.8 ★</div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-gray-800 mb-2 truncate">Nasr City Stadium</h3>
+                            <p class="text-gray-600">Nasr City, Cairo</p>
+                            <p class="text-lg font-semibold text-emerald-600 mt-4">EGP 300/hr</p>
+                            <a href="fields.html" class="mt-4 inline-block bg-emerald-600 text-white font-semibold px-4 py-2 rounded-lg hover:bg-emerald-700 transition">View Details</a>
+                        </div>
+                    </div>
+                    <!-- Example Static Field Card 2 -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden group">
+                        <div class="overflow-hidden h-48 relative">
+                            <img src="https://images.unsplash.com/photo-1551955139-01c353b0d37c?q=80&w=2070&auto=format&fit=crop" alt="Mohandessin Football Park" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                            <div class="absolute top-2 right-2 bg-emerald-600 text-white text-sm font-bold px-3 py-1 rounded-full">4.7 ★</div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-gray-800 mb-2 truncate">Mohandessin Football Park</h3>
+                            <p class="text-gray-600">Mohandessin, Giza</p>
+                            <p class="text-lg font-semibold text-emerald-600 mt-4">EGP 350/hr</p>
+                            <a href="fields.html" class="mt-4 inline-block bg-emerald-600 text-white font-semibold px-4 py-2 rounded-lg hover:bg-emerald-700 transition">View Details</a>
+                        </div>
+                    </div>
+                    <!-- Example Static Field Card 3 -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden group">
+                        <div class="overflow-hidden h-48 relative">
+                            <img src="https://images.unsplash.com/photo-1526203303979-5a1e847a2569?q=80&w=2070&auto=format&fit=crop" alt="Maadi Sports Club" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                            <div class="absolute top-2 right-2 bg-emerald-600 text-white text-sm font-bold px-3 py-1 rounded-full">4.6 ★</div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-gray-800 mb-2 truncate">Maadi Sports Club</h3>
+                            <p class="text-gray-600">Maadi, Cairo</p>
+                            <p class="text-lg font-semibold text-emerald-600 mt-4">EGP 320/hr</p>
+                            <a href="fields.html" class="mt-4 inline-block bg-emerald-600 text-white font-semibold px-4 py-2 rounded-lg hover:bg-emerald-700 transition">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Join The Largest Football Community Section -->
+        <section class="relative text-white bg-cover bg-center py-24" style="background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1544329388-2333b8a1a47b?q=80&w=2070&auto=format&fit=crop')">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-extrabold leading-tight mb-4">Join The Largest Football Community</h2>
+                <p class="text-lg md:text-xl text-gray-200 max-w-3xl mx-auto mb-8">Find players, join teams, or create challenges. Your next match is waiting.</p>
+                <div class="flex flex-col md:flex-row justify-center gap-4">
+                    <a href="community.html" class="bg-white text-emerald-700 font-bold px-8 py-3 rounded-lg text-lg hover:bg-gray-100 transition-transform transform hover:scale-105 flex items-center justify-center">Find Players & Teams</a>
+                    <a href="challenges.html" class="bg-transparent border-2 border-white text-white font-bold px-8 py-3 rounded-lg text-lg hover:bg-white hover:text-emerald-700 transition-colors flex items-center justify-center">View Challenges</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="bg-gray-800 text-white">
+        <div class="container mx-auto px-6 py-12">
+            <div class="grid md:grid-cols-3 gap-8 text-center md:text-left">
+                <div>
+                    <h3 class="text-2xl font-bold text-white mb-2">Sportiva</h3>
+                    <p class="text-gray-400">Connecting players and venues across Egypt.</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-white mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-gray-400 hover:text-white">Home</a></li>
+                        <li><a href="fields.html" class="text-gray-400 hover:text-white">Book a Field</a></li>
+                        <li><a href="community.html" class="text-gray-400 hover:text-white">Community</a></li>
+                        <li><a href="aboutus.html" class="text-gray-400 hover:text-white">About Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-white mb-4">Follow Us</h3>
+                    <!-- Add social media icons here -->
+                </div>
+            </div>
+            <div class="mt-8 border-t border-gray-700 pt-6 text-center text-gray-500 text-sm">
+                <p>&copy; 2025 Sportiva. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

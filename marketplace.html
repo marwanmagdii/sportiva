@@ -157,7 +157,55 @@
         function renderFooter() { return `<footer class="bg-gray-900 text-white"><div class="container mx-auto py-12 px-4 sm:px-6"><div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-center md:text-left"><div class="md:col-span-1"><h2 class="text-3xl font-bold text-emerald-500">Sportiva</h2><p class="text-gray-400 mt-2">Your ultimate destination for sports.</p><div class="flex justify-center md:justify-start space-x-4 mt-4"><a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-facebook-f fa-lg"></i></a><a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-twitter fa-lg"></i></a><a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-instagram fa-lg"></i></a></div></div><div><h3 class="font-semibold tracking-wider uppercase">Dashboards</h3><ul class="mt-4 space-y-2"><li><a href="player-dashboard.html" class="text-gray-400 hover:text-white">Player</a></li><li><a href="coach-dashboard.html" class="text-gray-400 hover:text-white">Coach</a></li><li><a href="field-owner-dashboard.html" class="text-gray-400 hover:text-white">Field Owner</a></li><li><a href="marketplace-dashboard.html" class="text-gray-400 hover:text-white">Marketplace</a></li></ul></div><div><h3 class="font-semibold tracking-wider uppercase">Find</h3><ul class="mt-4 space-y-2"><li><a href="find.html" class="text-gray-400 hover:text-white">Players</a></li><li><a href="find.html" class="text-gray-400 hover:text-white">Teams</a></li><li><a href="find.html" class="text-gray-400 hover:text-white">Coaches</a></li><li><a href="find.html" class="text-gray-400 hover:text-white">Challenges</a></li></ul></div><div><h3 class="font-semibold tracking-wider uppercase">More</h3><ul class="mt-4 space-y-2"><li><a href="fields.html" class="text-gray-400 hover:text-white">Fields</a></li><li><a href="marketplace.html" class="text-gray-400 hover:text-white">Marketplace</a></li><li><a href="about-us.html" class="text-gray-400 hover:text-white">About Us</a></li></ul></div></div><div class="border-t border-gray-700 mt-8 pt-6 text-center text-gray-500"><p>&copy; 2025 Sportiva. All Rights Reserved.</p></div></div></footer>`; }
 
         // --- GRID VIEW RENDER FUNCTIONS ---
-        function renderProductCard(product) { const initialImage = product.productImages && product.productImages.length > 0 ? product.productImages[0].imageUrl : ''; return `<div id="product-card-${product.id}" class="bg-white rounded-xl enhanced-shadow overflow-hidden max-w-sm w-full flex flex-col transform transition-all duration-300 hover:scale-[1.02]"><div class="relative h-48 sm:h-56 md:h-64 bg-gray-200 flex items-center justify-center overflow-hidden"><img id="product-image-${product.id}" src="${initialImage}" alt="${product.imageAlt}" class="object-cover w-full h-full" onerror="this.onerror=null;this.src='https://placehold.co/600x400/E0E0E0/333333?text=Image+Not+Found';"/></div><div class="p-4 sm:p-6 flex flex-col flex-grow"><p class="text-xs font-medium text-gray-500 mb-1">by ${product.provider}</p><h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-2 leading-tight">${product.title}</h2><div class="flex items-center mb-3">${renderStars(product.rating)}<span class="ml-2 text-sm text-gray-500">${product.reviews.toLocaleString()} reviews</span></div><p class="text-gray-700 text-sm mb-3 flex-grow"><span class="font-medium">${product.offerStatus}</span></p><div class="flex items-center justify-between mt-auto pt-4"><div class="text-3xl font-bold text-gray-900">$${product.price.toFixed(2)}</div></div><button class="mt-4 w-full bg-white text-emerald-700 border-2 border-emerald-600 py-2.5 px-4 rounded-lg font-semibold text-lg hover:bg-emerald-50 focus:outline-none focus:ring-4 focus:ring-emerald-300 transition duration-200 ease-in-out" onclick="viewProductDetails('${product.id}')">View Details</button></div></div>`;}
+        function renderProductCard(product) {
+            const initialImage = product.productImages && product.productImages.length > 0 ? product.productImages[0].imageUrl : '';
+            const initialColor = product.productImages && product.productImages.length > 0 ? product.productImages[0].color : '';
+
+            const colorChoicesHtml = product.productImages.map((image, index) => `
+                <div
+                    data-product-id="${product.id}"
+                    data-image-url="${image.imageUrl}"
+                    data-color="${image.color}"
+                    class="w-6 h-6 rounded-full border-2 cursor-pointer transition-transform duration-200 hover:scale-110
+                        ${initialColor === image.color ? 'border-emerald-500 ring-2 ring-emerald-200' : 'border-gray-300'}
+                        ${index < product.productImages.length - 1 ? 'mr-2' : ''}"
+                    style="background-color: ${image.color};"
+                    title="${colorMap[image.color.toLowerCase()] || 'Other'}"
+                    onclick="handleGridColorClick(event, '${product.id}')"
+                ></div>
+            `).join('');
+
+            return `
+                <div id="product-card-${product.id}" class="bg-white rounded-xl enhanced-shadow overflow-hidden max-w-sm w-full flex flex-col transform transition-all duration-300 hover:scale-[1.02]">
+                    <div class="relative h-48 sm:h-56 md:h-64 bg-gray-200 flex items-center justify-center overflow-hidden">
+                        <img id="product-image-${product.id}" src="${initialImage}" alt="${product.imageAlt}" class="object-cover w-full h-full" onerror="this.onerror=null;this.src='https://placehold.co/600x400/E0E0E0/333333?text=Image+Not+Found';"/>
+                    </div>
+                    <div class="p-4 sm:p-6 flex flex-col flex-grow">
+                        <p class="text-xs font-medium text-gray-500 mb-1">by ${product.provider}</p>
+                        <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-2 leading-tight">${product.title}</h2>
+                        <div class="flex items-center mb-3">
+                            ${renderStars(product.rating)}
+                            <span class="ml-2 text-sm text-gray-500">${product.reviews.toLocaleString()} reviews</span>
+                        </div>
+                        
+                        ${product.productImages.length > 1 ? `
+                        <div class="flex items-center mb-4">
+                            <span class="text-gray-700 text-sm mr-2 font-medium">Colors:</span>
+                            <div class="flex">
+                                ${colorChoicesHtml}
+                            </div>
+                        </div>` : ''}
+
+                        <p class="text-gray-700 text-sm mb-3 flex-grow"><span class="font-medium">${product.offerStatus}</span></p>
+                        <div class="flex items-center justify-between mt-auto pt-4">
+                            <div class="text-3xl font-bold text-gray-900">$${product.price.toFixed(2)}</div>
+                        </div>
+                        <button class="mt-4 w-full bg-white text-emerald-700 border-2 border-emerald-600 py-2.5 px-4 rounded-lg font-semibold text-lg hover:bg-emerald-50 focus:outline-none focus:ring-4 focus:ring-emerald-300 transition duration-200 ease-in-out" onclick="viewProductDetails('${product.id}')">
+                            View Details
+                        </button>
+                    </div>
+                </div>`;
+        }
         function renderMarketplaceGrid() { const filteredProducts = getFilteredProducts(); const startIndex = (appState.currentPage - 1) * appState.productsPerPage; const endIndex = startIndex + appState.productsPerPage; const paginatedProducts = filteredProducts.slice(startIndex, endIndex); const productCardsHtml = paginatedProducts.map(product => renderProductCard(product)).join(''); return `<div class="bg-gray-50"><div class="container mx-auto px-6 py-12"><div class="text-center mb-12"><h1 class="text-4xl md:text-5xl font-extrabold text-gray-900">Explore Our Marketplace</h1><p class="text-lg text-gray-600 mt-2">Find the best gear for your game!</p></div><div class="grid lg:grid-cols-4 gap-8"><div class="hidden lg:block lg:col-span-1">${renderAdvancedFiltersSectionForMarketplace()}</div><div class="lg:col-span-3"><div class="flex flex-col md:flex-row gap-2 mb-4"><input type="text" id="search-term-marketplace" value="${appState.searchTerm}" placeholder="Search products..." class="p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-emerald-500 enhanced-shadow" /><button id="search-button-marketplace" class="bg-emerald-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-emerald-700 transition flex-shrink-0 flex items-center justify-center enhanced-shadow"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg></button></div><div class="lg:hidden col-span-4 mb-4"><button id="toggle-advanced-filters-marketplace" class="w-full bg-white p-4 rounded-lg enhanced-shadow flex justify-between items-center"><span class="font-semibold">Advanced Filters</span><svg class="w-5 h-5 transition-transform ${appState.showAdvancedFilters ? 'transform rotate-180' : ''}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button>${appState.showAdvancedFilters ? `<div class="mt-4">${renderAdvancedFiltersSectionForMarketplace()}</div>` : ''}</div><div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">${paginatedProducts.length > 0 ? productCardsHtml : '<p class="col-span-full text-center text-gray-600">No products found.</p>'}</div>${renderPagination()}</div></div></div></div>`;}
         function renderAdvancedFiltersSectionForMarketplace() { const filteredCategories = allCategories.filter(c => c.toLowerCase().includes(appState.filters.categorySearchTerm.toLowerCase())); const filteredColors = allColorNames.filter(c => c.toLowerCase().includes(appState.filters.colorSearchTerm.toLowerCase())); const colorCheckboxesHtml = filteredColors.map(c => { const h = Object.keys(colorMap).find(k => colorMap[k] === c); return `<label for="color-${c}" class="filter-item-label"><input type="checkbox" id="color-${c}" name="color" value="${c}" ${appState.filters.selectedColors.includes(c) ? 'checked' : ''}><span class="color-circle" style="background-color: ${h};"></span><span class="ml-2 text-sm text-gray-700">${c}</span></label>`; }).join(''); const categoryCheckboxesHtml = filteredCategories.map(c => `<label for="category-${c}" class="filter-item-label"><input type="checkbox" id="category-${c}" name="category" value="${c}" ${appState.filters.selectedCategories.includes(c) ? 'checked' : ''}><span class="ml-2 text-sm text-gray-700">${c}</span></label>`).join(''); return `<div class="bg-white rounded-lg enhanced-shadow p-6 text-gray-700"><h3 class="text-xl font-bold mb-4">Filters</h3><div class="space-y-6"><div><label class="font-semibold">Category</label><div class="relative mt-2"><div id="category-dropdown-toggle" class="cursor-pointer p-2 border rounded-md flex justify-between items-center bg-white"><span class="text-gray-500">${appState.filters.selectedCategories.length > 0 ? `${appState.filters.selectedCategories.length} selected` : 'Select...'}</span><svg class="w-5 h-5 text-gray-400 ${appState.showCategoryDropdown ? 'rotate-180' : ''}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg></div><div id="category-dropdown" class="absolute top-full left-0 mt-1 w-full bg-white border rounded-md z-10 ${appState.showCategoryDropdown ? '' : 'hidden'}"><input type="text" id="category-search-input" placeholder="Search..." value="${appState.filters.categorySearchTerm}" class="w-full p-2 border-b"><div class="dropdown-checkbox-list p-2">${categoryCheckboxesHtml}</div></div></div></div><div><label class="font-semibold">Color</label><div class="relative mt-2"><div id="color-dropdown-toggle" class="cursor-pointer p-2 border rounded-md flex justify-between items-center bg-white"><span class="text-gray-500">${appState.filters.selectedColors.length > 0 ? `${appState.filters.selectedColors.length} selected` : 'Select...'}</span><svg class="w-5 h-5 text-gray-400 ${appState.showColorDropdown ? 'rotate-180' : ''}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg></div><div id="color-dropdown" class="absolute top-full left-0 mt-1 w-full bg-white border rounded-md z-10 ${appState.showColorDropdown ? '' : 'hidden'}"><input type="text" id="color-search-input" placeholder="Search..." value="${appState.filters.colorSearchTerm}" class="w-full p-2 border-b"><div class="dropdown-checkbox-list p-2">${colorCheckboxesHtml}</div></div></div></div><div><label class="font-semibold mb-2 block">Price Range ($)</label><div class="flex items-center gap-2"><input type="number" id="min-price-marketplace" placeholder="min" value="${appState.filters.minPrice}" class="w-1/2 p-2 border rounded-md"><span class="text-gray-500">-</span><input type="number" id="max-price-marketplace" placeholder="max" value="${appState.filters.maxPrice}" class="w-1/2 p-2 border rounded-md"></div></div><div><label class="font-semibold">Min Rating</label><select id="min-rating-marketplace" class="w-full p-2 border rounded-md mt-2"><option value="">Any</option><option value="1" ${appState.filters.minRating === '1' ? 'selected' : ''}>1+</option><option value="2" ${appState.filters.minRating === '2' ? 'selected' : ''}>2+</option><option value="3" ${appState.filters.minRating === '3' ? 'selected' : ''}>3+</option><option value="4" ${appState.filters.minRating === '4' ? 'selected' : ''}>4+</option><option value="5" ${appState.filters.minRating === '5' ? 'selected' : ''}>5</option></select></div></div><div class="flex gap-2 mt-6"><button id="reset-marketplace-filters" class="w-full bg-gray-200 py-2 rounded-lg">Reset</button><button id="apply-marketplace-filters" class="w-full bg-emerald-600 text-white py-2 rounded-lg">Apply</button></div></div>`; }
         function getFilteredProducts() { return mockProducts.filter(p => { const s = appState.searchTerm.toLowerCase(); const matchesSearch = s === '' || p.title.toLowerCase().includes(s) || p.description.toLowerCase().includes(s) || p.provider.toLowerCase().includes(s); const minP = parseFloat(appState.filters.minPrice); const maxP = parseFloat(appState.filters.maxPrice); const matchesPrice = (isNaN(minP) || p.price >= minP) && (isNaN(maxP) || p.price <= maxP); const matchesRating = appState.filters.minRating === '' || p.rating >= parseFloat(appState.filters.minRating); const matchesCat = appState.filters.selectedCategories.length === 0 || appState.filters.selectedCategories.includes(p.category); const matchesColor = appState.filters.selectedColors.length === 0 || p.productImages.some(img => { const c = colorMap[img.color.toLowerCase()]; return appState.filters.selectedColors.includes(c); }); return matchesSearch && matchesPrice && matchesRating && matchesCat && matchesColor; });}
@@ -276,6 +324,27 @@
         }
 
         // --- EVENT HANDLERS ---
+        function handleGridColorClick(event, productId) {
+            event.stopPropagation(); // Prevent card click event when clicking on a color
+            const clickedColorDiv = event.currentTarget;
+            const newImageUrl = clickedColorDiv.dataset.imageUrl;
+            
+            const productCard = document.getElementById(`product-card-${productId}`);
+            const productImage = document.getElementById(`product-image-${productId}`);
+            const colorChoices = productCard.querySelectorAll(`[data-product-id="${productId}"][data-color]`);
+
+            if (productImage) {
+                productImage.src = newImageUrl;
+            }
+
+            colorChoices.forEach(div => {
+                div.classList.remove('border-emerald-500', 'ring-2', 'ring-emerald-200');
+                div.classList.add('border-gray-300');
+            });
+            clickedColorDiv.classList.add('border-emerald-500', 'ring-2', 'ring-emerald-200');
+            clickedColorDiv.classList.remove('border-gray-300');
+        }
+
         function handleColorSelection(newImageUrl, selectedSwatchElement) {
             document.getElementById('main-product-image').src = newImageUrl;
             document.querySelectorAll('.color-swatch').forEach(swatch => swatch.classList.remove('selected'));

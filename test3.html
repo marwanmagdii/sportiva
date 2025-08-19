@@ -3,146 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sportiva - Book Football Fields in Egypt</title>
-    <!-- Tailwind CSS CDN -->
+    <title>Sportiva - Field Owner Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts - Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            background-color: #f8fafc; /* Light background */
-            scroll-behavior: smooth;
-            color: #1f2937; /* Dark text for contrast */
-        }
-        /* Custom animations for the hero section */
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes slideInLeft {
-            from { opacity: 0; transform: translateX(-50px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes slideInRight {
-            from { opacity: 0; transform: translateX(50px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        
-        .animate-fade-in-down {
-            animation: fadeInDown 1s ease-out forwards;
-        }
-        .animate-fade-in-up {
-            animation: fadeInUp 1s ease-out forwards;
-            animation-delay: 0.3s; /* Delay for a staggered effect */
-        }
-        .animate-on-scroll {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.8s ease-out;
-        }
-        .animate-on-scroll.is-visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .animate-on-scroll.is-visible.slide-in-left {
-            animation: slideInLeft 0.8s ease-out forwards;
-        }
-        .animate-on-scroll.is-visible.slide-in-right {
-            animation: slideInRight 0.8s ease-out forwards;
-        }
-        .animate-on-scroll.is-visible.delay-200 {
-            animation-delay: 0.2s;
-        }
-        .animate-on-scroll.is-visible.delay-400 {
-            animation-delay: 0.4s;
-        }
-        .animate-on-scroll.is-visible.delay-600 {
-            animation-delay: 0.6s;
-        }
-
-        /* Custom scrollbar for better aesthetics */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #e5e7eb;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #9ca3af;
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #6b7280;
-        }
-        /* Sidebar active link style (Not used in this page, but good to keep) */
-        .sidebar-link-active {
-            background-color: #ecfdf5;
-            color: #059669;
-            border-right: 3px solid #059669;
-        }
-        /* Bottom nav active link style */
-        .bottom-nav-link-active {
-            color: #2563eb;
-        }
-        /* Custom styles for the settings page toggle switch (Not used in this page) */
-        .toggle-checkbox:checked + .toggle-label {
-            background-color: #34d399;
-        }
-        .toggle-checkbox:checked + .toggle-label .dot {
-            transform: translateX(100%);
-        }
-        .card-shadow {
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07);
-        }
-        .card-shadow:hover {
-            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.07), 0 4px 6px -4px rgb(0 0 0 / 0.07);
-        }
-        /* Animation for Nav Links */
-        .nav-link-animated {
-            position: relative;
-            transition: all 0.3s ease;
-            padding-bottom: 4px; /* Space for the underline */
-        }
-        .nav-link-animated::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: 0;
-            left: 50%;
-            background-color: #10b981;
-            transition: all 0.3s ease;
-            transform: translateX(-50%);
-        }
-        .nav-link-animated:hover {
-            color: #059669;
-            transform: translateY(-2px); /* Slight lift effect */
-        }
-        .nav-link-animated:hover::after {
-            width: 100%;
-        }
-        /* Enhanced Shadow */
-        .enhanced-shadow {
-            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .enhanced-shadow:hover {
-            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1), 0 6px 12px -6px rgba(0, 0, 0, 0.08);
-            transform: translateY(-2px);
-        }
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .sidebar-link-active { background-color: #ecfdf5; color: #059669; border-right: 4px solid #059669; font-weight: 600; }
+        .bottom-nav-link-active { color: #059669; }
+        .card-shadow { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07); }
+        .enhanced-shadow { box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); }
+        .nav-link-animated { position: relative; transition: all 0.3s ease; padding-bottom: 4px; }
+        .nav-link-animated::after { content: ''; position: absolute; width: 0; height: 2px; bottom: 0; left: 50%; background-color: #10b981; transition: all 0.3s ease; transform: translateX(-50%); }
+        .nav-link-animated:hover { color: #059669; transform: translateY(-2px); }
+        .nav-link-animated:hover::after { width: 100%; }
+        /* Modal Animation */
+        .modal-enter { animation: fadeIn 0.3s ease-out forwards; }
+        .modal-leave { animation: fadeOut 0.3s ease-in forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        @keyframes fadeOut { from { opacity: 1; transform: scale(1); } to { opacity: 0; transform: scale(0.95); } }
     </style>
 </head>
 <body class="bg-gray-50 flex flex-col min-h-screen">
 
-    <!-- Header Section -->
     <header class="bg-white shadow-lg sticky top-0 z-50">
         <nav class="container mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
             <div class="flex-1 flex justify-start items-center">
@@ -154,442 +38,122 @@
                     <span class="text-3xl font-bold text-emerald-600">Sportiva</span>
                 </a>
             </div>
-            
             <div class="hidden md:flex flex-1 justify-center items-center space-x-12 text-xl">
                 <a href="fields.html" class="nav-link-animated text-gray-700 font-semibold">Fields</a>
                 <a href="find.html" class="nav-link-animated text-gray-700 font-semibold">Find</a>
                 <a href="marketplace.html" class="nav-link-animated text-gray-700 font-semibold">Marketplace</a>
             </div>
-
             <div class="flex-1 flex justify-end">
                 <div class="relative">
                     <button id="profile-button" class="block rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">
                         <img src="images/people/people 1.png" alt="Your profile picture" class="w-10 h-10 rounded-full object-cover border-2 border-emerald-500 hover:border-emerald-600 transition" onerror="this.onerror=null;this.src='https://placehold.co/40x40/E0E0E0/333333?text=KA';">
                     </button>
-                    <div id="profile-dropdown" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-md enhanced-shadow z-50 ring-1 ring-black ring-opacity-5">
-                        <div class="px-4 py-3 border-b">
-                            <p class="text-sm font-semibold text-gray-800">Karim Ahmed</p>
-                            <p class="text-xs text-gray-500 truncate">karim.ahmed@example.com</p>
-                        </div>
-                        <div class="py-1 border-b">
-                            <p class="px-4 pt-2 pb-1 text-xs font-semibold text-gray-400 uppercase">Switch Dashboard</p>
-                            <a href="player-dashboard.html" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                <i class="fas fa-user w-5 mr-2 text-gray-500"></i> Player
-                            </a>
-                            <a href="coach-dashboard.html" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                <i class="fas fa-user-tie w-5 mr-2 text-gray-500"></i> Coach
-                            </a>
-                            <a href="field-owner-dashboard.html" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                <i class="fas fa-map-marked-alt w-5 mr-2 text-gray-500"></i> Field Owner
-                            </a>
-                            <a href="marketplace-dashboard.html" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                <i class="fas fa-store w-5 mr-2 text-gray-500"></i> Marketplace
-                            </a>
-                        </div>
-                        <div class="py-1">
-                            <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                <i class="fas fa-cog w-5 mr-2 text-gray-500"></i> Settings
-                            </a>
-                            <a href="#" class="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
-                                <i class="fas fa-sign-out-alt w-5 mr-2"></i> Sign Out
-                            </a>
-                        </div>
-                    </div>
+                    <div id="profile-dropdown" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-md enhanced-shadow z-50 ring-1 ring-black ring-opacity-5"></div>
                 </div>
             </div>
         </nav>
     </header>
 
-    <!-- Main Content Container -->
-    <div id="app-container" class="flex-grow pb-20 md:pb-0">
-        <main class="bg-gray-50">
-            <!-- Hero Section -->
-            <section class="relative h-[80vh] flex items-center justify-center p-6">
-                <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('images/field/field 11.png');"></div>
-                <div class="absolute inset-0 bg-gray-50/80 backdrop-blur-sm"></div>
-                <div class="relative z-10 text-center text-gray-900 max-w-4xl mx-auto">
-                    <h1 class="text-5xl md:text-7xl font-black leading-tight animate-fade-in-down">Book Your Field, Live Your Game</h1>
-                    <p class="text-xl md:text-2xl text-gray-700 mt-4 animate-fade-in-up">The simplest way to find and book football fields across Egypt.</p>
-                    <div class="mt-10 flex justify-center animate-fade-in-up">
-                        <a href="fields.html" class="bg-emerald-600 text-white font-bold py-4 px-10 rounded-full text-lg shadow-xl hover:bg-emerald-700 transition-transform transform hover:scale-105">
-                            Find Fields
-                        </a>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- What Sportiva Does Section -->
-            <section class="py-20 bg-white">
-                <div class="container mx-auto px-6">
-                    <div class="text-center mb-16 animate-on-scroll">
-                        <h2 class="text-3xl md:text-4xl font-bold text-gray-800">What Sportiva Does</h2>
-                        <p class="text-lg text-gray-500 mt-2">We provide a seamless booking experience for football fields, and more.</p>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                        <div class="bg-gray-100 p-6 rounded-xl text-center shadow-md animate-on-scroll delay-200">
-                            <div class="flex items-center justify-center w-16 h-16 rounded-full bg-emerald-500 text-white mx-auto mb-4">
-                                <i class="fas fa-map-marker-alt fa-2x"></i>
-                            </div>
-                            <h3 class="text-xl font-semibold mb-2 text-gray-900">Discover Fields</h3>
-                            <p class="text-gray-600">Find thousands of fields across Egypt with detailed information, photos, and reviews.</p>
-                        </div>
-                        <div class="bg-gray-100 p-6 rounded-xl text-center shadow-md animate-on-scroll delay-400">
-                            <div class="flex items-center justify-center w-16 h-16 rounded-full bg-emerald-500 text-white mx-auto mb-4">
-                                <i class="fas fa-users fa-2x"></i>
-                            </div>
-                            <h3 class="text-xl font-semibold mb-2 text-gray-900">Connect with Community</h3>
-                            <p class="text-gray-600">Find teammates, challenge other teams, and grow your football network.</p>
-                        </div>
-                        <div class="bg-gray-100 p-6 rounded-xl text-center shadow-md animate-on-scroll delay-600">
-                            <div class="flex items-center justify-center w-16 h-16 rounded-full bg-emerald-500 text-white mx-auto mb-4">
-                                <i class="fas fa-store fa-2x"></i>
-                            </div>
-                            <h3 class="text-xl font-semibold mb-2 text-gray-900">Shop the Marketplace</h3>
-                            <p class="text-gray-600">Get the latest gear and accessories from local vendors in our in-app marketplace.</p>
-                        </div>
-                        <div class="bg-gray-100 p-6 rounded-xl text-center shadow-md animate-on-scroll delay-800">
-                            <div class="flex items-center justify-center w-16 h-16 rounded-full bg-emerald-500 text-white mx-auto mb-4">
-                                <i class="fas fa-chart-line fa-2x"></i>
-                            </div>
-                            <h3 class="text-xl font-semibold mb-2 text-gray-900">Powerful Tools for Owners</h3>
-                            <p class="text-gray-600">Easily manage your fields, bookings, and payments with a dedicated dashboard.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
+    <div id="owner-app-container" class="pb-20 md:pb-0 flex-grow">
+        </div>
+    <div id="modal-container"></div> <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white shadow-t-md z-30 border-t border-gray-200">
+        <div class="flex justify-around">
+            <a href="#" data-page="overview" class="owner-nav-link flex-1 flex flex-col items-center justify-center py-2 text-gray-500 hover:text-emerald-600 transition-colors"><i class="fas fa-home fa-lg mb-1"></i><span class="text-xs font-medium">Home</span></a>
+            <a href="#" data-page="bookings" class="owner-nav-link flex-1 flex flex-col items-center justify-center py-2 text-gray-500 hover:text-emerald-600 transition-colors"><i class="fas fa-calendar-check fa-lg mb-1"></i><span class="text-xs font-medium">Bookings</span></a>
+            <a href="#" data-page="reports" class="owner-nav-link flex-1 flex flex-col items-center justify-center py-2 text-gray-500 hover:text-emerald-600 transition-colors"><i class="fas fa-chart-line fa-lg mb-1"></i><span class="text-xs font-medium">Reports</span></a>
+            <a href="#" data-page="settings" class="owner-nav-link flex-1 flex flex-col items-center justify-center py-2 text-gray-500 hover:text-emerald-600 transition-colors"><i class="fas fa-cog fa-lg mb-1"></i><span class="text-xs font-medium">Settings</span></a>
+        </div>
+    </nav>
 
-            <!-- Gamified Leaderboards Section -->
-            <section class="py-20 bg-gray-100">
-                <div class="container mx-auto px-6">
-                    <div class="text-center mb-16 animate-on-scroll">
-                        <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Hall of Fame</h2>
-                        <p class="text-lg text-gray-500 mt-2">Meet the top players, teams, and coaches who dominate the game.</p>
-                    </div>
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
-                        <!-- Top Players -->
-                        <div class="bg-white rounded-xl shadow-lg p-8 animate-on-scroll slide-in-left">
-                            <h3 class="text-2xl font-bold mb-6 text-gray-900 text-center">🏆 Top Players</h3>
-                            <ul class="space-y-4">
-                                <li class="flex items-center justify-between p-3 rounded-lg bg-gray-50 transition-colors hover:bg-emerald-50">
-                                    <div class="flex items-center">
-                                        <img src="images/people/people 1.png" alt="Player 1" class="w-10 h-10 rounded-full mr-4">
-                                        <div class="flex-1">
-                                            <p class="font-semibold text-gray-800">Ahmed Hassan</p>
-                                            <p class="text-sm text-gray-500">12 Bookings</p>
-                                        </div>
-                                    </div>
-                                    <span class="text-lg font-bold text-yellow-500">#1</span>
-                                </li>
-                                <li class="flex items-center justify-between p-3 rounded-lg bg-gray-50 transition-colors hover:bg-emerald-50">
-                                    <div class="flex items-center">
-                                        <img src="images/people/people 2.png" alt="Player 2" class="w-10 h-10 rounded-full mr-4">
-                                        <div class="flex-1">
-                                            <p class="font-semibold text-gray-800">Mohamed Ali</p>
-                                            <p class="text-sm text-gray-500">10 Bookings</p>
-                                        </div>
-                                    </div>
-                                    <span class="text-lg font-bold text-gray-400">#2</span>
-                                </li>
-                                <li class="flex items-center justify-between p-3 rounded-lg bg-gray-50 transition-colors hover:bg-emerald-50">
-                                    <div class="flex items-center">
-                                        <img src="images/people/people 3.png" alt="Player 3" class="w-10 h-10 rounded-full mr-4">
-                                        <div class="flex-1">
-                                            <p class="font-semibold text-gray-800">Samir Fouad</p>
-                                            <p class="text-sm text-gray-500">8 Bookings</p>
-                                        </div>
-                                    </div>
-                                    <span class="text-lg font-bold text-amber-600">#3</span>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <!-- Top Teams -->
-                        <div class="bg-white rounded-xl shadow-lg p-8 animate-on-scroll">
-                            <h3 class="text-2xl font-bold mb-6 text-gray-900 text-center">🥇 Top Teams</h3>
-                            <ul class="space-y-4">
-                                <li class="flex items-center justify-between p-3 rounded-lg bg-gray-50 transition-colors hover:bg-emerald-50">
-                                    <div class="flex items-center">
-                                        <img src="https://placehold.co/40x40/10b981/FFFFFF?text=D" alt="Team 1" class="w-10 h-10 rounded-full mr-4">
-                                        <div class="flex-1">
-                                            <p class="font-semibold text-gray-800">Dream Team</p>
-                                            <p class="text-sm text-gray-500">15 Wins</p>
-                                        </div>
-                                    </div>
-                                    <span class="text-lg font-bold text-yellow-500">#1</span>
-                                </li>
-                                <li class="flex items-center justify-between p-3 rounded-lg bg-gray-50 transition-colors hover:bg-emerald-50">
-                                    <div class="flex items-center">
-                                        <img src="https://placehold.co/40x40/3b82f6/FFFFFF?text=F" alt="Team 2" class="w-10 h-10 rounded-full mr-4">
-                                        <div class="flex-1">
-                                            <p class="font-semibold text-gray-800">Flying Falcons</p>
-                                            <p class="text-sm text-gray-500">12 Wins</p>
-                                        </div>
-                                    </div>
-                                    <span class="text-lg font-bold text-gray-400">#2</span>
-                                </li>
-                                <li class="flex items-center justify-between p-3 rounded-lg bg-gray-50 transition-colors hover:bg-emerald-50">
-                                    <div class="flex items-center">
-                                        <img src="https://placehold.co/40x40/ef4444/FFFFFF?text=C" alt="Team 3" class="w-10 h-10 rounded-full mr-4">
-                                        <div class="flex-1">
-                                            <p class="font-semibold text-gray-800">Cairo United</p>
-                                            <p class="text-sm text-gray-500">11 Wins</p>
-                                        </div>
-                                    </div>
-                                    <span class="text-lg font-bold text-amber-600">#3</span>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <!-- Top Coaches -->
-                        <div class="bg-white rounded-xl shadow-lg p-8 animate-on-scroll slide-in-right">
-                            <h3 class="text-2xl font-bold mb-6 text-gray-900 text-center">🎖️ Top Coaches</h3>
-                            <ul class="space-y-4">
-                                <li class="flex items-center justify-between p-3 rounded-lg bg-gray-50 transition-colors hover:bg-emerald-50">
-                                    <div class="flex items-center">
-                                        <img src="images/coaches/coach 1.png" alt="Coach 1" class="w-10 h-10 rounded-full mr-4">
-                                        <div class="flex-1">
-                                            <p class="font-semibold text-gray-800">Khaled Tarek</p>
-                                            <p class="text-sm text-gray-500">50 Bookings</p>
-                                        </div>
-                                    </div>
-                                    <span class="text-lg font-bold text-yellow-500">#1</span>
-                                </li>
-                                <li class="flex items-center justify-between p-3 rounded-lg bg-gray-50 transition-colors hover:bg-emerald-50">
-                                    <div class="flex items-center">
-                                        <img src="images/coaches/coach 2.png" alt="Coach 2" class="w-10 h-10 rounded-full mr-4">
-                                        <div class="flex-1">
-                                            <p class="font-semibold text-gray-800">Hany Said</p>
-                                            <p class="text-sm text-gray-500">45 Bookings</p>
-                                        </div>
-                                    </div>
-                                    <span class="text-lg font-bold text-gray-400">#2</span>
-                                </li>
-                                <li class="flex items-center justify-between p-3 rounded-lg bg-gray-50 transition-colors hover:bg-emerald-50">
-                                    <div class="flex items-center">
-                                        <img src="images/coaches/coach 3.jpeg" alt="Coach 3" class="w-10 h-10 rounded-full mr-4">
-                                        <div class="flex-1">
-                                            <p class="font-semibold text-gray-800">Amr Gamal</p>
-                                            <p class="text-sm text-gray-500">40 Bookings</p>
-                                        </div>
-                                    </div>
-                                    <span class="text-lg font-bold text-amber-600">#3</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Featured Fields Section with Image Grid -->
-            <section class="py-20 bg-gray-50">
-                <div class="container mx-auto px-6">
-                    <div class="text-center mb-16 animate-on-scroll">
-                        <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Top-Rated Fields in Egypt</h2>
-                        <p class="text-lg text-gray-500 mt-2">Discover our community's favorite fields, hand-picked for quality.</p>
-                    </div>
-                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        <!-- Card 1 -->
-                        <div class="bg-white rounded-xl overflow-hidden shadow-lg transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl animate-on-scroll slide-in-left">
-                            <div class="relative h-64 overflow-hidden">
-                                <img src="images/field/field 13.png" alt="Nasr City Stadium" class="w-full h-full object-cover transform scale-100 transition-transform duration-500 group-hover:scale-110" />
-                                <div class="absolute inset-0 bg-black/10"></div>
-                                <div class="absolute top-4 right-4 bg-emerald-600 text-white text-sm font-bold px-3 py-1 rounded-full shadow-lg">
-                                    <i class="fas fa-star text-yellow-300 mr-1"></i>4.8
-                                </div>
-                            </div>
-                            <div class="p-6">
-                                <h3 class="text-2xl font-bold text-gray-900 mb-2">Nasr City Stadium</h3>
-                                <p class="text-gray-600">Nasr City, Cairo</p>
-                                <p class="text-2xl font-semibold text-emerald-600 mt-4">EGP 300<span class="text-sm text-gray-500 font-normal">/hr</span></p>
-                                <a href="#" class="mt-6 block text-center bg-emerald-500 text-white font-semibold py-3 rounded-lg hover:bg-emerald-600 transition">View Details</a>
-                            </div>
-                        </div>
-                        <!-- Card 2 -->
-                        <div class="bg-white rounded-xl overflow-hidden shadow-lg transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl animate-on-scroll">
-                            <div class="relative h-64 overflow-hidden">
-                                <img src="images/field/field 5.jpeg" alt="Mohandessin Football Park" class="w-full h-full object-cover transform scale-100 transition-transform duration-500 group-hover:scale-110" />
-                                <div class="absolute inset-0 bg-black/10"></div>
-                                <div class="absolute top-4 right-4 bg-emerald-600 text-white text-sm font-bold px-3 py-1 rounded-full shadow-lg">
-                                    <i class="fas fa-star text-yellow-300 mr-1"></i>4.7
-                                </div>
-                            </div>
-                            <div class="p-6">
-                                <h3 class="text-2xl font-bold text-gray-900 mb-2">Mohandessin Football Park</h3>
-                                <p class="text-gray-600">Mohandessin, Giza</p>
-                                <p class="text-2xl font-semibold text-emerald-600 mt-4">EGP 350<span class="text-sm text-gray-500 font-normal">/hr</span></p>
-                                <a href="#" class="mt-6 block text-center bg-emerald-500 text-white font-semibold py-3 rounded-lg hover:bg-emerald-600 transition">View Details</a>
-                            </div>
-                        </div>
-                        <!-- Card 3 -->
-                        <div class="bg-white rounded-xl overflow-hidden shadow-lg transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl animate-on-scroll slide-in-right">
-                            <div class="relative h-64 overflow-hidden">
-                                <img src="images/field/field 8.webp" alt="Maadi Sports Club" class="w-full h-full object-cover transform scale-100 transition-transform duration-500 group-hover:scale-110" />
-                                <div class="absolute inset-0 bg-black/10"></div>
-                                <div class="absolute top-4 right-4 bg-emerald-600 text-white text-sm font-bold px-3 py-1 rounded-full shadow-lg">
-                                    <i class="fas fa-star text-yellow-300 mr-1"></i>4.6
-                                </div>
-                            </div>
-                            <div class="p-6">
-                                <h3 class="text-2xl font-bold text-gray-900 mb-2">Maadi Sports Club</h3>
-                                <p class="text-gray-600">Maadi, Cairo</p>
-                                <p class="text-2xl font-semibold text-emerald-600 mt-4">EGP 320<span class="text-sm text-gray-500 font-normal">/hr</span></p>
-                                <a href="#" class="mt-6 block text-center bg-emerald-500 text-white font-semibold py-3 rounded-lg hover:bg-emerald-600 transition">View Details</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- Call to Action Section (Community) -->
-            <section class="relative py-20 bg-gray-200 text-center text-gray-900">
-                <div class="container mx-auto px-6">
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800 animate-on-scroll">Not Just a Booking App, It’s a Community.</h2>
-                    <p class="text-lg md:text-xl text-gray-700 mt-4 max-w-2xl mx-auto animate-on-scroll">Connect with players, find your next game, and become part of Egypt's largest football network.</p>
-                    <div class="mt-8 flex justify-center animate-on-scroll">
-                        <a href="find.html" class="bg-emerald-500 text-white font-bold py-3 px-8 rounded-full text-lg hover:bg-emerald-600 transition-transform transform hover:scale-105">
-                            Find Players & Teams
-                        </a>
-                    </div>
-                </div>
-            </section>
-        </main>
-    </div>
-
-    <!-- Footer Section -->
-    <footer class="bg-gray-900 text-white">
+    <footer class="bg-gray-900 text-white mt-auto">
         <div class="container mx-auto py-12 px-4 sm:px-6">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-center md:text-left">
                 <div class="md:col-span-1">
-                    <h2 class="text-3xl font-bold text-emerald-500">Sportiva</h2>
-                    <p class="text-gray-400 mt-2">Your ultimate destination for sports.</p>
-                    <div class="flex justify-center md:justify-start space-x-4 mt-4">
-                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-facebook-f fa-lg"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-twitter fa-lg"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-instagram fa-lg"></i></a>
-                    </div>
+                    <h2 class="text-3xl font-bold text-emerald-500">Sportiva</h2><p class="text-gray-400 mt-2">Your ultimate destination for sports.</p>
+                    <div class="flex justify-center md:justify-start space-x-4 mt-4"><a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-facebook-f fa-lg"></i></a><a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-twitter fa-lg"></i></a><a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-instagram fa-lg"></i></a></div>
                 </div>
-
-                <div>
-                    <h3 class="font-semibold tracking-wider uppercase">Dashboards</h3>
-                    <ul class="mt-4 space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-white">Player</a></li>
-                        <li><a href="#" class="text-400 hover:text-white">Coach</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Field Owner</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Marketplace</a></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h3 class="font-semibold tracking-wider uppercase">Find</h3>
-                    <ul class="mt-4 space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-white">Players</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Teams</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Coaches</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Challenges</a></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h3 class="font-semibold tracking-wider uppercase">More</h3>
-                    <ul class="mt-4 space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-white">Fields</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Marketplace</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">About Us</a></li>
-                    </ul>
-                </div>
+                <div><h3 class="font-semibold tracking-wider uppercase">Dashboards</h3><ul class="mt-4 space-y-2"><li><a href="player-dashboard.html" class="text-gray-400 hover:text-white">Player</a></li><li><a href="coach-dashboard.html" class="text-gray-400 hover:text-white">Coach</a></li><li><a href="field-owner-dashboard.html" class="text-gray-400 hover:text-white">Field Owner</a></li><li><a href="marketplace-dashboard.html" class="text-gray-400 hover:text-white">Marketplace</a></li></ul></div>
+                <div><h3 class="font-semibold tracking-wider uppercase">Find</h3><ul class="mt-4 space-y-2"><li><a href="find.html#players-section" class="text-gray-400 hover:text-white">Players</a></li><li><a href="find.html#teams-section" class="text-gray-400 hover:text-white">Teams</a></li><li><a href="find.html#coaches-section" class="text-gray-400 hover:text-white">Coaches</a></li><li><a href="find.html#challenges-section" class="text-gray-400 hover:text-white">Challenges</a></li></ul></div>
+                <div><h3 class="font-semibold tracking-wider uppercase">More</h3><ul class="mt-4 space-y-2"><li><a href="fields.html" class="text-gray-400 hover:text-white">Fields</a></li><li><a href="marketplace.html" class="text-gray-400 hover:text-white">Marketplace</a></li><li><a href="about-us.html" class="text-gray-400 hover:text-white">About Us</a></li></ul></div>
             </div>
-            <div class="border-t border-gray-700 mt-8 pt-6 text-center text-gray-500">
-                <p>© 2025 Sportiva. All Rights Reserved.</p>
-            </div>
+            <div class="border-t border-gray-700 mt-8 pt-6 text-center text-gray-500"><p>&copy; 2025 Sportiva. All Rights Reserved.</p></div>
         </div>
     </footer>
 
-    <!-- Mobile Bottom Navigation Bar (hidden on medium screens and larger) -->
-    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white shadow-t-md z-40 border-t border-gray-200">
-        <div class="flex justify-around">
-            <a href="#" data-page="overview" class="nav-link flex-1 flex flex-col items-center justify-center py-2 text-gray-500 hover:text-blue-600 transition-colors bottom-nav-link-active">
-                <i class="fas fa-home fa-lg mb-1"></i>
-                <span class="text-xs font-medium">Home</span>
-            </a>
-            <a href="#" data-page="bookings" class="nav-link flex-1 flex flex-col items-center justify-center py-2 text-gray-500 hover:text-blue-600 transition-colors">
-                <i class="fas fa-calendar-check fa-lg mb-1"></i>
-                <span class="text-xs font-medium">Bookings</span>
-            </a>
-            <a href="#" data-page="team" class="nav-link flex-1 flex flex-col items-center justify-center py-2 text-gray-500 hover:text-blue-600 transition-colors">
-                <i class="fas fa-users fa-lg mb-1"></i>
-                <span class="text-xs font-medium">Team</span>
-            </a>
-            <a href="#" data-page="orders" class="nav-1 flex-1 flex flex-col items-center justify-center py-2 text-gray-500 hover:text-blue-600 transition-colors">
-                <i class="fas fa-box fa-lg mb-1"></i>
-                <span class="text-xs font-medium">Orders</span>
-            </a>
-        </div>
-    </nav>
-    
     <script>
-        // --- APPLICATION STATE & EVENT LISTENERS ---
-        // Mock data to handle profile image and name
-        const mockData = {
-            user: {
-                name: "Karim Ahmed",
-                email: "karim.ahmed@example.com",
-                profileImage: "https://placehold.co/40x40/E0E0E0/333333?text=KA"
-            }
+        // --- HELPER FUNCTIONS ---
+        function formatTime12Hour(timeString) { if (!timeString) return ''; const [hour, minute] = timeString.split(':'); const hourInt = parseInt(hour); const ampm = hourInt >= 12 ? 'PM' : 'AM'; const hour12 = hourInt % 12 || 12; return `${hour12}:${minute} ${ampm}`; }
+        function getNextHour(timeString) { const [hour, minute] = timeString.split(':'); let nextHourNumber = (parseInt(hour) + 1) % 24; return `${String(nextHourNumber).padStart(2, '0')}:${minute}`; }
+
+        // --- MOCK DATA ---
+        const ownerMockData = {
+            owner: { name: "Karim Ahmed", email: "karim.ahmed@example.com", profileImage: "images/people/people 1.png" },
+            fields: [{ id: 1, name: "Nasr City Stadium", address: "Nasr City, Cairo", image: "images/field/field 1.jpg", stats: { totalBookings: 124, monthlyRevenue: "37,200 EGP", occupancyRate: "75%" } }, { id: 2, name: "Maadi Olympic Pitch", address: "Maadi, Cairo", image: "images/field/field 2.jpg", stats: { totalBookings: 98, monthlyRevenue: "29,400 EGP", occupancyRate: "65%" } }],
+            allPlayers: [{ id: 1, name: "Youssef El-Sayed", phone: "012-2345-6789", image: "images/people/people 2.png" }, { id: 2, name: "Mohamed Ali", phone: "010-9876-5432", image: "images/people/people 3.png" }, { id: 3, name: "Khaled Abdel-Rahman", phone: "011-5555-1234", image: "images/people/people 4.png" }, { id: 4, name: "Amr Hassan", phone: "015-4321-9876", image: "images/people/people 5.png" }, { id: 5, name: "Omar Sherif", phone: "010-1122-3344", image: "images/people/people 6.png" }, { id: 6, name: "Tarek Fathy", phone: "012-8877-6655", image: "images/people/people 7.png" }],
+            bookings: [{ id: 1, fieldId: 1, playerId: 3, date: new Date().toISOString().split('T')[0], time: "19:00", revenue: 350, amountPaid: 350, paymentMethod: 'InstaPay' }, { id: 2, fieldId: 1, playerId: 1, date: new Date().toISOString().split('T')[0], time: "20:00", revenue: 300, amountPaid: 100, paymentMethod: 'Vodafone Cash' }, { id: 3, fieldId: 1, playerId: 2, date: new Date().toISOString().split('T')[0], time: "21:00", revenue: 300, amountPaid: 300, paymentMethod: 'Cash' }, { id: 4, fieldId: 1, playerId: 4, date: new Date().toISOString().split('T')[0], time: "23:00", revenue: 400, amountPaid: 150, paymentMethod: 'Cash' }, { id: 5, fieldId: 2, playerId: 5, date: new Date().toISOString().split('T')[0], time: "20:00", revenue: 300, amountPaid: 300, paymentMethod: 'InstaPay' }, { id: 6, fieldId: 2, playerId: 6, date: new Date().toISOString().split('T')[0], time: "22:00", revenue: 300, amountPaid: 100, paymentMethod: 'Vodafone Cash' }]
         };
-
-        // Get elements from the DOM
-        const profileButton = document.getElementById('profile-button');
-        const profileDropdown = document.getElementById('profile-dropdown');
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const bottomNavLinks = document.querySelectorAll('.bottom-nav-link-active');
-
-        // Add event listener to profile button to toggle the dropdown
-        profileButton.addEventListener('click', (event) => {
-            event.stopPropagation();
-            profileDropdown.classList.toggle('hidden');
-        });
-
-        // Add event listener to close the dropdown when clicking outside
-        document.addEventListener('click', (event) => {
-            if (!profileButton.contains(event.target) && !profileDropdown.contains(event.target)) {
-                profileDropdown.classList.add('hidden');
-            }
-        });
         
-        // This is a placeholder for mobile menu functionality from the original snippet.
-        // The menu itself is not present, but the button can still be clicked.
-        mobileMenuButton.addEventListener('click', () => {
-            // Add mobile menu toggle logic here if a menu element is created
-            console.log('Mobile menu button clicked');
-        });
+        // --- APP STATE ---
+        const ownerAppState = { activePage: 'overview', selectedFieldId: 1, isProfileDropdownOpen: false, selectedDate: new Date().toISOString().split('T')[0], reportsDateRange: 30, modalContent: null };
 
-        // Update active link in the bottom nav based on the current page
+        // --- RENDER FUNCTIONS ---
+        function renderOwnerSidebar() { const currentField = ownerMockData.fields.find(f => f.id === ownerAppState.selectedFieldId) || ownerMockData.fields[0]; const links = [{ id: 'overview', icon: 'fa-tachometer-alt', text: 'Overview' }, { id: 'bookings', icon: 'fa-calendar-alt', text: 'Bookings' }, { id: 'reports', icon: 'fa-chart-line', text: 'Reports' }, { id: 'settings', icon: 'fa-cog', text: 'Field Settings' }, ]; return `<aside id="sidebar" class="fixed top-0 left-0 w-64 bg-white h-screen shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out z-40 md:sticky md:top-[72px] md:h-[calc(100vh-72px)] md:translate-x-0 md:flex-shrink-0 pt-[72px] md:pt-0"><div class="p-4 border-b border-gray-200"><label for="field-switcher" class="text-xs font-semibold text-gray-500">MANAGING FIELD</label><select id="field-switcher" class="w-full mt-1 p-2 border-0 rounded-md text-lg font-bold text-gray-800 focus:ring-2 focus:ring-emerald-500">${ownerMockData.fields.map(field => `<option value="${field.id}" ${field.id === ownerAppState.selectedFieldId ? 'selected' : ''}>${field.name}</option>`).join('')}</select><p class="text-sm text-gray-500 mt-1">${currentField.address}</p></div><nav class="mt-4 space-y-1">${links.map(link => `<a href="#" data-page="${link.id}" class="owner-nav-link flex items-center px-4 mx-2 py-3 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors duration-200 ${ownerAppState.activePage === link.id ? 'sidebar-link-active' : ''}"><i class="fas ${link.icon} w-6 text-center mr-3 text-lg"></i><span>${link.text}</span></a>`).join('')}</nav></aside>`; }
+        function renderOwnerOverview() { const currentField = ownerMockData.fields.find(f => f.id === ownerAppState.selectedFieldId); const todayBookings = ownerMockData.bookings.filter(b => b.fieldId === currentField.id && b.date === new Date().toISOString().split('T')[0]).sort((a,b) => a.time.localeCompare(b.time)); const statsCards = [{ title: "Bookings (Month)", value: currentField.stats.totalBookings, icon: "fa-calendar-check", color: "text-blue-500" }, { title: "Revenue (Month)", value: currentField.stats.monthlyRevenue, icon: "fa-money-bill-wave", color: "text-emerald-500" }, { title: "Occupancy Rate", value: currentField.stats.occupancyRate, icon: "fa-chart-pie", color: "text-yellow-500" }, { title: "Upcoming Today", value: todayBookings.length, icon: "fa-clock", color: "text-red-500" }, ]; return `<h1 class="text-3xl font-extrabold text-gray-900 mb-2">Welcome Back, ${ownerMockData.owner.name.split(' ')[0]}!</h1><p class="text-gray-500 mb-8">You are viewing the dashboard for <span class="font-semibold text-emerald-600">${currentField.name}</span>.</p><div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">${statsCards.map(stat => `<div class="bg-white p-6 rounded-xl card-shadow transition-shadow flex items-center space-x-4"><div class="bg-gray-100 p-3 rounded-full"><i class="fas ${stat.icon} fa-lg ${stat.color}"></i></div><div><p class="text-sm font-medium text-gray-500">${stat.title}</p><p class="text-2xl font-bold text-gray-900">${stat.value}</p></div></div>`).join('')}</div><div class="bg-white p-6 rounded-xl card-shadow transition-shadow"><h2 class="text-xl font-bold text-gray-800 mb-4">Today's Bookings on ${currentField.name}</h2><div class="space-y-4">${todayBookings.length > 0 ? todayBookings.map(b => { const player = ownerMockData.allPlayers.find(p => p.id === b.playerId); const remainingToPay = b.revenue - b.amountPaid; return `<div class="flex flex-col sm:flex-row items-start sm:items-center p-4 bg-gray-50 rounded-lg border border-gray-200"><div class="flex items-center flex-grow mb-3 sm:mb-0"><img src="${player.image}" alt="${player.name}" class="w-12 h-12 rounded-full object-cover mr-4" onerror="this.onerror=null;this.src='https://placehold.co/48x48/E0E0E0/333333?text=P';"><div><p class="font-bold text-gray-800">${player.name}</p><a href="tel:${player.phone}" class="text-sm text-gray-500 hover:text-emerald-600 transition-colors"><i class="fas fa-phone-alt mr-1"></i> ${player.phone}</a></div></div><div class="flex items-center justify-between w-full sm:w-auto space-x-4"><div class="text-right"><span class="font-semibold text-emerald-600 bg-emerald-100 px-3 py-1 rounded-full text-sm">${formatTime12Hour(b.time)} - ${formatTime12Hour(getNextHour(b.time))}</span>${remainingToPay > 0 ? `<p class="text-xs mt-1 font-semibold text-red-600">Onsite: ${remainingToPay} EGP</p>` : `<p class="text-xs mt-1 font-semibold text-green-600">Fully Paid</p>`}</div></div></div>` }).join('') : '<p class="text-gray-500 text-center py-4">No upcoming bookings for today on this field.</p>'}</div></div>`; }
+        function renderOwnerBookings() { const currentField = ownerMockData.fields.find(f => f.id === ownerAppState.selectedFieldId); const timeSlots = ['17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00', '00:00', '01:00', '02:00']; const bookingsForSelectedDate = ownerMockData.bookings.filter(b => b.date === ownerAppState.selectedDate && b.fieldId === currentField.id); const dailyRevenue = bookingsForSelectedDate.reduce((sum, b) => sum + b.revenue, 0); return `<h1 class="text-3xl font-extrabold text-gray-900 mb-8">Manage Bookings for ${currentField.name}</h1><div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8"><div class="bg-white p-6 rounded-xl card-shadow flex items-center space-x-4"><div class="bg-gray-100 p-3 rounded-full"><i class="fas fa-calendar-check fa-lg text-blue-500"></i></div><div><p class="text-sm font-medium text-gray-500">Bookings for Today</p><p class="text-2xl font-bold text-gray-900">${bookingsForSelectedDate.length}</p></div></div><div class="bg-white p-6 rounded-xl card-shadow flex items-center space-x-4"><div class="bg-gray-100 p-3 rounded-full"><i class="fas fa-money-bill-wave fa-lg text-emerald-500"></i></div><div><p class="text-sm font-medium text-gray-500">Revenue for Today</p><p class="text-2xl font-bold text-gray-900">${dailyRevenue.toLocaleString()} EGP</p></div></div></div><div class="grid grid-cols-1 lg:grid-cols-3 gap-8"><div class="lg:col-span-2 bg-white p-6 rounded-xl card-shadow"><div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6"><h2 class="text-xl font-bold text-gray-800 mb-3 sm:mb-0">Schedule for ${new Date(ownerAppState.selectedDate + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', day: 'numeric', month: 'long' })}</h2><input type="date" id="booking-date" value="${ownerAppState.selectedDate}" class="p-2 border rounded-md shadow-sm bg-gray-50"></div><div class="space-y-3">${timeSlots.map(slot => { const booking = bookingsForSelectedDate.find(b => b.time === slot); const player = booking ? ownerMockData.allPlayers.find(p => p.id === booking.playerId) : null; if(booking && player) { const remainingToPay = booking.revenue - booking.amountPaid; return `<div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center p-4 rounded-lg bg-yellow-50 border-yellow-200 border"><div class="flex items-center md:col-span-2"><img src="${player.image}" class="w-12 h-12 rounded-full mr-4 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/48x48/E0E0E0/333333?text=P';"><div><p class="font-bold text-gray-800">${player.name}</p><a href="tel:${player.phone}" class="text-sm text-gray-500 hover:text-emerald-600">${player.phone}</a><p class="text-xs font-semibold text-gray-600">${formatTime12Hour(slot)} - ${formatTime12Hour(getNextHour(slot))}</p></div></div><div class="flex items-center justify-end space-x-2">${remainingToPay <= 0 ? `<div class="p-2 rounded-md bg-green-100 text-green-800 font-semibold text-center text-sm"><p>Fully Paid</p><p class="font-bold">${booking.revenue} EGP</p></div>` : `<div class="text-right"><p class="text-sm text-gray-600">Paid: <span class="font-bold">${booking.amountPaid} EGP</span></p><p class="text-sm text-red-600 font-semibold">Onsite: <span class="font-bold">${remainingToPay} EGP</span></p></div>`}<button data-action="cancel-booking" data-booking-id="${booking.id}" class="p-2 h-10 w-10 bg-red-100 text-red-600 rounded-md hover:bg-red-200 transition flex-shrink-0" title="Cancel Booking"><i class="fas fa-trash-alt"></i></button></div></div>`; } else { return `<div class="flex items-center justify-between p-4 rounded-lg bg-gray-50 border-gray-200 border hover:bg-emerald-50 transition-colors"><div class="font-semibold text-gray-800">${formatTime12Hour(slot)} - ${formatTime12Hour(getNextHour(slot))}</div><button class="bg-emerald-600 text-white font-semibold text-sm py-2 px-4 rounded-lg hover:bg-emerald-700 transition">Book Now</button></div>`; } }).join('')}</div></div><div class="bg-white p-6 rounded-xl card-shadow h-fit sticky top-24"><h2 class="text-xl font-bold text-gray-800 mb-4">Manual Booking</h2><div class="space-y-4"><div><label class="block text-sm font-medium text-gray-600">Field</label><input type="text" value="${currentField.name}" class="mt-1 p-2 w-full border rounded-md bg-gray-100" disabled></div><div class="relative"><label class="block text-sm font-medium text-gray-600">Player Name</label><input type="text" id="manual-booking-name" value="${ownerAppState.playerSearchQuery}" placeholder="Search or type new name..." class="mt-1 p-2 w-full border rounded-md focus:ring-2 focus:ring-emerald-500"></div><div><label class="block text-sm font-medium text-gray-600">Player Phone</label><input type="text" id="manual-booking-phone" placeholder="e.g., 012-2345-6789" class="mt-1 p-2 w-full border rounded-md focus:ring-2 focus:ring-emerald-500"></div><div><label class="block text-sm font-medium text-gray-600">Time Slot</label><select id="manual-booking-time" class="mt-1 p-2 w-full border rounded-md bg-white focus:ring-2 focus:ring-emerald-500">${timeSlots.map(slot => {const isBooked = bookingsForSelectedDate.some(b => b.time === slot);return `<option value="${slot}" ${isBooked ? 'disabled' : ''}>${formatTime12Hour(slot)} - ${formatTime12Hour(getNextHour(slot))} ${isBooked ? '(Booked)' : ''}</option>`}).join('')}</select></div></div><button id="add-booking-button" class="mt-6 w-full bg-emerald-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-emerald-700 transition transform hover:scale-105">Add Booking</button></div></div>`; }
+        function renderOwnerReports() { return `<h1 class="text-3xl font-extrabold text-gray-900 mb-8">Reports for ${ownerMockData.fields.find(f => f.id === ownerAppState.selectedFieldId).name}</h1><div class="bg-white p-6 rounded-xl card-shadow mb-8"><div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4"><h2 class="text-xl font-bold text-gray-800 mb-3 sm:mb-0">Revenue Overview</h2><div class="flex space-x-1 bg-gray-100 p-1 rounded-lg"><button data-range="7" class="date-range-btn px-3 py-1 text-sm font-semibold rounded-md transition-colors ${ownerAppState.reportsDateRange === 7 ? 'bg-white text-emerald-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}">7 Days</button><button data-range="30" class="date-range-btn px-3 py-1 text-sm font-semibold rounded-md transition-colors ${ownerAppState.reportsDateRange === 30 ? 'bg-white text-emerald-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}">30 Days</button><button data-range="90" class="date-range-btn px-3 py-1 text-sm font-semibold rounded-md transition-colors ${ownerAppState.reportsDateRange === 90 ? 'bg-white text-emerald-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}">90 Days</button></div></div><div class="grid grid-cols-1 md:grid-cols-3 gap-6"><div class="bg-gray-50 p-4 rounded-lg"><p class="text-sm font-medium text-gray-500">Total Revenue</p><p class="text-2xl font-bold text-emerald-600">${ownerMockData.fields.find(f => f.id === ownerAppState.selectedFieldId).stats.monthlyRevenue}</p></div><div class="bg-gray-50 p-4 rounded-lg"><p class="text-sm font-medium text-gray-500">Total Bookings</p><p class="text-2xl font-bold text-emerald-600">${ownerMockData.fields.find(f => f.id === ownerAppState.selectedFieldId).stats.totalBookings}</p></div><div class="bg-gray-50 p-4 rounded-lg"><p class="text-sm font-medium text-gray-500">Avg. Booking Value</p><p class="text-2xl font-bold text-emerald-600">300 EGP</p></div></div></div><div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8"><div class="bg-white p-6 rounded-xl card-shadow transition-shadow"><h2 class="text-xl font-bold text-gray-800 mb-4">Daily Revenue</h2><canvas id="revenueChart"></canvas></div><div class="bg-white p-6 rounded-xl card-shadow transition-shadow"><h2 class="text-xl font-bold text-gray-800 mb-4">Peak Hours Analysis</h2><canvas id="peakHoursChart"></canvas></div></div><div class="bg-white p-6 rounded-xl card-shadow transition-shadow"><h2 class="text-xl font-bold text-gray-800 mb-4">Recent Transactions</h2><div class="overflow-x-auto"><table class="w-full text-left"><thead class="border-b bg-gray-50 text-xs text-gray-500 uppercase"><th class="p-3 font-semibold">Player</th><th class="p-3 font-semibold">Date & Time</th><th class="p-3 font-semibold">Status</th><th class="p-3 font-semibold">Method</th><th class="p-3 font-semibold text-right">Amount</th><th class="p-3 font-semibold"></th></thead><tbody class="divide-y divide-gray-200">${ownerMockData.bookings.filter(b => b.fieldId === ownerAppState.selectedFieldId).slice(0, 5).map(b => { const player = ownerMockData.allPlayers.find(p => p.id === b.playerId); const remainingToPay = b.revenue - b.amountPaid; const status = remainingToPay <= 0 ? `<span class="px-2 py-1 text-xs font-semibold text-green-800 bg-green-100 rounded-full">Paid</span>` : `<span class="px-2 py-1 text-xs font-semibold text-yellow-800 bg-yellow-100 rounded-full">Onsite ${remainingToPay}</span>`; return `<tr><td class="p-3 flex items-center"><img src="${player.image}" class="w-8 h-8 rounded-full mr-3 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/32x32/E0E0E0/333333?text=P';"><div><p class="font-medium text-gray-800">${player.name}</p><p class="text-xs text-gray-500">${player.phone}</p></div></td><td class="p-3 text-sm text-gray-600">${b.date}<br>${formatTime12Hour(b.time)}</td><td class="p-3">${status}</td><td class="p-3 text-sm text-gray-600">${b.paymentMethod}</td><td class="p-3 text-right font-semibold text-gray-800">${b.revenue} EGP</td><td class="p-3 text-right"><button class="details-btn text-sm font-medium text-emerald-600 hover:text-emerald-800" data-booking-id="${b.id}">Details</button></td></tr>` }).join('')}</tbody></table></div></div>`; }
+        function renderOwnerSettings() { const currentField = ownerMockData.fields.find(f => f.id === ownerAppState.selectedFieldId); return `<h1 class="text-3xl font-extrabold text-gray-900 mb-8">Settings for ${currentField.name}</h1><div class="bg-white p-8 rounded-xl card-shadow max-w-2xl mx-auto divide-y divide-gray-200"><div class="pb-6"><h2 class="text-2xl font-bold text-gray-800 mb-2">General Settings</h2><p class="text-gray-500 mb-6">Manage your field's core information and pricing.</p><div class="space-y-6"><div><label class="block text-sm font-medium text-gray-700">Field Name</label><input type="text" value="${currentField.name}" class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-emerald-500"></div><div><label class="block text-sm font-medium text-gray-700">Address</label><input type="text" value="${currentField.address}" class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-emerald-500"></div><div><label class="block text-sm font-medium text-gray-700">Default Price per Hour (EGP)</label><input type="number" value="300" class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-emerald-500"></div></div></div><div class="py-6"><h2 class="text-2xl font-bold text-gray-800 mb-2">Services & Payments</h2><p class="text-gray-500 mb-6">Offer add-ons and manage payment options.</p><div class="space-y-4"><div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg"><label for="require-deposit" class="font-medium text-gray-700">Require Deposit</label><input id="require-deposit" type="checkbox" class="h-4 w-4 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500"></div><div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg"><label for="offer-balls" class="font-medium text-gray-700">Offer Ball Rental (+30 EGP)</label><input id="offer-balls" type="checkbox" checked class="h-4 w-4 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500"></div><div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg"><label for="offer-shirts" class="font-medium text-gray-700">Offer Shirt Rental (+50 EGP)</label><input id="offer-shirts" type="checkbox" class="h-4 w-4 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500"></div></div></div><div class="pt-6 text-right"><button class="bg-emerald-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-emerald-700 transition-transform hover:scale-105">Save All Changes</button></div></div>`; }
+        function renderBookingDetailsModal(bookingId) { const booking = ownerMockData.bookings.find(b => b.id === bookingId); if (!booking) return ''; const player = ownerMockData.allPlayers.find(p => p.id === booking.playerId); const field = ownerMockData.fields.find(f => f.id === booking.fieldId); const remaining = booking.revenue - booking.amountPaid; return `<div id="modal-backdrop" class="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50 p-4"><div class="bg-white rounded-lg shadow-xl max-w-md w-full relative modal-enter" onclick="event.stopPropagation()"><button onclick="closeModal()" class="absolute top-2 right-4 text-gray-500 hover:text-gray-800 text-3xl z-10">&times;</button><div class="p-6"><h2 class="text-2xl font-bold mb-4">Booking Details</h2><div class="space-y-4"><div class="flex items-center"><img src="${player.image}" class="w-16 h-16 rounded-full mr-4 object-cover"><div class="font-medium"><p class="text-lg text-gray-800">${player.name}</p><p class="text-sm text-gray-500">${player.phone}</p></div></div><div class="border-t pt-4"><p><span class="font-semibold">Field:</span> ${field.name}</p><p><span class="font-semibold">Date:</span> ${booking.date}</p><p><span class="font-semibold">Time:</span> ${formatTime12Hour(booking.time)}</p></div><div class="border-t pt-4 text-sm space-y-2"><div class="flex justify-between"><span>Total Price:</span><span class="font-semibold">${booking.revenue} EGP</span></div><div class="flex justify-between"><span>Amount Paid:</span><span class="font-semibold">${booking.amountPaid} EGP</span></div><div class="flex justify-between items-center text-base font-bold ${remaining > 0 ? 'text-red-600' : 'text-green-600'}"><span>${remaining > 0 ? 'Onsite Payment:' : 'Status:'}</span><span>${remaining > 0 ? `${remaining} EGP` : 'Fully Paid'}</span></div><div class="flex justify-between"><span>Method:</span><span class="font-semibold">${booking.paymentMethod}</span></div></div></div></div></div></div>`; }
+        function closeModal() { ownerAppState.modalContent = null; document.getElementById('modal-container').innerHTML = ''; }
+        
+        // --- CORE LOGIC ---
+        function renderProfileDropdown() { const dropdown = document.getElementById('profile-dropdown'); if(!dropdown) return; dropdown.innerHTML = `<div class="px-4 py-3 border-b"><p class="text-sm font-semibold text-gray-800">${ownerMockData.owner.name}</p><p class="text-xs text-gray-500 truncate">${ownerMockData.owner.email}</p></div><div class="py-1 border-b"><p class="px-4 pt-2 pb-1 text-xs font-semibold text-gray-400 uppercase">Switch Dashboard</p><a href="player-dashboard.html" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"><i class="fas fa-user w-5 mr-2 text-gray-500"></i> Player</a><a href="coach-dashboard.html" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"><i class="fas fa-user-tie w-5 mr-2 text-gray-500"></i> Coach</a><a href="field-owner-dashboard.html" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"><i class="fas fa-map-marked-alt w-5 mr-2 text-gray-500"></i> Field Owner</a><a href="marketplace-dashboard.html" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"><i class="fas fa-store w-5 mr-2 text-gray-500"></i> Marketplace</a></div><div class="py-1"><a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"><i class="fas fa-cog w-5 mr-2 text-gray-500"></i> Settings</a><a href="#" class="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100"><i class="fas fa-sign-out-alt w-5 mr-2"></i> Sign Out</a></div>`; dropdown.classList.toggle('hidden', !ownerAppState.isProfileDropdownOpen); }
+        function renderMainOwnerContent() { const container = document.getElementById('owner-dashboard-content'); if (!container) return; container.classList.add('opacity-0'); setTimeout(() => { let content = ''; switch (ownerAppState.activePage) { case 'overview': content = renderOwnerOverview(); break; case 'bookings': content = renderOwnerBookings(); break; case 'reports': content = renderOwnerReports(); break; case 'settings': content = renderOwnerSettings(); break; default: content = renderOwnerOverview(); } container.innerHTML = content; container.classList.remove('opacity-0'); attachPageSpecificEventListeners(); }, 150); }
+        function attachPageSpecificEventListeners() { if (ownerAppState.activePage === 'bookings') { document.getElementById('booking-date')?.addEventListener('change', (e) => { ownerAppState.selectedDate = e.target.value; renderOwnerPage(); }); } if(ownerAppState.activePage === 'reports') { document.querySelectorAll('.date-range-btn').forEach(btn => btn.addEventListener('click', (e) => { ownerAppState.reportsDateRange = parseInt(e.currentTarget.dataset.range); renderOwnerPage(); })); document.querySelectorAll('.details-btn').forEach(btn => btn.addEventListener('click', (e) => { const bookingId = parseInt(e.currentTarget.dataset.bookingId); ownerAppState.modalContent = renderBookingDetailsModal(bookingId); document.getElementById('modal-container').innerHTML = ownerAppState.modalContent; })); setTimeout(() => { const revenueCtx = document.getElementById('revenueChart')?.getContext('2d'); if (revenueCtx) new Chart(revenueCtx, { type: 'line', data: { labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], datasets: [{ label: 'Revenue', data: [1200, 1500, 900, 1800, 2100, 2500, 2300], backgroundColor: 'rgba(16, 185, 129, 0.1)', borderColor: '#10b981', borderWidth: 2, tension: 0.4, fill: true, pointBackgroundColor: '#10b981' }] }, options: { responsive: true, scales: { y: { beginAtZero: true } }, plugins: { legend: { display: false } } } }); const peakHoursCtx = document.getElementById('peakHoursChart')?.getContext('2d'); if (peakHoursCtx) new Chart(peakHoursCtx, { type: 'bar', data: { labels: ['5-7PM', '7-9PM', '9-11PM', '11PM-1AM'], datasets: [{ label: 'Bookings', data: [15, 28, 35, 22], backgroundColor: ['#3b82f6', '#10b981', '#ef4444', '#f97316'], borderRadius: 5 }] }, options: { responsive: true, scales: { y: { beginAtZero: true } }, plugins: { legend: { display: false } } } }); }, 200); } }
+        
+        function setupInitialPage() {
+            // This function is for one-time setup of event listeners that don't need to be re-attached.
+            document.getElementById('profile-button').addEventListener('click', (e) => { e.stopPropagation(); ownerAppState.isProfileDropdownOpen = !ownerAppState.isProfileDropdownOpen; renderProfileDropdown(); });
+            
+            // CRITICAL FIX: Direct DOM manipulation for mobile menu for stability.
+            document.getElementById('mobile-menu-button').addEventListener('click', (e) => {
+                e.stopPropagation();
+                const sidebar = document.getElementById('sidebar');
+                const overlay = document.querySelector('#sidebar-overlay');
+                if (sidebar) {
+                    sidebar.classList.toggle('-translate-x-full');
+                }
+                if (overlay) {
+                    overlay.classList.toggle('hidden');
+                }
+            });
+
+            document.addEventListener('click', (e) => {
+                if (ownerAppState.isProfileDropdownOpen && !e.target.closest('#profile-button') && !e.target.closest('#profile-dropdown')) { ownerAppState.isProfileDropdownOpen = false; renderProfileDropdown(); }
+                const sidebar = document.getElementById('sidebar');
+                const overlay = document.querySelector('#sidebar-overlay');
+                if (sidebar && !sidebar.classList.contains('-translate-x-full') && e.target.id === 'sidebar-overlay') {
+                    sidebar.classList.add('-translate-x-full');
+                    overlay.classList.add('hidden');
+                }
+            });
+        }
+
+        function renderOwnerPage() {
+            const appContainer = document.getElementById('owner-app-container');
+            const sidebarOverlay = `<div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden hidden"></div>`;
+            appContainer.innerHTML = `${sidebarOverlay}<div class="flex">${renderOwnerSidebar()}<main class="flex-1 p-4 sm:p-6 md:p-10 bg-gray-50 min-h-screen"><div class="container mx-auto" id="owner-dashboard-content"></div></main></div>`;
+            
+            document.querySelectorAll('nav.md\\:hidden .owner-nav-link').forEach(link => link.classList.toggle('bottom-nav-link-active', link.dataset.page === ownerAppState.activePage));
+            document.querySelectorAll('.owner-nav-link').forEach(link => { link.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); const page = e.currentTarget.dataset.page; if (ownerAppState.activePage !== page) { ownerAppState.activePage = page; renderOwnerPage(); } const sidebar = document.getElementById('sidebar'); if (sidebar && !sidebar.classList.contains('-translate-x-full')) { document.getElementById('mobile-menu-button').click(); } }); });
+            document.getElementById('field-switcher')?.addEventListener('change', (e) => { ownerAppState.selectedFieldId = parseInt(e.target.value); renderOwnerPage(); });
+            
+            renderMainOwnerContent();
+            renderProfileDropdown();
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
-            const path = window.location.pathname;
-            const currentPage = path.split('/').pop().replace('.html', '');
-
-            bottomNavLinks.forEach(link => {
-                link.classList.remove('bottom-nav-link-active');
-                if (link.getAttribute('data-page') === currentPage) {
-                    link.classList.add('bottom-nav-link-active');
-                }
-            });
-        });
-
-        // Intersection Observer for scroll animations
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('is-visible');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, {
-            threshold: 0.2 // Trigger when 20% of the element is visible
-        });
-
-        document.querySelectorAll('.animate-on-scroll').forEach(section => {
-            observer.observe(section);
+            renderOwnerPage();
+            setupInitialPage();
         });
     </script>
 </body>

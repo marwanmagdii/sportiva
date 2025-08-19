@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sportiva - Find Players & Challenges</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        margin: 0;
+        background-color: #f8fafc; /* Tailwind gray-50 */
+        scroll-behavior: smooth;
+      }
+      /* Custom active tab styling */
+      .tab-active {
+        background-color: #059669; /* emerald-600 */
+        color: white;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      /* Custom styling for the district badge */
+      .district-badge {
+        background-color: #047857; /* Darker emerald-700 for badge */
+        color: white;
+        font-weight: 600; /* font-semibold */
+        padding: 0.25rem 0.75rem; /* px-3 py-1 */
+        border-radius: 9999px; /* rounded-full */
+        font-size: 0.75rem; /* text-xs */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* shadow-md */
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 2.5rem;
+        height: 1.75rem;
+        letter-spacing: 0.05em; /* Add slight letter spacing */
+      }
+      .pagination-btn {
+        min-width: 40px;
+        height: 40px;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        transition: all 0.2s ease-in-out;
+      }
+      .pagination-btn.active {
+        background-color: #059669;
+        color: white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      .pagination-btn:not(.active) {
+        background-color: white;
+        color: #374151;
+        border: 1px solid #e5e7eb;
+      }
+      .pagination-btn:not(.active):hover {
+        background-color: #f3f4f6;
+      }
+
+      /* Navigation/Footer Styles */
+      .enhanced-shadow {
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1),
+          0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .enhanced-shadow:hover {
+        box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1),
+          0 6px 12px -6px rgba(0, 0, 0, 0.08);
+        transform: translateY(-2px);
+      }
+
+      .nav-link-animated {
+        position: relative;
+        transition: all 0.3s ease;
+        padding-bottom: 4px; /* Space for the underline */
+      }
+      .nav-link-animated::after {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: 0;
+        left: 50%;
+        background-color: #10b981; /* emerald-500 */
+        transition: all 0.3s ease;
+        transform: translateX(-50%);
+      }
+      .nav-link-animated:hover {
+        color: #059669; /* emerald-600 */
+        transform: translateY(-2px); /* Slight lift effect */
+      }
+      .nav-link-animated:hover::after {
+        width: 100%;
+      }
+      /* Rating and Modal Styles */
+      #write-review-stars .fa-star {
+        color: #d1d5db; /* gray-300 */
+      }
+      #write-review-stars .fa-star.filled,
+      #write-review-stars .fa-star.hovered {
+        color: #f59e0b; /* amber-500 */
+      }
+      .modal-enter {
+        animation: fadeIn 0.3s ease-out forwards;
+      }
+      .modal-leave {
+        animation: fadeOut 0.3s ease-in forwards;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      @keyframes fadeOut {
+        from {
+          opacity: 1;
+          transform: scale(1);
+        }
+        to {
+          opacity: 0;
+          transform: scale(0.95);
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 flex flex-col min-h-screen">
+    <header class="bg-white shadow-lg sticky top-0 z-50">
+      <nav
+        class="container mx-auto px-4 sm:px-6 py-4 flex justify-between items-center"
+      >
+        <div class="flex-1 flex justify-start items-center">
+          <button
+            id="mobile-menu-button"
+            class="md:hidden text-gray-600 hover:text-emerald-600 focus:outline-none mr-4"
+          >
+            <i class="fas fa-bars fa-lg"></i>
+          </button>
+          <a href="index.html" class="flex items-center space-x-2">
+            <img
+              src="images/logo/Sportiva logo.png"
+              alt="Sportiva Logo"
+              class="h-10 w-10"
+              onerror="this.onerror=null;this.src='https://placehold.co/40x40/10b981/FFFFFF?text=S';"
+            />
+            <span class="text-3xl font-bold text-emerald-600">Sportiva</span>
+          </a>
+        </div>
+
+        <div
+          class="hidden md:flex flex-1 justify-center items-center space-x-12 text-xl"
+        >
+          <a
+            href="fields.html"
+            class="nav-link-animated text-gray-700 font-semibold"
+            >Fields</a
+          >
+          <a
+            href="find.html"
+            class="nav-link-animated text-gray-700 font-semibold"
+            >Find</a
+          >
+          <a
+            href="marketplace.html"
+            class="nav-link-animated text-gray-700 font-semibold"
+            >Marketplace</a
+          >
+        </div>
+
+        <div class="flex-1 flex justify-end">
+          <div class="relative">
+            <button
+              id="profile-button"
+              class="block rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500"
+            >
+              <img
+                src="images/people/people 1.png"
+                alt="Your profile picture"
+                class="w-10 h-10 rounded-full object-cover border-2 border-emerald-500 hover:border-emerald-600 transition"
+                onerror="this.onerror=null;this.src='https://placehold.co/40x40/E0E0E0/333333?text=KA';"
+              />
+            </button>
+            <div
+              id="profile-dropdown"
+              class="hidden absolute right-0 mt-2 w-56 bg-white rounded-md enhanced-shadow z-50 ring-1 ring-black ring-opacity-5"
+            >
+              <div class="px-4 py-3 border-b">
+                <p class="text-sm font-semibold text-gray-800">Karim Ahmed</p>
+                <p class="text-xs text-gray-500 truncate">
+                  karim.ahmed@example.com
+                </p>
+              </div>
+              <div class="py-1 border-b">
+                <p
+                  class="px-4 pt-2 pb-1 text-xs font-semibold text-gray-400 uppercase"
+                >
+                  Switch Dashboard
+                </p>
+                <a
+                  href="player-dashboard.html"
+                  class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  <i class="fas fa-user w-5 mr-2 text-gray-500"></i> Player
+                </a>
+                <a
+                  href="coach-dashboard.html"
+                  class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  <i class="fas fa-user-tie w-5 mr-2 text-gray-500"></i> Coach
+                </a>
+                <a
+                  href="field-owner-dashboard.html"
+                  class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  <i class="fas fa-map-marked-alt w-5 mr-2 text-gray-500"></i>
+                  Field Owner
+                </a>
+                <a
+                  href="marketplace-dashboard.html"
+                  class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  <i class="fas fa-store w-5 mr-2 text-gray-500"></i>
+                  Marketplace
+                </a>
+              </div>
+              <div class="py-1">
+                <a
+                  href="#"
+                  class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  <i class="fas fa-cog w-5 mr-2 text-gray-500"></i> Settings
+                </a>
+                <a
+                  href="#"
+                  class="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                >
+                  <i class="fas fa-sign-out-alt w-5 mr-2"></i> Sign Out
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="mobile-menu" class="hidden md:hidden">
+          <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+              <a href="fields.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-white hover:bg-emerald-600">Fields</a>
+              <a href="find.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-white hover:bg-emerald-600">Find</a>
+              <a href="marketplace.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-white hover:bg-emerald-600">Marketplace</a>
+          </div>
+      </div>
+    </header>
+
+    <div id="app" class="flex-grow"></div>
+
+    <footer class="bg-gray-900 text-white">
+      <div class="container mx-auto py-12 px-4 sm:px-6">
+        <div
+          class="grid grid-cols-1 md:grid-cols-4 gap-8 text-center md:text-left"
+        >
+          <div class="md:col-span-1">
+            <h2 class="text-3xl font-bold text-emerald-500">Sportiva</h2>
+            <p class="text-gray-400 mt-2">
+              Your ultimate destination for sports.
+            </p>
+            <div class="flex justify-center md:justify-start space-x-4 mt-4">
+              <a href="#" class="text-gray-400 hover:text-white transition"
+                ><i class="fab fa-facebook-f fa-lg"></i
+              ></a>
+              <a href="#" class="text-gray-400 hover:text-white transition"
+                ><i class="fab fa-twitter fa-lg"></i
+              ></a>
+              <a href="#" class="text-gray-400 hover:text-white transition"
+                ><i class="fab fa-instagram fa-lg"></i
+              ></a>
+            </div>
+          </div>
+
+          <div>
+            <h3 class="font-semibold tracking-wider uppercase">Dashboards</h3>
+            <ul class="mt-4 space-y-2">
+              <li><a href="player-dashboard.html" class="text-gray-400 hover:text-white" >Player</a></li>
+              <li><a href="coach-dashboard.html" class="text-gray-400 hover:text-white" >Coach</a></li>
+              <li><a href="field-owner-dashboard.html" class="text-gray-400 hover:text-white" >Field Owner</a></li>
+              <li><a href="marketplace-dashboard.html" class="text-gray-400 hover:text-white" >Marketplace</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="font-semibold tracking-wider uppercase">Find</h3>
+            <ul class="mt-4 space-y-2">
+                <li><a href="find.html#players-section" class="text-gray-400 hover:text-white">Players</a></li>
+                <li><a href="find.html#matches-section" class="text-gray-400 hover:text-white">Matches</a></li>
+                <li><a href="find.html#coaches-section" class="text-gray-400 hover:text-white">Coaches</a></li>
+                <li><a href="find.html#challenges-section" class="text-gray-400 hover:text-white">Challenges</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="font-semibold tracking-wider uppercase">More</h3>
+            <ul class="mt-4 space-y-2">
+              <li><a href="fields.html" class="text-gray-400 hover:text-white">Fields</a></li>
+              <li><a href="marketplace.html" class="text-gray-400 hover:text-white">Marketplace</a></li>
+              <li><a href="about-us.html" class="text-gray-400 hover:text-white">About Us</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="border-t border-gray-700 mt-8 pt-6 text-center text-gray-500" >
+          <p>© 2025 Sportiva. All Rights Reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // --- MOCK DATA ---
+      const mockPlayers = [
+        { id: "p1", name: "Ali Hassan", position: "Forward", skillLevel: "Intermediate", location: "Nasr City", image: "images/people/people 1.png", availability: "Evenings (7 PM - 10 PM)" },
+        { id: "p2", name: "Omar Sherif", position: "Midfielder", skillLevel: "Intermediate", location: "Maadi", image: "images/people/people 2.png", availability: "Weekends (2 PM - 8 PM)" },
+        { id: "p3", name: "Karim Ahmed", position: "Defender", skillLevel: "Beginner", location: "Heliopolis", image: "images/people/people 3.png", availability: "Flexible" },
+        { id: "p4", name: "Nour El-Sayed", position: "Goalkeeper", skillLevel: "Intermediate", location: "Zamalek", image: "images/people/people 4.png", availability: "Saturday Mornings (9 AM - 12 PM)" },
+        { id: "p5", name: "Youssef Tarek", position: "Forward", skillLevel: "Advanced", location: "New Cairo", image: "images/people/people 5.png", availability: "Evenings (8 PM - 11 PM)" },
+        { id: "p6", name: "Amr Mostafa", position: "Midfielder", skillLevel: "Beginner", location: "Dokki", image: "images/people/people 6.png", availability: "Weekends" },
+        { id: "p7", name: "Hana Gamal", position: "Forward", skillLevel: "Beginner", location: "Maadi", image: "images/people/people 7.png", availability: "Flexible" },
+        { id: "p8", name: "Fares Adel", position: "Defender", skillLevel: "Advanced", location: "Heliopolis", image: "images/people/people 8.png", availability: "Weeknights (after 6 PM)" },
+        { id: "p9", name: "Layla Hesham", position: "Midfielder", skillLevel: "Intermediate", location: "Nasr City", image: "images/people/people 9.png", availability: "Weekends (all day)" },
+      ];
+      
+      const mockMatches = [
+        { id: "m1", teamName: "Al Ahly Fans", teamImage: "https://placehold.co/100x100/A80505/FFFFFF?text=AF", skillLevel: "Advanced", location: "Nasr City", club: "Nasr City Stadium", date: "Aug 22, 2025", timeRange: "8:00 PM - 9:00 PM", playersNeeded: 5, currentPlayers: ["Ali Hassan", "Youssef Tarek", "Fares Adel"], bio: "Looking for 2 more advanced players for a competitive 5-a-side match." },
+        { id: "m2", teamName: "Zamalek Legends", teamImage: "https://placehold.co/100x100/FFFFFF/000000?text=ZL", skillLevel: "Intermediate", location: "Mohandessin", club: "Mohandessin Football Park", date: "Aug 23, 2025", timeRange: "9:00 PM - 10:30 PM", playersNeeded: 7, currentPlayers: ["Omar Sherif", "Amr Mostafa", "Nour El-Sayed", "Karim Ahmed"], bio: "Need 3 more players for a 7-a-side friendly. Intermediate level preferred." },
+        { id: "m3", teamName: "Maadi Warriors", teamImage: "https://placehold.co/100x100/E0F2F7/000?text=MW", skillLevel: "Beginner", location: "Maadi", club: "Maadi Sports Club", date: "Aug 29, 2025", timeRange: "7:00 PM - 8:00 PM", playersNeeded: 10, currentPlayers: ["Hana Gamal", "Karim Ahmed", "Layla Hesham", "Amr Mostafa", "Omar Sherif", "Ali Hassan", "Youssef Tarek"], bio: "Casual 10-player game, need 3 more. All skill levels welcome, just be ready to have fun!" },
+        { id: "m4", teamName: "Heliopolis United", teamImage: "https://placehold.co/100x100/34D399/FFFFFF?text=HU", skillLevel: "Advanced", location: "Heliopolis", club: "Heliopolis SC", date: "Aug 24, 2025", timeRange: "8:30 PM - 10:00 PM", playersNeeded: 11, currentPlayers: ["Fares Adel", "Ali Hassan", "Youssef Tarek", "Omar Sherif", "Nour El-Sayed", "Layla Hesham", "Karim Ahmed", "Amr Mostafa"], bio: "Need 3 more for an 11-a-side practice match. High intensity expected." },
+        { id: "m5", teamName: "Cairo Pyramids", teamImage: "https://placehold.co/100x100/F59E0B/FFFFFF?text=CP", skillLevel: "Intermediate", location: "New Cairo", club: "New Cairo Fields", date: "Aug 24, 2025", timeRange: "6:00 PM - 7:00 PM", playersNeeded: 5, currentPlayers: ["Youssef Tarek", "Layla Hesham", "Ali Hassan"], bio: "Looking for 2 players for a quick 5-a-side game." },
+        { id: "m6", teamName: "Giza Lions", teamImage: "https://placehold.co/100x100/9333EA/FFFFFF?text=GL", skillLevel: "Beginner", location: "Dokki", club: "Dokki Pitch", date: "Aug 25, 2025", timeRange: "7:00 PM - 8:30 PM", playersNeeded: 7, currentPlayers: ["Amr Mostafa", "Karim Ahmed", "Hana Gamal", "Omar Sherif", "Nour El-Sayed"], bio: "Beginner-friendly 7-a-side match. Need 2 more, no pressure, just for fun." },
+      ];
+
+      const mockChallenges = [ { id: "c1", name: "Friendly Match", type: "5-a-side", club: "Nasr City Stadium", district: "Nasr City", date: "Aug 20, 2025", time: "7:00 PM - 8:00 PM", clubPrice: "EGP 300/hr", teamPrice: "EGP 100/team", teamsRequired: 2, teams: 1, prize: "Bragging Rights", description: "Looking for another team of 5 for a friendly match!" }, { id: "c2", name: "Tournament", type: "7-a-side", club: "Mohandessin Football Park", district: "Mohandessin", date: "Sep 1, 2025", time: "6:00 PM - 10:00 PM", clubPrice: "N/A", teamPrice: "EGP 500/team", teamsRequired: 8, teams: 8, prize: "EGP 1000 Cash Prize", description: "Knockout tournament for 7-a-side teams. Compete for the grand prize!" }, { id: "c3", name: "Friendly Match", type: "3-a-side", club: "Maadi Sports Club", district: "Maadi", date: "Aug 22, 2025", time: "5:00 PM - 6:00 PM", clubPrice: "EGP 150/hr", teamPrice: "N/A", teamsRequired: 2, teams: 1, prize: "Free Drinks", description: "Casual 3-a-side game. Just show up and play!" }, { id: "c4", name: "Friendly Match", type: "11-a-side", club: "Zamalek Club Pitch 5", district: "Zamalek", date: "Aug 25, 2025", time: "8:00 PM - 10:00 PM", clubPrice: "N/A", teamPrice: "EGP 800/match", teamsRequired: 2, teams: 1, prize: "League Trophy", description: "Official league match. Seeking a challenging opponent!" }, { id: "c5", name: "Friendly Match", type: "5-a-side", club: "Heliopolis SC", district: "Heliopolis", date: "Aug 26, 2025", time: "4:00 PM - 5:00 PM", clubPrice: "EGP 250/hr", teamPrice: "N/A", teamsRequired: 2, teams: 2, prize: "Fun!", description: "A relaxed weekend game for anyone to join." }, { id: "c6", name: "Tournament", type: "7-a-side", club: "New Cairo Fields", district: "New Cairo", date: "Sep 5, 2025", time: "7:00 PM - 9:00 PM", clubPrice: "N/A", teamPrice: "EGP 600/team", teamsRequired: 4, teams: 1, prize: "Company Trophy", description: "Inter-company football challenge." }, { id: "c7", name: "Friendly Match", type: "5-a-side", club: "Dokki Pitch", district: "Dokki", date: "Aug 22, 2025", time: "11:00 PM - 12:00 AM", clubPrice: "EGP 400/hr", teamPrice: "EGP 150/team", teamsRequired: 2, teams: 0, prize: "Glory", description: "Late-night football action under the lights." }, { id: "c8", name: "Tournament", type: "11-a-side", club: "Maadi Youth Academy", district: "Maadi", date: "Aug 30, 2025", time: "10:00 AM - 4:00 PM", clubPrice: "N/A", teamPrice: "EGP 300/team", teamsRequired: 8, teams: 2, prize: "Medals and Trophy", description: "A tournament for the next generation of football stars." }, { id: "c9", name: "Tournament", type: "7-a-side", club: "Zamalek Vets Club", district: "Zamalek", date: "Aug 25, 2025", time: "8:00 PM - 9:00 PM", clubPrice: "N/A", teamPrice: "EGP 100/team", teamsRequired: 4, teams: 3, prize: "Respect", description: "A league for players over 35." }, ];
+      
+      const mockCoaches = [
+        { id: "coach1", name: "Coach Tarek", specialization: "Striker Training", skillLevel: "Advanced", location: "Nasr City", phone: "+20 100 123 4567", bio: "Experienced coach specializing in offensive play and goal-scoring techniques. With a focus on precision and power, I help strikers find the back of the net consistently.", trainingClubs: [ { name: "Nasr City Club", location: "Nasr City, Cairo", age: "16+", whatToBring: ["Football boots", "Shin guards", "Water bottle"], image: "images/field/field 1.jpg", description: "A comprehensive program focusing on shooting accuracy, off-the-ball movement, and creating scoring opportunities.", included: ["Professional Guide", "All training equipment", "Video analysis session", "Personalized feedback"], gallery: ["images/field/field 2.webp", "images/field/field 3.jpeg"], schedule: [ { day: "Monday", time: "6:00 PM - 8:00 PM" }, { day: "Wednesday", time: "6:00 PM - 8:00 PM" }, { day: "Friday", time: "5:00 PM - 7:00 PM" }, ], }, { name: "Heliopolis SC", location: "Heliopolis, Cairo", age: "18+", whatToBring: ["Football boots", "Shin guards", "Water bottle", "Towel"], image: "images/field/field 4.jpg", description: "Advanced striker training for competitive players. We cover tactical positioning, one-on-one situations, and finishing under pressure.", included: [ "Advanced drills", "Match simulation", "Guest pro player talks" ], gallery: ["images/field/field 5.jpeg"], schedule: [ { day: "Tuesday", time: "7:00 PM - 9:00 PM" }, { day: "Thursday", time: "7:00 PM - 9:00 PM" } ], }, ], image: "images/coaches/coach 1.png", yearsOfExperience: 10, rating: 4.8, gallery: ["images/field/field 10.png", "images/field/field 11.png", "images/field/field 12.png"], reviews: [ { name: "Ali Hassan", rating: 5, comment: "Best striker coach in Cairo! My finishing has improved dramatically.", date: "July 20, 2025" }, { name: "Youssef Tarek", rating: 5, comment: "Coach Tarek's drills are intense but incredibly effective.", date: "July 15, 2025" }, { name: "Omar Sherif", rating: 4, comment: "Great coach, very knowledgeable about attacking strategies.", date: "June 28, 2025" }, { name: "Karim Ahmed", rating: 5, comment: "Helped me understand the striker role from a defender's perspective. Highly recommended.", date: "June 10, 2025" }, ], },
+        { id: "coach2", name: "Coach Hany", specialization: "Goalkeeper Drills", skillLevel: "Intermediate", location: "Maadi", phone: "+20 111 234 5678", bio: "Dedicated to improving goalkeeper reflexes, positioning, and shot-stopping abilities.", trainingClubs: [ { name: "Maadi Youth Academy", location: "Maadi, Cairo", age: "12-18", whatToBring: ["Goalkeeper gloves", "Padded shorts", "Water bottle"], image: "images/field/field 6.jpeg", description: "Intensive drills for young goalkeepers focusing on fundamentals and advanced techniques.", included: ["Glove care tutorial", "Reflex training equipment"], gallery: ["images/field/field 7.jpeg"], schedule: [{ day: "Saturday", time: "10:00 AM - 12:00 PM" }] }, { name: "Giza Training Center", location: "Dokki, Giza", age: "16+", whatToBring: ["Goalkeeper gloves", "Water bottle"], image: "images/field/field 8.webp", description: "Training for semi-pro goalkeepers.", included: ["Professional equipment"], gallery: ["images/field/field 9.jpg"], schedule: [{ day: "Sunday", time: "6:00 PM - 8:00 PM" }, { day: "Wednesday", time: "7:00 PM - 9:00 PM" }] }, ], image: "images/coaches/coach 2.png", yearsOfExperience: 7, rating: 4.5, gallery: ["images/field/field 13.png", "images/field/field 14.png"], reviews: [{ name: "Nour El-Sayed", rating: 5, comment: "Coach Hany improved my diving technique in just a few weeks!", date: "July 22, 2025" }], },
+        { id: "coach3", name: "Coach Samy", specialization: "Defensive Tactics", skillLevel: "Advanced", location: "Zamalek", phone: "+20 122 345 6789", bio: "Focuses on building solid defensive structures and tactical awareness for teams.", trainingClubs: [ { name: "Zamalek FC Training Ground", location: "Zamalek, Giza", age: "18+", whatToBring: ["Cleats", "Shin guards"], image: "images/field/field 15.png", description: "Elite defensive training for professional and semi-professional teams.", included: ["Video analysis", "Tactical board sessions"], gallery: ["images/field/field 1.jpg"], schedule: [{ day: "Monday", time: "8:00 PM - 10:00 PM" }, { day: "Tuesday", time: "8:00 PM - 10:00 PM" }] }, ], image: "images/coaches/coach 3.jpeg", yearsOfExperience: 12, rating: 4.9, gallery: ["images/field/field 2.webp", "images/field/field 3.jpeg"], reviews: [{ name: "Fares Adel", rating: 5, comment: "A tactical genius. Our team's defense has never been stronger.", date: "May 10, 2025" }], },
+        { id: "coach4", name: "Coach Mona", specialization: "Fitness & Conditioning", skillLevel: "Intermediate", location: "Heliopolis", phone: "+20 100 987 6543", bio: "Certified fitness coach helping players enhance their stamina and physical performance.", trainingClubs: [ { name: "Heliopolis Sports Complex", location: "Heliopolis, Cairo", age: "All ages", whatToBring: ["Running shoes", "Water bottle", "Towel"], image: "images/field/field 4.jpg", description: "Football-specific fitness programs to improve speed, agility, and endurance.", included: ["Personalized fitness plan", "Nutrition advice"], gallery: ["images/field/field 5.jpeg"], schedule: [{ day: "Thursday", time: "6:00 PM - 7:30 PM" }, { day: "Saturday", time: "9:00 AM - 10:30 AM" }] }, ], image: "images/coaches/coach 4.jpeg", yearsOfExperience: 5, rating: 4.7, gallery: ["images/field/field 6.jpeg", "images/field/field 7.jpeg"], reviews: [], },
+        { id: "coach5", name: "Coach Sherif", specialization: "Youth Development", skillLevel: "Beginner", location: "New Cairo", phone: "+20 111 876 5432", bio: "Passionate about nurturing young talent and building fundamental football skills in children.", trainingClubs: [ { name: "New Cairo Juniors Club", location: "New Cairo, Cairo", age: "6-12", whatToBring: ["Sneakers", "Water bottle"], image: "images/field/field 8.webp", description: "Fun and engaging sessions to introduce kids to the beautiful game.", included: ["Skill games", "Small-sided matches"], gallery: ["images/field/field 9.jpg"], schedule: [{ day: "Monday", time: "4:00 PM - 5:00 PM" }, { day: "Wednesday", time: "4:00 PM - 5:00 PM" }] }, ], image: "images/coaches/coach 5.jpeg", yearsOfExperience: 3, rating: 4.6, gallery: ["images/field/field 10.png", "images/field/field 11.png"], reviews: [], },
+        { id: "coach6", name: "Coach Adel", specialization: "Midfield Control", skillLevel: "Advanced", location: "Dokki", phone: "+20 122 765 4321", bio: "Expert in midfield strategy, passing, and possession-based football.", trainingClubs: [ { name: "Dokki Sporting Club", location: "Dokki, Giza", age: "16+", whatToBring: ["Football boots", "Training bibs"], image: "images/field/field 12.png", description: "Master the midfield with drills focusing on vision, passing range, and tactical positioning.", included: ["Possession drills", "Game analysis"], gallery: ["images/field/field 13.png"], schedule: [{ day: "Tuesday", time: "7:00 PM - 9:00 PM" }, { day: "Thursday", time: "7:00 PM - 9:00 PM" }] }, ], image: "images/coaches/coach 6.png", yearsOfExperience: 15, rating: 5.0, gallery: ["images/field/field 14.png", "images/field/field 15.png"], reviews: [], },
+        { id: "coach7", name: "Coach Dina", specialization: "Youth Agility", skillLevel: "Beginner", location: "Nasr City", phone: "+20 100 654 3210", bio: "Specializes in agility and coordination drills for young players.", trainingClubs: [ { name: "Nasr City Youth Center", location: "Nasr City, Cairo", age: "8-14", whatToBring: ["Athletic shoes", "Water"], image: "images/field/field 1.jpg", description: "Improve footwork, balance, and speed with fun agility ladders, cones, and hurdles.", included: ["All equipment provided"], gallery: ["images/field/field 2.webp"], schedule: [{ day: "Saturday", time: "11:00 AM - 12:00 PM" }, { day: "Sunday", time: "11:00 AM - 12:00 PM" }] }, ], image: "images/coaches/coach 7.jpeg", yearsOfExperience: 4, rating: 4.8, gallery: ["images/field/field 3.jpeg", "images/field/field 4.jpg"], reviews: [], },
+        { id: "coach8", name: "Coach Wael", specialization: "Set Piece Mastery", skillLevel: "Intermediate", location: "Mohandessin", phone: "+20 111 543 2109", bio: "Teaches the art of free-kicks, corners, and other set-piece situations.", trainingClubs: [ { name: "Mohandessin FC", location: "Mohandessin, Giza", age: "14+", whatToBring: ["Football boots"], image: "images/field/field 5.jpeg", description: "Learn how to turn set pieces into scoring opportunities with expert guidance.", included: ["Drill repetition", "Tactical setups"], gallery: ["images/field/field 6.jpeg"], schedule: [{ day: "Friday", time: "5:00 PM - 6:30 PM" }] }, ], image: "images/coaches/coach 8.jpeg", yearsOfExperience: 8, rating: 4.7, gallery: ["images/field/field 7.jpeg", "images/field/field 8.webp"], reviews: [], },
+        { id: "coach9", name: "Coach Sara", specialization: "Team Chemistry", skillLevel: "Advanced", location: "Maadi", phone: "+20 122 432 1098", bio: "Focuses on improving team dynamics, communication, and on-field chemistry.", trainingClubs: [ { name: "Maadi Community Club", location: "Maadi, Cairo", age: "Teams only", whatToBring: ["Full team kit"], image: "images/field/field 9.jpg", description: "Team-building exercises and on-field communication drills to create a cohesive unit.", included: ["Team strategy sessions"], gallery: ["images/field/field 10.png"], schedule: [{ day: "Monday", time: "7:00 PM - 9:00 PM" }, { day: "Wednesday", time: "7:00 PM - 9:00 PM" }] }, ], image: "https://placehold.co/100x100/E0F2F7/000?text=CS9", yearsOfExperience: 9, rating: 4.9, gallery: ["images/field/field 11.png", "images/field/field 12.png"], reviews: [], },
+      ];
+      
+      // --- GLOBAL STATE ---
+      let appState = { currentPage: "community_challenges", currentSubPage: "players", selectedCoachId: null, modalContent: null, searchTerm: "", showAdvancedFilters: false, filters: { skillLevel: "", position: "", location: "", minPrice: "", maxPrice: "", selectedDate: "", }, itemsPerPage: 6, playersPage: 1, matchesPage: 1, coachesPage: 1, challengesPage: 1, reviewRating: 0, };
+
+      // --- NAVIGATION & STATE UPDATE FUNCTIONS ---
+      function updateSubPage(subPage) { appState.currentPage = "community_challenges"; appState.currentSubPage = subPage; appState.selectedCoachId = null; renderPage(); window.scrollTo({ top: 0, behavior: "smooth" }); }
+      function viewCoachProfile(coachId) { appState.currentPage = "coach_profile"; appState.selectedCoachId = coachId; renderPage(); window.scrollTo({ top: 0, behavior: "smooth" }); }
+      function goBackToCoaches() { updateSubPage("coaches"); }
+      function changePage(pageType, pageNumber) { appState[pageType + "Page"] = pageNumber; renderPage(); }
+      function toggleReviews(coachId) { const extraReviews = document.getElementById(`extra-reviews-${coachId}`); const toggleButton = document.getElementById(`toggle-reviews-btn-${coachId}`); if (extraReviews && toggleButton) { extraReviews.classList.toggle("hidden"); if (extraReviews.classList.contains("hidden")) { toggleButton.innerHTML = 'Show More <i class="fas fa-chevron-down ml-2"></i>'; } else { toggleButton.innerHTML = 'Show Less <i class="fas fa-chevron-up ml-2"></i>'; } } }
+      
+      // --- UI & HELPER FUNCTIONS ---
+      function renderPaginationControls(totalPages, currentPage, pageType) { if (totalPages <= 1) return ""; let buttonsHtml = ""; for (let i = 1; i <= totalPages; i++) { buttonsHtml += `<button class="pagination-btn ${ i === currentPage ? "active" : "" }" onclick="changePage('${pageType}', ${i})">${i}</button>`; } const prevDisabled = currentPage === 1; const nextDisabled = currentPage === totalPages; return `<div class="flex justify-center items-center gap-2 mt-8"> <button class="pagination-btn" onclick="changePage('${pageType}', ${ currentPage - 1 })" ${prevDisabled ? "disabled" : ""}> <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg> </button> ${buttonsHtml} <button class="pagination-btn" onclick="changePage('${pageType}', ${ currentPage + 1 })" ${nextDisabled ? "disabled" : ""}> <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg> </button> </div>`; }
+      function renderModal(content) { return `<div id="modal-backdrop" class="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-[100] p-4" onclick="closeModal()"> <div class="bg-white rounded-lg shadow-xl max-w-lg w-full relative modal-enter" onclick="event.stopPropagation()"> <button onclick="closeModal()" class="absolute top-3 right-4 text-gray-400 hover:text-gray-800 text-2xl z-10">×</button> ${content} </div> </div>`; }
+      function closeModal() { const modalBackdrop = document.getElementById("modal-backdrop"); if (modalBackdrop) { const modalContent = modalBackdrop.querySelector(".modal-enter"); if (modalContent) { modalContent.classList.remove("modal-enter"); modalContent.classList.add("modal-leave"); setTimeout(() => { appState.modalContent = null; renderPage(); }, 300); } else { appState.modalContent = null; renderPage(); } } }
+      function openClubModal(coachId, clubName) { const coach = mockCoaches.find((c) => c.id === coachId); const club = coach.trainingClubs.find((cl) => cl.name === clubName); if (!club) return; const modalContent = `<div class="max-h-[80vh] overflow-y-auto p-6"> <h2 class="text-2xl font-bold mb-4">${club.name} - Training Details</h2> <div class="grid grid-cols-1 md:grid-cols-2 gap-6"> <div> <img src="${ club.gallery[0] }" class="rounded-lg shadow-md w-full h-48 object-cover mb-4" alt="${ club.name }"> <h3 class="font-bold text-lg">${club.name}</h3> <p class="text-gray-600">${club.description}</p> </div> <div> <h4 class="font-bold text-md mb-2">What's Included</h4> <ul class="space-y-1 text-gray-600"> ${club.included.map( (item) => `<li><i class="fas fa-check text-emerald-500 mr-2"></i>${item}</li>` ).join("")} </ul> <h4 class="font-bold text-md mt-4 mb-2">What to Bring</h4> <ul class="space-y-1 text-gray-600"> ${club.whatToBring.map( (item) => `<li><i class="fas fa-futbol text-emerald-500 mr-2"></i>${item}</li>` ).join("")} </ul> <h4 class="font-bold text-md mt-4 mb-2">Agenda</h4> <ul class="space-y-1 text-gray-600"> ${club.schedule.map( (item) => `<li><strong>${item.day}:</strong> ${item.time}</li>` ).join("")} </ul> <h4 class="font-bold text-md mt-4 mb-2">Age Group</h4> <p class="text-gray-600">${club.age}</p> </div> </div> </div>`; appState.modalContent = modalContent; renderPage(); }
+      function openPlayerInviteModal(playerId) { const player = mockPlayers.find(p => p.id === playerId); if (!player) return; const modalContent = `<div class="p-8 text-center"> <i class="fas fa-paper-plane text-4xl text-emerald-500 mb-4"></i> <h2 class="text-2xl font-bold mb-2">Invite Sent!</h2> <p class="text-gray-600">An invitation to play has been sent to <strong>${player.name}</strong>. They will contact you via the app if they are interested.</p> <button onclick="closeModal()" class="mt-6 bg-emerald-600 text-white font-bold px-6 py-2 rounded-lg">OK</button></div>`; appState.modalContent = modalContent; renderPage(); }
+      function openJoinChallengeModal(challengeId) { const challenge = mockChallenges.find(c => c.id === challengeId); if (!challenge) return; let modalContent; if (challenge.teams < challenge.teamsRequired) { challenge.teams++; modalContent = `<div class="p-8 text-center"> <i class="fas fa-check-circle text-4xl text-emerald-500 mb-4"></i> <h2 class="text-2xl font-bold mb-2">Successfully Joined!</h2> <p class="text-gray-600">You have joined the <strong>${challenge.name}</strong> challenge. Good luck!</p> <button onclick="closeModal()" class="mt-6 bg-emerald-600 text-white font-bold px-6 py-2 rounded-lg">Great!</button></div>`; } else { modalContent = `<div class="p-8 text-center"> <i class="fas fa-times-circle text-4xl text-red-500 mb-4"></i> <h2 class="text-2xl font-bold mb-2">Challenge Full</h2> <p class="text-gray-600">Sorry, the <strong>${challenge.name}</strong> challenge is already full.</p> <button onclick="closeModal()" class="mt-6 bg-gray-600 text-white font-bold px-6 py-2 rounded-lg">OK</button></div>`; } appState.modalContent = modalContent; renderPage(); }
+      function openMatchModal(matchId) { const match = mockMatches.find(m => m.id === matchId); if (!match) return; const modalContent = `<div class="p-6 max-h-[80vh] overflow-y-auto"> <div class="text-center"> <img src="${match.teamImage}" alt="${match.teamName}" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-4 border-emerald-500 p-1"> <h2 class="text-2xl font-bold mb-1">${match.teamName}'s Match</h2> <p class="text-gray-500">${match.location}</p> <p class="mt-4 text-gray-600">${match.bio}</p> </div> <div class="mt-6 border-t pt-4"> <h3 class="font-bold text-lg text-center mb-3">Match Details</h3> <div class="text-center text-gray-700"> <p><strong>Club:</strong> ${match.club}</p> <p><strong>Date:</strong> ${match.date} at ${match.timeRange}</p> </div> </div> <div class="mt-6 border-t pt-4"> <h3 class="font-bold text-lg text-center mb-3">Players (${match.currentPlayers.length}/${match.playersNeeded})</h3> <ul class="space-y-2"> ${match.currentPlayers.length > 0 ? match.currentPlayers.map(name => `<li class="bg-gray-100 p-2 rounded-md text-center">${name}</li>`).join('') : '<li class="text-center text-gray-500">Be the first to join!</li>'} </ul> </div> <div class="mt-6 text-center"><button onclick="requestToJoinMatch('${match.id}')" class="bg-emerald-600 text-white font-bold px-6 py-2 rounded-lg">Request to Join</button></div> </div>`; appState.modalContent = modalContent; renderPage(); }
+      function requestToJoinMatch(matchId){ const match = mockMatches.find(m => m.id === matchId); if (!match) return; const modalContent = `<div class="p-8 text-center"> <i class="fas fa-user-plus text-4xl text-emerald-500 mb-4"></i> <h2 class="text-2xl font-bold mb-2">Request Sent!</h2> <p class="text-gray-600">Your request to join the match by <strong>${match.teamName}</strong> has been sent.</p> <button onclick="closeModal()" class="mt-6 bg-emerald-600 text-white font-bold px-6 py-2 rounded-lg">OK</button></div>`; appState.modalContent = modalContent; renderPage(); }
+      
+      // --- CARD RENDERING FUNCTIONS ---
+      function renderPlayerCard(player) {
+        let skillColorClass = "";
+        switch (player.skillLevel) {
+          case "Beginner": skillColorClass = "bg-blue-100 text-blue-800"; break;
+          case "Intermediate": skillColorClass = "bg-orange-100 text-orange-800"; break;
+          case "Advanced": skillColorClass = "bg-red-100 text-red-800"; break;
+          default: skillColorClass = "bg-gray-100 text-gray-800";
+        }
+        return `
+        <div class="bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-200 hover:scale-105 flex flex-col">
+            <div class="p-4 flex-1">
+                <div class="absolute top-2 right-2 bg-emerald-600 text-white text-xs font-bold px-2 py-1 rounded-full">${player.location.toUpperCase()}</div>
+                <div class="flex items-center space-x-4">
+                    <img src="${player.image}" alt="${player.name}" class="w-20 h-20 rounded-full object-cover border-4 border-emerald-100" onerror="this.onerror=null;this.src='https://placehold.co/100x100/E0F2F7/000?text=Not+Found';">
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-gray-900">${player.name}</h3>
+                        <span class="inline-block mt-1 ${skillColorClass} text-xs font-semibold px-2.5 py-0.5 rounded-full">${player.skillLevel}</span>
+                    </div>
+                </div>
+                <div class="mt-4 pt-4 border-t space-y-2 text-sm text-gray-600">
+                    <div class="flex items-center"><i class="fas fa-bullseye-pointer w-5 mr-2 text-gray-400"></i> ${player.position}</div>
+                    <div class="flex items-center"><i class="far fa-clock w-5 mr-2 text-gray-400"></i> Available ${player.availability}</div>
+                </div>
+            </div>
+            <button onclick="openPlayerInviteModal('${player.id}')" class="w-full bg-emerald-600 text-white font-semibold px-6 py-3 hover:bg-emerald-700 transition">Send Invite</button>
+        </div>`;
+      }
+      function renderMatchCard(match) { const spotsFilled = match.currentPlayers.length; const spotsTotal = match.playersNeeded; const progress = (spotsFilled / spotsTotal) * 100; return `<div class="bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-200 hover:scale-105 flex flex-col"> <div class="p-6 flex-1"> <div class="flex justify-between items-start"> <div> <p class="text-xs font-semibold text-gray-500 uppercase">${match.location}</p> <h3 class="text-xl font-bold text-gray-800">${match.teamName}'s Match</h3> </div> <img src="${match.teamImage}" alt="${match.teamName}" class="w-12 h-12 rounded-full object-cover border-2 border-emerald-500"> </div> <div class="mt-4 space-y-2 text-sm text-gray-600"> <div class="flex items-start"><i class="far fa-calendar-alt w-4 mr-2 text-gray-400 mt-1"></i> <div>${match.date}<div class="text-xs text-gray-500">${match.timeRange}</div></div></div> <div class="flex items-center"><i class="fas fa-map-marker-alt w-4 mr-2 text-gray-400"></i> ${match.club}</div> </div> <div class="mt-4"> <div class="flex justify-between items-center text-sm font-semibold text-gray-600 mb-1"> <span>Players</span> <span>${spotsFilled} / ${spotsTotal}</span> </div> <div class="w-full bg-gray-200 rounded-full h-3.5"> <div class="bg-gradient-to-r from-emerald-400 to-green-500 h-3.5 rounded-full" style="width: ${progress}%"></div> </div> </div> </div> <button onclick="openMatchModal('${match.id}')" class="w-full bg-emerald-600 text-white font-semibold px-6 py-3 hover:bg-emerald-700 transition">View & Join Match</button> </div>`; }
+      function renderCoachCard(coach) { const clubsHtml = coach.trainingClubs.map( (club) => `<div class="border border-emerald-200 p-2 rounded-md bg-emerald-50 flex flex-col items-start"> <p class="font-semibold text-emerald-800 mb-1 text-sm">${ club.name }</p> <div class="flex flex-wrap gap-1"> ${club.schedule.map( (item) => `<span class="bg-emerald-200 text-emerald-800 text-xs font-medium px-2 py-0.5 rounded-full">${item.day}</span>` ).join("")} </div> </div>` ).join(""); return `<div class="w-full bg-white rounded-2xl shadow-xl overflow-hidden transform transition-all duration-300 hover:scale-105 flex flex-col"> <div class="relative bg-emerald-700 h-32 flex items-center justify-center rounded-t-2xl"> <div class="absolute top-3 right-3 bg-white text-emerald-700 text-xs font-bold px-2.5 py-0.5 rounded-full shadow-md uppercase"> ${coach.location.toUpperCase()} </div> <div class="absolute top-3 left-3 bg-white text-emerald-700 text-xs font-bold px-2.5 py-0.5 rounded-full shadow-md"> ${coach.yearsOfExperience || "N/A"} YRS EXP </div> <img class="w-28 h-28 rounded-full border-4 border-white shadow-lg object-cover absolute -bottom-10" src="${ coach.image }" alt="${ coach.name } Profile" onerror="this.onerror=null;this.src='https://placehold.co/100x100/E0F2F7/000?text=Not+Found';"> </div> <div class="pt-14 pb-2 px-6 text-center"> <p class="text-xs font-semibold text-gray-500 uppercase mb-0.5">Coach</p> <h1 class="text-xl font-extrabold text-gray-900 mb-1">${ coach.name }</h1> </div> <div class="px-6 pb-6 flex-1 flex flex-col"> <div class="border-t border-gray-200 pt-3 mt-3 flex-1"> <h3 class="text-lg font-bold text-gray-800 mb-2 text-center">Clubs:</h3> <div class="space-y-2 text-gray-700 text-base"> ${clubsHtml} </div> </div> <div class="mt-4"> <button onclick="viewCoachProfile('${ coach.id }')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-center font-bold py-2.5 px-4 rounded-lg shadow-md transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-opacity-75 flex items-center justify-center gap-2"> View Profile <i class="fas fa-arrow-right text-sm"></i> </button> </div> </div> </div>`; }
+      function renderChallengeCard(challenge) { const isFull = challenge.teams >= challenge.teamsRequired; return `<div class="w-full bg-white rounded-2xl shadow-xl p-8 relative transform transition-transform duration-200 hover:scale-[1.02] border border-gray-100 flex flex-col"> <div class="flex-grow"> <div class="flex justify-between items-center mb-6"> <h3 class="text-2xl font-extrabold text-gray-900 flex-grow mr-2">${ challenge.name }</h3> <div class="district-badge flex-shrink-0"> ${challenge.district.toUpperCase()} </div> </div> <div class="space-y-4 text-gray-800"> <div class="flex items-center"><span class="text-lg mr-2">⚽</span><span class="font-semibold text-gray-700">Format:</span><span class="ml-2">${challenge.type}</span></div> <div class="flex items-center"><span class="text-lg mr-2">📍</span><span class="font-semibold text-gray-700">Club:</span><span class="ml-2">${challenge.club}</span></div> <div class="flex items-center"><span class="text-lg mr-2">💸</span><span class="font-semibold text-gray-700">Club Price:</span><span class="ml-2">${ challenge.clubPrice || "N/A" }</span></div> <div class="flex items-center"><span class="text-lg mr-2">💰</span><span class="font-semibold text-gray-700">Team Price:</span><span class="ml-2">${ challenge.teamPrice || "N/A" }</span></div> <div class="flex items-center"><span class="text-lg mr-2">🗓️</span><span class="font-semibold text-gray-700">Date:</span><span class="ml-2">${challenge.date}</span></div> <div class="flex items-center"><span class="text-lg mr-2">🕒</span><span class="font-semibold text-gray-700">Time:</span><span class="ml-2">${challenge.time}</span></div> </div> <p class="text-gray-600 mt-6 text-base leading-relaxed"> ${JSON.stringify(challenge.description).slice( 1, -1 )} </p> </div> <div class="flex justify-between items-center mt-6 pt-4 border-t border-gray-100"> <span class="text-emerald-700 font-bold text-base">Teams Joined: ${ challenge.teams } / ${challenge.teamsRequired}</span> <button ${isFull ? 'disabled' : ''} onclick="${!isFull ? `openJoinChallengeModal('${challenge.id}')` : ''}" class="font-bold px-6 py-3 rounded-xl shadow-lg transition transform focus:outline-none focus:ring-2 focus:ring-opacity-50 ${isFull ? 'bg-gray-400 text-gray-800 cursor-not-allowed' : 'bg-emerald-600 text-white hover:bg-emerald-700 hover:scale-105 focus:ring-emerald-500'}"> ${isFull ? 'Challenge Full' : 'Join'} </button> </div> </div>`; }
+      
+      // --- SECTION & PAGE RENDERING ---
+      function renderPlayersSection() { const filteredPlayers = mockPlayers.filter((player) => { const matchesSearchTerm = player.name .toLowerCase() .includes(appState.searchTerm.toLowerCase()) || player.position .toLowerCase() .includes(appState.searchTerm.toLowerCase()) || player.location .toLowerCase() .includes(appState.searchTerm.toLowerCase()); const matchesSkillLevel = appState.filters.skillLevel === "" || player.skillLevel === appState.filters.skillLevel; const matchesPosition = appState.filters.position === "" || player.position === appState.filters.position; const matchesLocation = appState.filters.location === "" || player.location .toLowerCase() .includes(appState.filters.location.toLowerCase()); return ( matchesSearchTerm && matchesSkillLevel && matchesPosition && matchesLocation ); }); const currentPage = appState.playersPage; const totalPages = Math.ceil( filteredPlayers.length / appState.itemsPerPage ); const startIndex = (currentPage - 1) * appState.itemsPerPage; const endIndex = startIndex + appState.itemsPerPage; const paginatedPlayers = filteredPlayers.slice(startIndex, endIndex); return ` <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8"> ${ paginatedPlayers.length > 0 ? paginatedPlayers .map((player) => renderPlayerCard(player)) .join("") : '<p class="col-span-full text-center text-gray-600">No players found matching your criteria.</p>' } </div> ${renderPaginationControls(totalPages, currentPage, "players")} `; }
+      function renderMatchesSection() { const filteredMatches = mockMatches.filter((match) => { const matchesSearchTerm = match.teamName.toLowerCase().includes(appState.searchTerm.toLowerCase()) || match.location.toLowerCase().includes(appState.searchTerm.toLowerCase()) || match.club.toLowerCase().includes(appState.searchTerm.toLowerCase()); const matchesSkillLevel = appState.filters.skillLevel === "" || match.skillLevel === appState.filters.skillLevel; const matchesLocation = appState.filters.location === "" || match.location.toLowerCase().includes(appState.filters.location.toLowerCase()); return matchesSearchTerm && matchesSkillLevel && matchesLocation; }); const currentPage = appState.matchesPage; const totalPages = Math.ceil(filteredMatches.length / appState.itemsPerPage); const startIndex = (currentPage - 1) * appState.itemsPerPage; const endIndex = startIndex + appState.itemsPerPage; const paginatedMatches = filteredMatches.slice(startIndex, endIndex); return ` <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8"> ${ paginatedMatches.length > 0 ? paginatedMatches.map((match) => renderMatchCard(match)).join("") : '<p class="col-span-full text-center text-gray-600">No matches found matching your criteria.</p>' } </div> ${renderPaginationControls(totalPages, currentPage, "matches")} `; }
+      function renderCoachesSection() { const filteredCoaches = mockCoaches.filter((coach) => { const matchesSearchTerm = coach.name .toLowerCase() .includes(appState.searchTerm.toLowerCase()) || coach.specialization .toLowerCase() .includes(appState.searchTerm.toLowerCase()) || coach.bio .toLowerCase() .includes(appState.searchTerm.toLowerCase()) || coach.trainingClubs.some((club) => club.name .toLowerCase() .includes(appState.searchTerm.toLowerCase()) ); const matchesSkillLevel = appState.filters.skillLevel === "" || coach.skillLevel === appState.filters.skillLevel; const matchesLocation = appState.filters.location === "" || coach.location .toLowerCase() .includes(appState.filters.location.toLowerCase()); return matchesSearchTerm && matchesSkillLevel && matchesLocation; }); const currentPage = appState.coachesPage; const totalPages = Math.ceil( filteredCoaches.length / appState.itemsPerPage ); const startIndex = (currentPage - 1) * appState.itemsPerPage; const endIndex = startIndex + appState.itemsPerPage; const paginatedCoaches = filteredCoaches.slice(startIndex, endIndex); return ` <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8"> ${ paginatedCoaches.length > 0 ? paginatedCoaches .map((coach) => renderCoachCard(coach)) .join("") : '<p class="col-span-full text-center text-gray-600">No coaches found matching your criteria.</p>' } </div> ${renderPaginationControls(totalPages, currentPage, "coaches")} `; }
+      function renderAdvancedFiltersSection() { const today = new Date(); const year = today.getFullYear(); const month = String(today.getMonth() + 1).padStart(2, "0"); const day = String(today.getDate()).padStart(2, "0"); const minDate = `${year}-${month}-${day}`; return ` <div class="bg-white rounded-lg shadow-md p-6 text-gray-700"> <h3 class="text-xl font-bold mb-4">Advanced Filters</h3> <div class="space-y-4"> <div> <label for="skill-level" class="font-semibold text-gray-700">Skill Level</label> <select id="skill-level" class="w-full p-2 border rounded-md mt-2"> <option value="">All Levels</option> <option value="Beginner" ${ appState.filters.skillLevel === "Beginner" ? "selected" : "" }>Beginner</option> <option value="Intermediate" ${ appState.filters.skillLevel === "Intermediate" ? "selected" : "" }>Intermediate</option> <option value="Advanced" ${ appState.filters.skillLevel === "Advanced" ? "selected" : "" }>Advanced</option> </select> </div> ${ appState.currentSubPage === "players" ? ` <div> <label for="position" class="font-semibold text-gray-700">Position</label> <select id="position" class="w-full p-2 border rounded-md mt-2"> <option value="">All Positions</option> <option value="Forward" ${ appState.filters.position === "Forward" ? "selected" : "" }>Forward</option> <option value="Midfielder" ${ appState.filters.position === "Midfielder" ? "selected" : "" }>Midfielder</option> <option value="Defender" ${ appState.filters.position === "Defender" ? "selected" : "" }>Defender</option> <option value="Goalkeeper" ${ appState.filters.position === "Goalkeeper" ? "selected" : "" }>Goalkeeper</option> </select> </div> ` : "" } <div> <label for="location" class="font-semibold text-gray-700">Location</label> <input type="text" id="location" placeholder="e.g., Nasr City" value="${ appState.filters.location }" class="w-full p-2 border rounded-md mt-2"> </div> ${ appState.currentSubPage === "challenges" ? ` <div> <label for="min-price" class="font-semibold text-gray-700">Min Price (EGP)</label> <input type="number" id="min-price" placeholder="min" value="${ appState.filters.minPrice }" class="w-full p-2 border rounded-md mt-2"> </div> <div> <label for="max-price" class="font-semibold text-gray-700">Max Price (EGP)</label> <input type="number" id="max-price" placeholder="max" value="${ appState.filters.maxPrice }" class="w-full p-2 border rounded-md mt-2"> </div> <div> <label for="date-picker" class="font-semibold text-gray-700">Date</label> <input type="date" id="date-picker" value="${ appState.filters.selectedDate || minDate }" min="${minDate}" class="w-full p-2 border rounded-md mt-2"> </div> ` : "" } </div> <div class="flex gap-2 mt-6"> <button id="reset-advanced-filters" class="w-full bg-gray-200 text-gray-800 font-semibold py-2 rounded-lg hover:bg-gray-300">Reset</button> <button id="apply-advanced-filters" class="w-full bg-emerald-600 text-white font-semibold py-2 rounded-lg hover:bg-emerald-700">Apply</button> </div> </div> `; }
+      function renderChallengesSection() { const filteredChallenges = mockChallenges.filter((challenge) => { const matchesSearchTerm = challenge.name .toLowerCase() .includes(appState.searchTerm.toLowerCase()) || challenge.description .toLowerCase() .includes(appState.searchTerm.toLowerCase()) || challenge.club .toLowerCase() .includes(appState.searchTerm.toLowerCase()) || challenge.district .toLowerCase() .includes(appState.searchTerm.toLowerCase()); const clubPriceValue = parseFloat( challenge.clubPrice.replace("EGP ", "").replace("/hr", "") ) || 0; const teamPriceValue = parseFloat( challenge.teamPrice.replace("EGP ", "").replace("/team", "") ) || 0; const challengePrice = Math.max(clubPriceValue, teamPriceValue); const matchesMinPrice = appState.filters.minPrice === "" || challengePrice >= parseFloat(appState.filters.minPrice); const matchesMaxPrice = appState.filters.maxPrice === "" || challengePrice <= parseFloat(appState.filters.maxPrice); const matchesDate = appState.filters.selectedDate === "" || (challenge.date && new Date(parseDate(challenge.date)).toDateString() === new Date(appState.filters.selectedDate).toDateString()); const matchesLocation = appState.filters.location === "" || challenge.district .toLowerCase() .includes(appState.filters.location.toLowerCase()); return ( matchesSearchTerm && matchesMinPrice && matchesMaxPrice && matchesDate && matchesLocation ); }); const currentPage = appState.challengesPage; const totalPages = Math.ceil( filteredChallenges.length / appState.itemsPerPage ); const startIndex = (currentPage - 1) * appState.itemsPerPage; const endIndex = startIndex + appState.itemsPerPage; const paginatedChallenges = filteredChallenges.slice( startIndex, endIndex ); return ` <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8"> ${ paginatedChallenges.length > 0 ? paginatedChallenges .map((challenge) => renderChallengeCard(challenge)) .join("") : '<p class="col-span-full text-center text-gray-600">No challenges found matching your criteria.</p>' } </div> ${renderPaginationControls( totalPages, currentPage, "challenges" )} `; }
+      function renderCommunityChallengesPage() { const tabsHtml = `<div class="flex justify-center mt-8 mb-12"> <div class="inline-flex rounded-lg shadow-sm bg-white p-1.5 space-x-1"> <button id="tab-players" class="px-5 py-2 text-sm font-semibold rounded-md transition ${ appState.currentSubPage === "players" ? "bg-emerald-600 text-white shadow" : "text-gray-600 hover:bg-gray-100" }">Players</button> <button id="tab-matches" class="px-5 py-2 text-sm font-semibold rounded-md transition ${ appState.currentSubPage === "matches" ? "bg-emerald-600 text-white shadow" : "text-gray-600 hover:bg-gray-100" }">Matches</button> <button id="tab-coaches" class="px-5 py-2 text-sm font-semibold rounded-md transition ${ appState.currentSubPage === "coaches" ? "bg-emerald-600 text-white shadow" : "text-gray-600 hover:bg-gray-100" }">Coaches</button> <button id="tab-challenges" class="px-5 py-2 text-sm font-semibold rounded-md transition ${ appState.currentSubPage === "challenges" ? "bg-emerald-600 text-white shadow" : "text-gray-600 hover:bg-gray-100" }">Challenges</button> </div> </div>`; return `<div class="bg-gray-50 flex-grow"> <div class="container mx-auto px-6 py-12"> <div class="text-center"> <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900">Find Your Next Game</h1> <p class="text-lg text-gray-600 mt-2">Connect with players, join matches, and test your skills!</p> </div> ${tabsHtml} <div class="grid lg:grid-cols-4 gap-8"> <div class="hidden lg:block lg:col-span-1"> ${renderAdvancedFiltersSection()} </div> <div class="lg:col-span-3"> <div class="flex flex-col md:flex-row gap-2 mb-4"> <input type="text" id="search-term" value="${ appState.searchTerm }" placeholder="Search by name, location, etc..." class="p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-emerald-500 shadow-sm" /> <button id="search-button" class="bg-emerald-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-emerald-700 transition flex-shrink-0 flex items-center justify-center"> <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg> </button> </div> <div class="lg:hidden col-span-4 mb-4"> <button id="toggle-advanced-filters" class="w-full bg-white p-4 rounded-lg shadow-md flex justify-between items-center"> <span class="font-semibold">Advanced Filters</span> <svg class="w-5 h-5 transition-transform ${ appState.showAdvancedFilters ? "transform rotate-180" : "" }" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg> </button> ${ appState.showAdvancedFilters ? `<div class="mt-4">${renderAdvancedFiltersSection()}</div>` : "" } </div> <div id="subpage-content"> <section id="players-section" class="${ appState.currentSubPage === 'players' ? '' : 'hidden' }">${renderPlayersSection()}</section> <section id="matches-section" class="${ appState.currentSubPage === 'matches' ? '' : 'hidden' }">${renderMatchesSection()}</section> <section id="coaches-section" class="${ appState.currentSubPage === 'coaches' ? '' : 'hidden' }">${renderCoachesSection()}</section> <section id="challenges-section" class="${ appState.currentSubPage === 'challenges' ? '' : 'hidden' }">${renderChallengesSection()}</section> </div> </div> </div> </div> </div>`; }
+      function renderCoachProfilePage(coach) { if (!coach) { return `<div class="text-center p-12 text-red-500">Coach not found.</div>`; } const renderStars = (rating) => { let stars = ''; const fullStars = Math.floor(rating); const halfStar = rating % 1 >= 0.5; const emptyStars = 5 - fullStars - (halfStar ? 1 : 0); for (let i = 0; i < fullStars; i++) { stars += `<i class="fa-solid fa-star text-amber-400"></i>`; } if (halfStar) { stars += `<i class="fa-solid fa-star-half-stroke text-amber-400"></i>`; } for (let i = 0; i < emptyStars; i++) { stars += `<i class="fa-regular fa-star text-amber-400"></i>`; } return stars; }; const extraReviewsHtml = coach.reviews.length > 3 ? coach.reviews.slice(3).map(review => `<div class="border-t border-gray-100 pt-4 mt-4"> <div class="flex items-center mb-1"> <div class="flex items-center gap-1">${renderStars(review.rating)}</div> </div> <p class="text-gray-600 italic">"${review.comment}"</p> <p class="text-sm text-gray-500 font-semibold text-right mt-2">- ${review.name}</p> </div>`).join('') : ''; return ` <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8"> <button onclick="goBackToCoaches()" class="mb-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-transform hover:scale-105"> <i class="fas fa-arrow-left mr-2"></i> Back to Coaches </button> <div class="lg:grid lg:grid-cols-12 lg:gap-8"> <aside class="lg:col-span-4 xl:col-span-3 mb-8 lg:mb-0"> <div class="lg:sticky lg:top-28 bg-white rounded-xl shadow-lg p-6"> <img class="w-32 h-32 rounded-full mx-auto border-4 border-emerald-500 shadow-md object-cover" src="${coach.image}" alt="${coach.name}" onerror="this.onerror=null;this.src='https://placehold.co/128x128/E0F2F7/000?text=Not+Found';"> <div class="text-center mt-4"> <h1 class="text-2xl font-bold text-gray-900">${coach.name}</h1> <p class="text-md text-emerald-600 font-semibold mt-1">${coach.specialization}</p> </div> <div class="flex justify-center items-center mt-3"> <div class="text-lg flex items-center gap-1">${renderStars(coach.rating)}</div> <span class="ml-2 text-md font-bold text-gray-800">${coach.rating.toFixed(1)}</span> <span class="ml-1 text-sm text-gray-500">(${coach.reviews.length} reviews)</span> </div> <ul class="mt-6 text-sm text-gray-600 space-y-3"> <li><a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(coach.location)}" target="_blank" class="flex items-center hover:text-emerald-600 transition-colors"><i class="fas fa-map-marker-alt w-5 mr-3 text-gray-400"></i><span>${coach.location}</span></a></li> <li><span class="flex items-center"><i class="fas fa-briefcase w-5 mr-3 text-gray-400"></i>${coach.yearsOfExperience} Years Experience</span></li> <li><a href="tel:${coach.phone}" class="flex items-center hover:text-emerald-600 transition-colors"><i class="fas fa-phone w-5 mr-3 text-gray-400"></i>${coach.phone || 'N/A'}</a></li> </ul> <button class="mt-6 w-full bg-emerald-600 text-white font-bold px-6 py-3 rounded-lg shadow-md hover:bg-emerald-700 transition transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500"> Contact Coach </button> </div> </aside> <main class="lg:col-span-8 xl:col-span-9 space-y-8"> <div class="bg-white rounded-xl shadow-lg p-6"> <h2 class="text-xl font-bold text-gray-800 mb-3 border-b pb-2">About Me</h2> <p class="text-gray-600 leading-relaxed">${coach.bio}</p> </div> <div class="bg-white rounded-xl shadow-lg p-6"> <h2 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Training Programs</h2> <div class="space-y-4"> ${coach.trainingClubs.map(club => ` <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 flex flex-col sm:flex-row gap-4 items-center cursor-pointer hover:shadow-md hover:border-emerald-300 transition-all duration-300" onclick="openClubModal('${coach.id}', '${club.name}')"> <img src="${club.image}" class="w-full sm:w-32 h-24 object-cover rounded-md shadow-sm" alt="${club.name}" onerror="this.onerror=null;this.src='https://placehold.co/128x96/CCCCCC/FFFFFF?text=Club';"> <div class="flex-1"> <p class="font-bold text-lg text-emerald-700">${club.name}</p> <p class="text-sm text-gray-500 flex items-center mt-1"><i class="fas fa-map-marker-alt mr-2"></i>${club.location}</p> <div class="mt-2 space-y-1 border-t pt-2"> ${club.schedule.map(item => ` <div class="flex justify-between items-center text-gray-600 text-sm"> <span><i class="far fa-calendar-alt w-5 mr-1 text-gray-400"></i>${item.day}</span> <span class="font-semibold text-gray-800"><i class="far fa-clock w-5 mr-1 text-gray-400"></i>${item.time}</span> </div> `).join('')} </div> </div> <i class="fas fa-chevron-right text-gray-400 ml-auto hidden sm:block"></i> </div> `).join('')} </div> </div> <div class="bg-white rounded-xl shadow-lg p-6"> <h2 class="text-xl font-bold text-gray-800 mb-3 border-b pb-2">Gallery</h2> <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4"> ${coach.gallery.map(img => `<img src="${img}" class="rounded-lg shadow-md object-cover w-full h-32 hover:opacity-80 transition-opacity cursor-pointer" alt="Coach gallery image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/CCCCCC/FFFFFF?text=Image';">`).join('')} </div> </div> <div class="bg-white rounded-xl shadow-lg p-6"> <h2 class="text-xl font-bold text-gray-800 mb-3 border-b pb-2">Ratings & Reviews</h2> <div id="reviews-section" class="space-y-4"> ${coach.reviews.slice(0, 3).map(review => ` <div class="border-t border-gray-100 pt-4 first:border-t-0 first:pt-0"> <div class="flex items-center mb-1"> <div class="flex items-center gap-1">${renderStars(review.rating)}</div> </div> <p class="text-gray-600 italic">"${review.comment}"</p> <p class="text-sm text-gray-500 font-semibold text-right mt-2">- ${review.name}</p> </div> `).join('')} ${coach.reviews.length > 3 ? ` <div id="extra-reviews-${coach.id}" class="hidden space-y-4"> ${extraReviewsHtml} </div> <button id="toggle-reviews-btn-${coach.id}" onclick="toggleReviews('${coach.id}')" class="w-full mt-4 text-emerald-600 font-semibold py-2 rounded-lg hover:bg-emerald-50 transition"> Show More <i class="fas fa-chevron-down ml-2"></i> </button> ` : ''} </div> <div class="mt-6 pt-4 border-t border-gray-200"> <h3 class="text-lg font-bold text-gray-800">Write a Review</h3> <div class="mt-2"> <p class="text-sm text-gray-600 mb-1">Your Rating:</p> <div id="write-review-stars" class="text-2xl cursor-pointer"> <i class="fa-solid fa-star" data-value="1"></i><i class="fa-solid fa-star" data-value="2"></i><i class="fa-solid fa-star" data-value="3"></i><i class="fa-solid fa-star" data-value="4"></i><i class="fa-solid fa-star" data-value="5"></i> </div> </div> <textarea id="review-text" class="w-full mt-2 p-2 border rounded-md focus:ring-emerald-500 focus:border-emerald-500" placeholder="Share your experience..."></textarea> <button id="submit-review-btn" class="mt-2 bg-emerald-600 text-white font-semibold px-4 py-2 rounded-lg hover:bg-emerald-700">Submit Review</button> </div> </div> </main> </div> </div>`; }
+
+      // --- EVENT LISTENERS & MAIN APP LOGIC ---
+      function applyCommunityFilters() { appState.playersPage = 1; appState.matchesPage = 1; appState.coachesPage = 1; appState.challengesPage = 1; if (window.innerWidth < 1024) { appState.showAdvancedFilters = false; } renderPage(); }
+      function resetCommunityFilters() { appState.searchTerm = ""; appState.filters = { skillLevel: "", position: "", location: "", minPrice: "", maxPrice: "", selectedDate: "" }; appState.playersPage = 1; appState.matchesPage = 1; appState.coachesPage = 1; appState.challengesPage = 1; if (window.innerWidth < 1024) { appState.showAdvancedFilters = false; } renderPage(); }
+      function attachEventListeners() {
+        const safeAddEventListener = (id, event, handler) => { const element = document.getElementById(id); if (element) { element.addEventListener(event, handler); } };
+        safeAddEventListener("tab-players", "click", () => updateSubPage("players"));
+        safeAddEventListener("tab-matches", "click", () => updateSubPage("matches"));
+        safeAddEventListener("tab-coaches", "click", () => updateSubPage("coaches"));
+        safeAddEventListener("tab-challenges", "click", () => updateSubPage("challenges"));
+        safeAddEventListener("search-button", "click", applyCommunityFilters);
+        safeAddEventListener("search-term", "input", (e) => { appState.searchTerm = e.target.value; });
+        safeAddEventListener("search-term", "keypress", (e) => { if (e.key === "Enter") applyCommunityFilters(); });
+        safeAddEventListener("toggle-advanced-filters", "click", () => { appState.showAdvancedFilters = !appState.showAdvancedFilters; renderPage(); });
+        safeAddEventListener("skill-level", "change", (e) => { appState.filters.skillLevel = e.target.value; });
+        safeAddEventListener("position", "change", (e) => { appState.filters.position = e.target.value; });
+        safeAddEventListener("location", "input", (e) => { appState.filters.location = e.target.value; });
+        safeAddEventListener("min-price", "input", (e) => { appState.filters.minPrice = e.target.value; });
+        safeAddEventListener("max-price", "input", (e) => { appState.filters.maxPrice = e.target.value; });
+        safeAddEventListener("date-picker", "change", (e) => { appState.filters.selectedDate = e.target.value; });
+        safeAddEventListener("apply-advanced-filters", "click", applyCommunityFilters);
+        safeAddEventListener("reset-advanced-filters", "click", resetCommunityFilters);
+        
+        const profileButton = document.getElementById("profile-button");
+        const profileDropdown = document.getElementById("profile-dropdown");
+        if (profileButton && profileDropdown) { profileButton.addEventListener("click", (e) => { e.stopPropagation(); profileDropdown.classList.toggle("hidden"); }); }
+        document.body.addEventListener("click", (e) => { if ( profileDropdown && !profileDropdown.classList.contains('hidden') && !profileDropdown.contains(e.target) && !e.target.closest("#profile-button") ) { profileDropdown.classList.add("hidden"); } });
+        
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        if (mobileMenuButton && mobileMenu) { mobileMenuButton.addEventListener('click', () => { mobileMenu.classList.toggle('hidden'); const icon = mobileMenuButton.querySelector('i'); if (mobileMenu.classList.contains('hidden')) { icon.classList.remove('fa-times'); icon.classList.add('fa-bars'); } else { icon.classList.remove('fa-bars'); icon.classList.add('fa-times'); } }); }
+
+        const submitReviewBtn = document.getElementById('submit-review-btn');
+        if (submitReviewBtn) {
+            submitReviewBtn.addEventListener('click', () => {
+                const reviewText = document.getElementById('review-text').value;
+                if (appState.reviewRating > 0 && reviewText) {
+                    const coach = mockCoaches.find(c => c.id === appState.selectedCoachId);
+                    const newReview = { name: "You", rating: appState.reviewRating, comment: reviewText, date: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: '2025' }) };
+                    coach.reviews.unshift(newReview);
+                    coach.rating = (coach.reviews.reduce((acc, r) => acc + Number(r.rating), 0) / coach.reviews.length);
+                    appState.reviewRating = 0;
+                    renderPage();
+                } else {
+                    alert("Please provide a rating and a comment.");
+                }
+            });
+        }
+        
+        const reviewStars = document.getElementById('write-review-stars');
+        if(reviewStars) {
+            const stars = reviewStars.querySelectorAll('.fa-star');
+            const setStars = (value) => { stars.forEach(s => { s.classList.toggle('filled', s.dataset.value <= value); }); };
+            stars.forEach(star => {
+                star.addEventListener('mouseover', () => { stars.forEach(s => s.classList.toggle('hovered', s.dataset.value <= star.dataset.value)); });
+                star.addEventListener('mouseout', () => { stars.forEach(s => s.classList.remove('hovered')); });
+                star.addEventListener('click', () => { appState.reviewRating = star.dataset.value; setStars(appState.reviewRating); });
+            });
+        }
+      }
+
+      function renderPage() {
+        const appDiv = document.getElementById("app");
+        let contentHtml = "";
+        switch (appState.currentPage) {
+          case "community_challenges": contentHtml += renderCommunityChallengesPage(); break;
+          case "coach_profile": const coach = mockCoaches.find(c => c.id === appState.selectedCoachId); contentHtml += renderCoachProfilePage(coach); break;
+          default: contentHtml += renderCommunityChallengesPage();
+        }
+        if (appState.modalContent) { contentHtml += renderModal(appState.modalContent); }
+        appDiv.innerHTML = contentHtml;
+        attachEventListeners();
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const hash = window.location.hash.substring(1); // Remove #
+        if (hash) {
+          const targetSection = hash;
+          if (targetSection === 'players-section') appState.currentSubPage = 'players';
+          if (targetSection === 'matches-section' || targetSection === 'teams-section') appState.currentSubPage = 'matches';
+          if (targetSection === 'coaches-section') appState.currentSubPage = 'coaches';
+          if (targetSection === 'challenges-section') appState.currentSubPage = 'challenges';
+        }
+        renderPage();
+      });
+    </script>
+  </body>
+</html>

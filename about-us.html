@@ -5,49 +5,113 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us - Sportiva</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         body {
             font-family: 'Inter', sans-serif;
         }
-        .s-logo {
-            width: 28px;
-            height: 28px;
-            background-color: #0d9488; /* teal-600 */
-            border-radius: 9999px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: white;
-            font-size: 1.25rem;
+        .enhanced-shadow {
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .enhanced-shadow:hover {
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1), 0 6px 12px -6px rgba(0, 0, 0, 0.08);
+            transform: translateY(-2px);
+        }
+        .nav-link-animated {
+            position: relative;
+            transition: all 0.3s ease;
+            padding-bottom: 4px; /* Space for the underline */
+        }
+        .nav-link-animated::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            background-color: #10b981; /* emerald-500 */
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        .nav-link-animated:hover {
+            color: #059669; /* emerald-600 */
+            transform: translateY(-2px); /* Slight lift effect */
+        }
+        .nav-link-animated:hover::after {
+            width: 100%;
         }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
 
     <!-- Header -->
-    <header class="bg-white shadow-sm sticky top-0 z-50">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#" class="flex items-center space-x-3">
-                <!-- Using a simplified SVG logo based on the document -->
-                <svg class="h-8 w-auto text-teal-600" viewBox="0 0 40 40" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M20 0C11.1634 0 4 7.16344 4 16C4 28 20 40 20 40C20 40 36 28 36 16C36 7.16344 28.8366 0 20 0ZM22.4919 19.3837C24.1257 17.993 25.0022 16.1014 25.0022 14.1241C25.0022 10.1882 21.954 7 18.0933 7C14.3679 7 11.5 9.79585 11.5 13.5C11.5 15.6332 12.5186 17.6534 14.2197 19.1581C14.9037 19.7495 15.5 20.5 15.5 21.5C15.5 22.8807 16.6193 24 17.9999 24C19.3806 24 20.4999 22.8807 20.4999 21.5C20.4999 20.4357 21.218 19.8221 22.4919 19.3837Z"/>
-                </svg>
-                <span class="text-2xl font-bold text-gray-800">Sportiva</span>
+    <header class="bg-white shadow-lg sticky top-0 z-50">
+  <nav class="container mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
+    <div class="flex-1 flex justify-start items-center">
+      <button id="mobile-menu-button" class="md:hidden text-gray-600 hover:text-emerald-600 focus:outline-none mr-4">
+        <i class="fas fa-bars fa-lg"></i>
+      </button>
+      <a href="index.html" class="flex items-center space-x-2">
+        <img src="images/logo/Sportiva logo.png" alt="Sportiva Logo" class="h-10 w-10" onerror="this.onerror=null;this.src='https://placehold.co/40x40/10b981/FFFFFF?text=S';">
+        <span class="text-3xl font-bold text-emerald-600">Sportiva</span>
+      </a>
+    </div>
+
+    <div class="hidden md:flex flex-1 justify-center items-center space-x-12 text-xl">
+      <a href="fields.html" class="nav-link-animated text-gray-700 font-semibold">Fields</a>
+      <a href="find.html" class="nav-link-animated text-gray-700 font-semibold">Find</a>
+      <a href="marketplace.html" class="nav-link-animated text-gray-700 font-semibold">Marketplace</a>
+    </div>
+
+    <div class="flex-1 flex justify-end">
+      <div class="relative">
+        <button id="profile-button" class="block rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">
+          <img src="images/people/people 1.png" alt="Your profile picture" class="w-10 h-10 rounded-full object-cover border-2 border-emerald-500 hover:border-emerald-600 transition" onerror="this.onerror=null;this.src='https://placehold.co/40x40/E0E0E0/333333?text=KA';">
+        </button>
+        <div id="profile-dropdown" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-md enhanced-shadow z-50 ring-1 ring-black ring-opacity-5">
+          <div class="px-4 py-3 border-b">
+            <p class="text-sm font-semibold text-gray-800">Karim Ahmed</p>
+            <p class="text-xs text-gray-500 truncate">karim.ahmed@example.com</p>
+          </div>
+          <div class="py-1 border-b">
+            <p class="px-4 pt-2 pb-1 text-xs font-semibold text-gray-400 uppercase">Switch Dashboard</p>
+            <a href="player-dashboard.html" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+              <i class="fas fa-user w-5 mr-2 text-gray-500"></i> Player
             </a>
-            <div class="hidden md:flex items-center space-x-8">
-                <a href="#" class="text-gray-600 hover:text-teal-600 transition duration-300">Home</a>
-                <a href="#" class="text-teal-600 font-semibold">About Us</a>
-                <a href="#" class="text-gray-600 hover:text-teal-600 transition duration-300">For Venues</a>
-                <a href="#" class="text-gray-600 hover:text-teal-600 transition duration-300">Contact</a>
-            </div>
-            <a href="#" class="hidden md:inline-block bg-teal-600 text-white font-semibold px-5 py-2 rounded-lg hover:bg-teal-700 transition duration-300">Download App</a>
-        </nav>
-    </header>
+            <a href="coach-dashboard.html" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+              <i class="fas fa-user-tie w-5 mr-2 text-gray-500"></i> Coach
+            </a>
+            <a href="field-owner-dashboard.html" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+              <i class="fas fa-map-marked-alt w-5 mr-2 text-gray-500"></i> Field Owner
+            </a>
+            <a href="marketplace-dashboard.html" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+              <i class="fas fa-store w-5 mr-2 text-gray-500"></i> Marketplace
+            </a>
+          </div>
+          <div class="py-1">
+            <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+              <i class="fas fa-cog w-5 mr-2 text-gray-500"></i> Settings
+            </a>
+            <a href="#" class="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+              <i class="fas fa-sign-out-alt w-5 mr-2"></i> Sign Out
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div id="mobile-menu" class="md:hidden hidden bg-white border-t border-gray-200">
+    <a href="fields.html" class="block py-3 px-4 text-lg text-gray-700 font-semibold hover:bg-gray-100">Fields</a>
+    <a href="find.html" class="block py-3 px-4 text-lg text-gray-700 font-semibold hover:bg-gray-100">Find</a>
+    <a href="marketplace.html" class="block py-3 px-4 text-lg text-gray-700 font-semibold hover:bg-gray-100">Marketplace</a>
+  </div>
+</header>
 
     <!-- Main Content -->
-    <main>
+    <main class="flex-grow">
         <!-- Hero Section -->
         <section class="bg-white">
             <div class="container mx-auto px-6 py-20 md:py-28 text-center">
@@ -79,7 +143,7 @@
         <!-- Our Mission Section -->
         <section class="bg-teal-700 text-white">
             <div class="container mx-auto px-6 py-20 text-center">
-                 <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+               <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 <h2 class="text-3xl font-bold">Our Mission</h2>
@@ -97,20 +161,23 @@
                     <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">We are a team of passionate developers, strategists, and sports enthusiasts dedicated to building the future of sports in Egypt.</p>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+
                     <!-- Team Member 1 -->
-                    <div class="text-center">
-                        <img class="w-32 h-32 rounded-full mx-auto shadow-lg" src="https://placehold.co/200x200/e2e8f0/334155?text=MM" alt="Marwan Magdy">
-                        <h3 class="mt-6 text-xl font-semibold text-gray-900">Marwan Magdy</h3>
-                        <p class="text-teal-600">Founder & CEO</p>
-                        <p class="mt-2 text-gray-600">A Computer Science graduate with deep entrepreneurial experience and over 10 years of insight into the sports booking market. Marwan drives our vision and strategic growth.</p>
-                    </div>
-                    <!-- Team Member 2 -->
                     <div class="text-center">
                         <img class="w-32 h-32 rounded-full mx-auto shadow-lg" src="https://placehold.co/200x200/e2e8f0/334155?text=PA" alt="Pero Alpert">
                         <h3 class="mt-6 text-xl font-semibold text-gray-900">Pero Alpert</h3>
                         <p class="text-teal-600">Chief Technology Officer</p>
                         <p class="mt-2 text-gray-600">With 8 years in mobile development and experience leading the launch of a field-booking app, Pero is the architect of our scalable and reliable tech platform.</p>
                     </div>
+
+                    <!-- Team Member 2 -->
+                    <div class="text-center">
+                        <img class="w-32 h-32 rounded-full mx-auto shadow-lg" src="https://placehold.co/200x200/e2e8f0/334155?text=MM" alt="Marwan Magdy">
+                        <h3 class="mt-6 text-xl font-semibold text-gray-900">Marwan Magdy</h3>
+                        <p class="text-teal-600">Founder & CEO</p>
+                        <p class="mt-2 text-gray-600">A Computer Science graduate with deep entrepreneurial experience and over 10 years of insight into the sports booking market. Marwan drives our vision and strategic growth.</p>
+                    </div>
+                    
                     <!-- Team Member 3 -->
                     <div class="text-center">
                         <img class="w-32 h-32 rounded-full mx-auto shadow-lg" src="https://placehold.co/200x200/e2e8f0/334155?text=ME" alt="Moktar Erfan">
@@ -133,66 +200,92 @@
                 </div>
             </div>
         </section>
-
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white">
-        <div class="container mx-auto px-6 py-12">
-            <div class="md:flex md:justify-between">
-                <div class="mb-8 md:mb-0 md:w-1/3">
-                    <a href="#" class="flex items-center space-x-3">
-                        <svg class="h-8 w-auto text-teal-500" viewBox="0 0 40 40" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                           <path fill-rule="evenodd" clip-rule="evenodd" d="M20 0C11.1634 0 4 7.16344 4 16C4 28 20 40 20 40C20 40 36 28 36 16C36 7.16344 28.8366 0 20 0ZM22.4919 19.3837C24.1257 17.993 25.0022 16.1014 25.0022 14.1241C25.0022 10.1882 21.954 7 18.0933 7C14.3679 7 11.5 9.79585 11.5 13.5C11.5 15.6332 12.5186 17.6534 14.2197 19.1581C14.9037 19.7495 15.5 20.5 15.5 21.5C15.5 22.8807 16.6193 24 17.9999 24C19.3806 24 20.4999 22.8807 20.4999 21.5C20.4999 20.4357 21.218 19.8221 22.4919 19.3837Z"/>
-                        </svg>
-                        <span class="text-2xl font-bold">Sportiva</span>
-                    </a>
-                    <p class="mt-4 text-gray-400">The easiest way to book sports facilities and connect with players in Egypt.</p>
+    <footer class="bg-gray-900 text-white">
+        <div class="container mx-auto py-12 px-4 sm:px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-center md:text-left">
+                <div class="md:col-span-1">
+                    <h2 class="text-3xl font-bold text-emerald-500">Sportiva</h2>
+                    <p class="text-gray-400 mt-2">Your ultimate destination for sports.</p>
+                    <div class="flex justify-center md:justify-start space-x-4 mt-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-facebook-f fa-lg"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-twitter fa-lg"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-instagram fa-lg"></i></a>
+                    </div>
                 </div>
-                <div class="grid grid-cols-2 sm:grid-cols-3 gap-8 md:w-1/2">
-                    <div>
-                        <h3 class="font-semibold tracking-wider uppercase">Solutions</h3>
-                        <ul class="mt-4 space-y-2">
-                            <li><a href="#" class="text-gray-400 hover:text-white transition">For Players</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white transition">For Venues</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white transition">Tournaments</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h3 class="font-semibold tracking-wider uppercase">Company</h3>
-                        <ul class="mt-4 space-y-2">
-                            <li><a href="#" class="text-gray-400 hover:text-white transition">About</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white transition">Careers</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white transition">Press</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h3 class="font-semibold tracking-wider uppercase">Legal</h3>
-                        <ul class="mt-4 space-y-2">
-                            <li><a href="#" class="text-gray-400 hover:text-white transition">Privacy</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white transition">Terms</a></li>
-                        </ul>
-                    </div>
+
+                <div>
+                    <h3 class="font-semibold tracking-wider uppercase">Dashboards</h3>
+                    <ul class="mt-4 space-y-2">
+                        <li><a href="player-dashboard.html" class="text-gray-400 hover:text-white">Player</a></li>
+                        <li><a href="coach-dashboard.html" class="text-gray-400 hover:text-white">Coach</a></li>
+                        <li><a href="field-owner-dashboard.html" class="text-gray-400 hover:text-white">Field Owner</a></li>
+                        <li><a href="marketplace-dashboard.html" class="text-gray-400 hover:text-white">Marketplace</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="font-semibold tracking-wider uppercase">Find</h3>
+                    <ul class="mt-4 space-y-2">
+                        <li><a href="find.html" class="text-gray-400 hover:text-white">Players</a></li>
+                        <li><a href="find.html" class="text-gray-400 hover:text-white">Teams</a></li>
+                        <li><a href="find.html" class="text-gray-400 hover:text-white">Coaches</a></li>
+                        <li><a href="find.html" class="text-gray-400 hover:text-white">Challenges</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="font-semibold tracking-wider uppercase">More</h3>
+                    <ul class="mt-4 space-y-2">
+                        <li><a href="fields.html" class="text-gray-400 hover:text-white">Fields</a></li>
+                        <li><a href="marketplace.html" class="text-gray-400 hover:text-white">Marketplace</a></li>
+                        <li><a href="about-us.html" class="text-gray-400 hover:text-white">About Us</a></li>
+                    </ul>
                 </div>
             </div>
-            <div class="mt-10 border-t border-gray-700 pt-8 flex flex-col md:flex-row justify-between items-center text-center">
-                <p class="text-gray-400">&copy; 2025 Sportiva. All Rights Reserved.</p>
-                <div class="flex space-x-6 mt-4 md:mt-0">
-                    <!-- Social Icons -->
-                    <a href="#" class="text-gray-400 hover:text-white transition">
-                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" /></svg>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-white transition">
-                         <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.71v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" /></svg>
-                    </a>
-                     <a href="#" class="text-gray-400 hover:text-white transition">
-                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.927 8.11a5.047 5.047 0 01-1.463 3.454c-.522.51-1.13.91-1.79.118-.66-.792.107-1.448.188-2.164.09-.787-.21-1.448-.9-1.638-.7-.2-1.42.27-1.72.91-.32.64-.1 1.44.32 2.01.42.58 1.17.78 1.8.44.6-.33 1.05-.9 1.2-1.5.15-.6-.3-1.2-.9-1.2-.6 0-1.15.44-1.35 1.05-.2.6.05 1.35.6 1.8.55.45 1.35.45 2.05.05.7-.4 1.2-1.1 1.3-1.9.1-.8-.2-1.65-1-2.15-.8-.5-1.75-.6-2.6-.2-1.1.5-1.7 1.6-1.7 2.8 0 .5.1.9.3 1.3.2.4.5.8.9.9.4.1.8-.1 1.1-.4.3-.3.5-.7.4-1.1-.1-.4-.4-.7-.8-.8-.4-.1-.7.1-1 .4-.3.3-.4.7-.3 1.1.1.4.4.7.8.8.4.1.8-.1 1.1-.4.3-.3.5-.7.4-1.1l-.1-.2c-.85.4-1.7.8-2.55 1.2-1.1.5-2.2 1-3.3 1.5-.5.2-1 .4-1.5.6a1 1 0 01-1.1-.4c-.2-.3-.1-.7.2-1 .3-.3.6-.6.9-.9.8-.8 1.6-1.6 2.4-2.4.8-.8 1.6-1.6 2.4-2.4.8-.8 1.6-1.6 2.4-2.4.3-.3.6-.6.9-.9.3-.3.7-.4 1-.2.3.2.4.6.2 1-.2.4-.4.8-.6 1.2-.5 1.1-1 2.2-1.5 3.3z" clip-rule="evenodd" /></svg>
-                    </a>
-                </div>
+            <div class="border-t border-gray-700 mt-8 pt-6 text-center text-gray-500">
+                <p>&copy; 2025 Sportiva. All Rights Reserved.</p>
             </div>
         </div>
     </footer>
 
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- Get Elements from the DOM ---
+        const profileButton = document.getElementById('profile-button');
+        const profileDropdown = document.getElementById('profile-dropdown');
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
 
+        // --- Profile Dropdown Logic ---
+        // Toggle profile dropdown on button click
+        if (profileButton && profileDropdown) {
+            profileButton.addEventListener('click', (event) => {
+                event.stopPropagation(); // Prevents the click from closing the menu immediately
+                profileDropdown.classList.toggle('hidden');
+            });
+        }
+
+        // --- Mobile Menu Logic (This part was added) ---
+        // Toggle mobile menu on button click
+        if (mobileMenuButton && mobileMenu) {
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+
+        // --- Close Dropdown on Outside Click ---
+        // Add a single event listener to the body to handle clicks outside of the dropdown
+        document.body.addEventListener('click', (event) => {
+            if (profileDropdown && !profileDropdown.classList.contains('hidden')) {
+                if (!profileButton.contains(event.target)) {
+                    profileDropdown.classList.add('hidden');
+                }
+            }
+        });
+    });
+</script>
 </body>
 </html>

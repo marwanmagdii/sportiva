@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sportiva - Field Owner Dashboard</title>
-    <!-- Tailwind CSS CDN -->
+    <!-- Tailwind CSS CDN --> 
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts - Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -39,56 +39,171 @@
             background: #9ca3af;
         }
         .card-shadow {
-             box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07);
         }
         .card-shadow:hover {
             box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.07), 0 4px 6px -4px rgb(0 0 0 / 0.07);
         }
+        .enhanced-shadow {
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .enhanced-shadow:hover {
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1), 0 6px 12px -6px rgba(0, 0, 0, 0.08);
+            transform: translateY(-2px);
+        }
+        .nav-link-animated {
+            position: relative;
+            transition: all 0.3s ease;
+            padding-bottom: 4px; /* Space for the underline */
+        }
+        .nav-link-animated::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            background-color: #10b981; /* emerald-500 */
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        .nav-link-animated:hover {
+            color: #059669; /* emerald-600 */
+            transform: translateY(-2px); /* Slight lift effect */
+        }
+        .nav-link-animated:hover::after {
+            width: 100%;
+        }
     </style>
 </head>
-<body class="bg-gray-50">
+<body class="bg-gray-50 flex flex-col min-h-screen">
 
-    <div id="owner-app-container" class="pb-20 md:pb-0">
+    <!-- NEW NAVIGATION BAR -->
+    <header class="bg-white shadow-lg sticky top-0 z-50">
+        <nav class="container mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
+            <div class="flex-1 flex justify-start items-center">
+                <button id="mobile-menu-button" class="md:hidden text-gray-600 hover:text-emerald-600 focus:outline-none mr-4">
+                    <i class="fas fa-bars fa-lg"></i>
+                </button>
+                <a href="index.html" class="flex items-center space-x-2">
+                    <img src="images/logo/Sportiva logo.png" alt="Sportiva Logo" class="h-10 w-10" onerror="this.onerror=null;this.src='https://placehold.co/40x40/10b981/FFFFFF?text=S';">
+                    <span class="text-3xl font-bold text-emerald-600">Sportiva</span>
+                </a>
+            </div>
+            
+            <div class="hidden md:flex flex-1 justify-center items-center space-x-12 text-xl">
+                <a href="fields.html" class="nav-link-animated text-gray-700 font-semibold">Fields</a>
+                <a href="find.html" class="nav-link-animated text-gray-700 font-semibold">Find</a>
+                <a href="marketplace.html" class="nav-link-animated text-gray-700 font-semibold">Marketplace</a>
+            </div>
+
+            <div class="flex-1 flex justify-end">
+                <div class="relative">
+                    <button id="profile-button" class="block rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">
+                        <img src="images/people/people 1.png" alt="Your profile picture" class="w-10 h-10 rounded-full object-cover border-2 border-emerald-500 hover:border-emerald-600 transition" onerror="this.onerror=null;this.src='https://placehold.co/40x40/E0E0E0/333333?text=KA';">
+                    </button>
+                    <div id="profile-dropdown" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-md enhanced-shadow z-50 ring-1 ring-black ring-opacity-5">
+                        <div class="px-4 py-3 border-b">
+                            <p class="text-sm font-semibold text-gray-800">Karim Ahmed</p>
+                            <p class="text-xs text-gray-500 truncate">karim.ahmed@example.com</p>
+                        </div>
+                        <div class="py-1 border-b">
+                            <p class="px-4 pt-2 pb-1 text-xs font-semibold text-gray-400 uppercase">Switch Dashboard</p>
+                            <a href="player-dashboard.html" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-user w-5 mr-2 text-gray-500"></i> Player
+                            </a>
+                            <a href="coach-dashboard.html" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-user-tie w-5 mr-2 text-gray-500"></i> Coach
+                            </a>
+                            <a href="field-owner-dashboard.html" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-map-marked-alt w-5 mr-2 text-gray-500"></i> Field Owner
+                            </a>
+                            <a href="marketplace-dashboard.html" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-store w-5 mr-2 text-gray-500"></i> Marketplace
+                            </a>
+                        </div>
+                        <div class="py-1">
+                            <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-cog w-5 mr-2 text-gray-500"></i> Settings
+                            </a>
+                            <a href="#" class="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+                                <i class="fas fa-sign-out-alt w-5 mr-2"></i> Sign Out
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div id="owner-app-container" class="pb-20 md:pb-0 flex-grow">
         <!-- Field Owner App content will be rendered here -->
     </div>
-      <footer class="bg-gray-800 text-white">
+
+    <!-- OLD BOTTOM NAV (for mobile) - KEPT FOR RESPONSIVENESS -->
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white shadow-t-md z-30 border-t border-gray-200">
+        <div class="flex justify-around">
+            <a href="#" data-page="overview" class="owner-nav-link flex-1 flex flex-col items-center justify-center py-2 text-gray-500 hover:text-amber-600 transition-colors">
+                <i class="fas fa-home fa-lg mb-1"></i>
+                <span class="text-xs font-medium">Home</span>
+            </a>
+            <a href="#" data-page="bookings" class="owner-nav-link flex-1 flex flex-col items-center justify-center py-2 text-gray-500 hover:text-amber-600 transition-colors">
+                <i class="fas fa-calendar-check fa-lg mb-1"></i>
+                <span class="text-xs font-medium">Bookings</span>
+            </a>
+            <a href="#" data-page="reports" class="owner-nav-link flex-1 flex flex-col items-center justify-center py-2 text-gray-500 hover:text-amber-600 transition-colors">
+                <i class="fas fa-chart-line fa-lg mb-1"></i>
+                <span class="text-xs font-medium">Reports</span>
+            </a>
+            <a href="#" data-page="settings" class="owner-nav-link flex-1 flex flex-col items-center justify-center py-2 text-gray-500 hover:text-amber-600 transition-colors">
+                <i class="fas fa-cog fa-lg mb-1"></i>
+                <span class="text-xs font-medium">Settings</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- NEW FOOTER -->
+    <footer class="bg-gray-900 text-white mt-auto">
         <div class="container mx-auto py-12 px-4 sm:px-6">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div>
-                    <h2 class="text-2xl font-bold">Sportiva</h2>
-                    <p class="text-gray-400 mt-2">Connecting players and venues across Egypt.</p>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-center md:text-left">
+                <div class="md:col-span-1">
+                    <h2 class="text-3xl font-bold text-emerald-500">Sportiva</h2>
+                    <p class="text-gray-400 mt-2">Your ultimate destination for sports.</p>
+                    <div class="flex justify-center md:justify-start space-x-4 mt-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-facebook-f fa-lg"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-twitter fa-lg"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-instagram fa-lg"></i></a>
+                    </div>
                 </div>
+
                 <div>
-                    <h3 class="font-semibold tracking-wider">Quick Links</h3>
+                    <h3 class="font-semibold tracking-wider uppercase">Dashboards</h3>
                     <ul class="mt-4 space-y-2">
-                        <li><a href="index.html" class="text-gray-400 hover:text-white">Home</a></li>
-                        <li><a href="fields.html" class="text-gray-400 hover:text-white">Book a Field</a></li>
-                        <li><a href="community.html" class="text-gray-400 hover:text-white">Community</a></li>
+                        <li><a href="player-dashboard.html" class="text-gray-400 hover:text-white">Player</a></li>
+                        <li><a href="coach-dashboard.html" class="text-gray-400 hover:text-white">Coach</a></li>
+                        <li><a href="field-owner-dashboard.html" class="text-gray-400 hover:text-white">Field Owner</a></li>
+                        <li><a href="marketplace-dashboard.html" class="text-gray-400 hover:text-white">Marketplace</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="font-semibold tracking-wider uppercase">Find</h3>
+                    <ul class="mt-4 space-y-2">
+                        <li><a href="find.html" class="text-gray-400 hover:text-white">Players</a></li>
+                        <li><a href="find.html" class="text-gray-400 hover:text-white">Teams</a></li>
+                        <li><a href="find.html" class="text-gray-400 hover:text-white">Coaches</a></li>
+                        <li><a href="find.html" class="text-gray-400 hover:text-white">Challenges</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="font-semibold tracking-wider uppercase">More</h3>
+                    <ul class="mt-4 space-y-2">
+                        <li><a href="fields.html" class="text-gray-400 hover:text-white">Fields</a></li>
                         <li><a href="marketplace.html" class="text-gray-400 hover:text-white">Marketplace</a></li>
-                         <li><a href="index.html" class="text-gray-400 hover:text-white">Dashboard</a></li>
+                        <li><a href="about-us.html" class="text-gray-400 hover:text-white">About Us</a></li>
                     </ul>
-                </div>
-                <div>
-                    <h3 class="font-semibold tracking-wider">Support</h3>
-                    <ul class="mt-4 space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-white">FAQ</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Help Center</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Contact Us</a></li>
-                    </ul>
-                </div>
-                <div>
-                     <h3 class="font-semibold tracking-wider">Follow Us</h3>
-                     <div class="flex space-x-4 mt-4">
-                         <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
-                         <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
-                         <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
-                         <a href="#" class="text-gray-400 hover:text-white"><i class="fas fa-link"></i></a>
-                     </div>
-                     <h3 class="font-semibold tracking-wider mt-6">Legal</h3>
-                     <ul class="mt-4 space-y-2">
-                         <li><a href="#" class="text-gray-400 hover:text-white">Privacy Policy</a></li>
-                         <li><a href="#" class="text-gray-400 hover:text-white">Terms of Service</a></li>
-                     </ul>
                 </div>
             </div>
             <div class="border-t border-gray-700 mt-8 pt-6 text-center text-gray-500">
@@ -157,93 +272,29 @@
         };
 
         // --- RENDER FUNCTIONS ---
-
-        function renderOwnerHeader() {
-            return `
-                <header class="bg-white shadow-sm sticky top-0 z-30">
-                    <nav class="container mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
-                        <button id="mobile-menu-button" class="md:hidden text-gray-600 hover:text-emerald-600 focus:outline-none">
-                            <i class="fas fa-bars fa-lg"></i>
-                        </button>
-                        <a href="index.html" class="text-3xl font-bold text-emerald-600">Sportiva</a>
-                         <div class="hidden md:flex items-center space-x-8">
-                             <a href="fields.html" class="text-gray-600 hover:text-emerald-600 transition">Fields</a>
-                             <a href="community.html" class="text-gray-600 hover:text-emerald-600 transition">Community</a>
-                             <a href="marketplace.html" class="text-gray-600 hover:text-emerald-600 transition">Marketplace</a>
-                             <a href="about-us.html" class="text-gray-600 hover:text-emerald-600 transition">About Us</a>
-                         </div>
-                        <div class="relative">
-                            <button id="profile-button" class="flex items-center space-x-2">
-                                <img src="${ownerMockData.owner.profileImage}" alt="Owner Profile" class="w-10 h-10 rounded-full object-cover border-2 border-emerald-500" onerror="this.onerror=null;this.src='https://placehold.co/40x40/10b981/FFFFFF?text=AM';">
-                            </button>
-                             <div id="profile-dropdown" class="${ownerAppState.isProfileDropdownOpen ? '' : 'hidden'} absolute right-0 mt-2 w-56 bg-white rounded-md shadow-xl z-50 overflow-hidden">
-                                 <div class="p-4 border-b">
-                                     <p class="font-semibold text-gray-800">${ownerMockData.owner.name}</p>
-                                     <p class="text-sm text-gray-500">Field Owner</p>
-                                 </div>
-                                 <a href="#" class="owner-nav-link flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 transition-colors" data-page="overview">
-                                     <i class="fas fa-user-tie w-6 text-center mr-2"></i>
-                                     <span>Owner Dashboard</span>
-                                 </a>
-                                 <a href="player-dashboard.html" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
-                                     <i class="fas fa-user w-6 text-center mr-2"></i>
-                                     <span>Player View</span>
-                                 </a>
-                                 <a href="coach-dashboard.html" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
-                                      <i class="fas fa-whistle w-6 text-center mr-2"></i>
-                                     <span>Coach View</span>
-                                 </a>
-                             </div>
-                        </div>
-                    </nav>
-                </header>
-            `;
-        }
-        
         function renderOwnerSidebar() {
-             const links = [
-                 { id: 'overview', icon: 'fa-tachometer-alt', text: 'Overview' },
-                 { id: 'bookings', icon: 'fa-calendar-alt', text: 'Bookings' },
-                 { id: 'reports', icon: 'fa-chart-line', text: 'Reports' },
-                 { id: 'settings', icon: 'fa-cog', text: 'Field Settings' },
-             ];
-            return `
-                 <aside id="sidebar" class="fixed top-0 left-0 w-64 bg-white h-full shadow-lg transform ${ownerAppState.isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out z-40 md:sticky md:top-[72px] md:h-screen md:translate-x-0">
-                     <div class="p-6 text-center border-b">
-                         <img src="${ownerMockData.field.image}" alt="Field Image" class="w-24 h-24 rounded-full mx-auto mb-3 border-4 border-amber-200 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/96x96/f59e0b/FFFFFF?text=Field';">
-                         <h3 class="text-xl font-bold text-gray-800">${ownerMockData.field.name}</h3>
-                         <p class="text-sm text-gray-500">${ownerMockData.field.address}</p>
-                     </div>
-                     <nav class="mt-6">
-                         ${links.map(link => `
-                             <a href="#" data-page="${link.id}" class="owner-nav-link flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 ${ownerAppState.activePage === link.id ? 'sidebar-link-active' : ''}">
-                                 <i class="fas ${link.icon} w-6 text-center mr-3"></i>
-                                 <span>${link.text}</span>
-                             </a>
-                         `).join('')}
-                     </nav>
-                 </aside>
-            `;
-        }
-
-        function renderOwnerBottomNav() {
-            const navItems = [
-                { id: 'overview', icon: 'fa-home', text: 'Home' },
-                { id: 'bookings', icon: 'fa-calendar-check', text: 'Bookings' },
+            const links = [
+                { id: 'overview', icon: 'fa-tachometer-alt', text: 'Overview' },
+                { id: 'bookings', icon: 'fa-calendar-alt', text: 'Bookings' },
                 { id: 'reports', icon: 'fa-chart-line', text: 'Reports' },
-                { id: 'settings', icon: 'fa-cog', text: 'Settings' },
+                { id: 'settings', icon: 'fa-cog', text: 'Field Settings' },
             ];
             return `
-                <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white shadow-t-md z-30 border-t border-gray-200">
-                    <div class="flex justify-around">
-                        ${navItems.map(item => `
-                            <a href="#" data-page="${item.id}" class="owner-nav-link flex-1 flex flex-col items-center justify-center py-2 text-gray-500 hover:text-amber-600 transition-colors ${ownerAppState.activePage === item.id ? 'bottom-nav-link-active' : ''}">
-                                <i class="fas ${item.icon} fa-lg mb-1"></i>
-                                <span class="text-xs font-medium">${item.text}</span>
+                <aside id="sidebar" class="fixed top-0 left-0 w-64 bg-white h-full shadow-lg transform ${ownerAppState.isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out z-40 md:sticky md:top-[72px] md:h-screen md:translate-x-0">
+                    <div class="p-6 text-center border-b">
+                        <img src="${ownerMockData.field.image}" alt="Field Image" class="w-24 h-24 rounded-full mx-auto mb-3 border-4 border-amber-200 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/96x96/f59e0b/FFFFFF?text=Field';">
+                        <h3 class="text-xl font-bold text-gray-800">${ownerMockData.field.name}</h3>
+                        <p class="text-sm text-gray-500">${ownerMockData.field.address}</p>
+                    </div>
+                    <nav class="mt-6">
+                        ${links.map(link => `
+                            <a href="#" data-page="${link.id}" class="owner-nav-link flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 ${ownerAppState.activePage === link.id ? 'sidebar-link-active' : ''}">
+                                <i class="fas ${link.icon} w-6 text-center mr-3"></i>
+                                <span>${link.text}</span>
                             </a>
                         `).join('')}
-                    </div>
-                </nav>
+                    </nav>
+                </aside>
             `;
         }
 
@@ -264,21 +315,21 @@
                      <h2 class="text-xl font-bold text-gray-800 mb-4">Upcoming Bookings</h2>
                      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                          ${upcomingBookings.length > 0 ? upcomingBookings.map(b => {
-                            const player = ownerMockData.allPlayers.find(p => p.id === b.playerId);
-                            return `
-                             <div class="flex items-center p-4 bg-gray-50 rounded-lg border border-gray-200">
-                                <img src="${player.image}" alt="${player.name}" class="w-12 h-12 rounded-full object-cover mr-4" onerror="this.onerror=null;this.src='https://placehold.co/48x48/E0E0E0/333333?text=P';">
-                                <div class="flex-grow">
-                                     <p class="font-bold text-gray-800">${player.name}</p>
-                                     <p class="text-sm text-gray-500"><i class="fas fa-phone-alt mr-1"></i> ${player.phone}</p>
-                                     <p class="text-sm text-gray-500"><i class="fas fa-calendar-alt mr-1"></i> ${b.date}</p>
-                                </div>
-                                <div class="text-right">
-                                    <p class="font-semibold text-emerald-600">${formatTime12Hour(b.time)}</p>
-                                    <p class="text-sm font-medium text-gray-700">${b.revenue} EGP</p>
-                                </div>
-                             </div>
-                            `
+                             const player = ownerMockData.allPlayers.find(p => p.id === b.playerId);
+                             return `
+                              <div class="flex items-center p-4 bg-gray-50 rounded-lg border border-gray-200">
+                                  <img src="${player.image}" alt="${player.name}" class="w-12 h-12 rounded-full object-cover mr-4" onerror="this.onerror=null;this.src='https://placehold.co/48x48/E0E0E0/333333?text=P';">
+                                  <div class="flex-grow">
+                                       <p class="font-bold text-gray-800">${player.name}</p>
+                                       <p class="text-sm text-gray-500"><i class="fas fa-phone-alt mr-1"></i> ${player.phone}</p>
+                                       <p class="text-sm text-gray-500"><i class="fas fa-calendar-alt mr-1"></i> ${b.date}</p>
+                                  </div>
+                                  <div class="text-right">
+                                      <p class="font-semibold text-emerald-600">${formatTime12Hour(b.time)}</p>
+                                      <p class="text-sm font-medium text-gray-700">${b.revenue} EGP</p>
+                                  </div>
+                              </div>
+                             `
                          }).join('') : '<p class="text-gray-500">No upcoming bookings.</p>'}
                      </div>
                  </div>
@@ -295,99 +346,99 @@
             return `
                  <h1 class="text-3xl font-extrabold text-gray-900 mb-8">Manage Bookings</h1>
                  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <div class="lg:col-span-2 bg-white p-6 rounded-xl card-shadow">
-                        <div class="flex items-center mb-6">
-                            <label for="booking-date" class="mr-4 font-semibold text-gray-700">Select Date:</label>
-                            <input type="date" id="booking-date" value="${ownerAppState.selectedDate}" class="p-2 border rounded-md shadow-sm">
-                        </div>
-                        <div class="space-y-3">
-                            ${timeSlots.map(slot => {
-                                const booking = bookingsForSelectedDate.find(b => b.time === slot);
-                                const player = booking ? ownerMockData.allPlayers.find(p => p.id === booking.playerId) : null;
-                                
-                                let nextHourNumber = (parseInt(slot.split(':')[0]) + 1) % 24;
-                                const nextHour = `${String(nextHourNumber).padStart(2, '0')}:00`;
+                     <div class="lg:col-span-2 bg-white p-6 rounded-xl card-shadow">
+                         <div class="flex items-center mb-6">
+                             <label for="booking-date" class="mr-4 font-semibold text-gray-700">Select Date:</label>
+                             <input type="date" id="booking-date" value="${ownerAppState.selectedDate}" class="p-2 border rounded-md shadow-sm">
+                         </div>
+                         <div class="space-y-3">
+                             ${timeSlots.map(slot => {
+                                 const booking = bookingsForSelectedDate.find(b => b.time === slot);
+                                 const player = booking ? ownerMockData.allPlayers.find(p => p.id === booking.playerId) : null;
+                                 
+                                 let nextHourNumber = (parseInt(slot.split(':')[0]) + 1) % 24;
+                                 const nextHour = `${String(nextHourNumber).padStart(2, '0')}:00`;
 
-                                if(booking && player) {
-                                    const remainingToPay = booking.revenue - booking.amountPaid;
-                                    return `
-                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center p-4 rounded-lg bg-amber-50 border-amber-200 border">
-                                        <div class="flex items-center md:col-span-2">
-                                            <img src="${player.image}" class="w-12 h-12 rounded-full mr-4" onerror="this.onerror=null;this.src='https://placehold.co/48x48/E0E0E0/333333?text=P';">
-                                            <div>
-                                                <p class="font-bold text-gray-800">${player.name}</p>
-                                                <p class="text-sm text-gray-500">${player.phone}</p>
-                                                <p class="text-xs text-gray-500">${formatTime12Hour(slot)} - ${formatTime12Hour(nextHour)}</p>
-                                            </div>
-                                        </div>
-                                        <div class="flex items-center justify-end space-x-2">
-                                            ${remainingToPay <= 0 ? `
-                                                <div class="p-2 rounded-md bg-green-100 text-green-800 font-semibold text-center">
-                                                    <p>Fully Paid</p>
-                                                    <p class="text-sm">${booking.revenue} EGP</p>
-                                                </div>
-                                            ` : `
-                                                <div>
-                                                    <p class="text-sm text-gray-600">Paid: <span class="font-bold text-gray-800">${booking.amountPaid} EGP</span></p>
-                                                    <p class="text-sm text-red-600">Due: <span class="font-bold">${remainingToPay} EGP</span></p>
-                                                </div>
-                                            `}
-                                            <button data-action="cancel-booking" data-booking-id="${booking.id}" class="p-2 h-10 w-10 bg-red-100 text-red-600 rounded-md hover:bg-red-200 transition flex-shrink-0">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    `;
-                                } else {
-                                    return `
-                                    <div class="grid grid-cols-2 items-center p-4 rounded-lg bg-emerald-50 border-emerald-200 border">
-                                        <div class="font-semibold text-gray-800">${formatTime12Hour(slot)} - ${formatTime12Hour(nextHour)}</div>
-                                        <div class="text-right">
-                                            <span class="font-semibold text-emerald-800">Available</span>
-                                        </div>
-                                    </div>
-                                    `;
-                                }
-                            }).join('')}
-                        </div>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl card-shadow">
-                        <h2 class="text-xl font-bold text-gray-800 mb-4">Manual Booking</h2>
-                        <div class="space-y-4">
-                            <div class="relative">
-                                <label class="block text-sm font-medium text-gray-600">Player Name</label>
-                                <input type="text" id="manual-booking-name" value="${ownerAppState.manualBookingName}" placeholder="Search or type new name..." class="mt-1 p-2 w-full border rounded-md">
-                                ${ownerAppState.playerSearchQuery ? `
-                                <div class="search-results-container absolute w-full mt-1 border bg-white rounded-md max-h-48 overflow-y-auto z-10 shadow-lg">
-                                    ${filteredPlayers.length > 0 ? filteredPlayers.map(p => `
-                                        <div class="player-select-item flex items-center p-2 hover:bg-gray-100 cursor-pointer" data-player-id="${p.id}">
-                                            <img src="${p.image}" class="w-8 h-8 rounded-full mr-3" onerror="this.onerror=null;this.src='https://placehold.co/32x32/E0E0E0/333333?text=P';">
-                                            <div>
-                                                <p class="font-semibold text-sm">${p.name}</p>
-                                                <p class="text-xs text-gray-500">${p.phone}</p>
-                                            </div>
-                                        </div>
-                                    `).join('') : '<p class="p-2 text-sm text-gray-500">No players found. Type to add new.</p>'}
-                                </div>
-                                ` : ''}
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-600">Player Phone</label>
-                                <input type="text" id="manual-booking-phone" value="${ownerAppState.manualBookingPhone}" placeholder="e.g., 012-2345-6789" class="mt-1 p-2 w-full border rounded-md">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-600">Time Slot</label>
-                                <select id="manual-booking-time" class="mt-1 p-2 w-full border rounded-md bg-white">
-                                    ${timeSlots.map(slot => {
-                                        let nextHourNumber = (parseInt(slot.split(':')[0]) + 1) % 24;
-                                        const nextHour = `${String(nextHourNumber).padStart(2, '0')}:00`;
-                                        return `<option value="${slot}">${formatTime12Hour(slot)} - ${formatTime12Hour(nextHour)}</option>`
-                                    }).join('')}
-                                </select>
-                            </div>
-                        </div>
-                        <button id="add-booking-button" class="mt-6 w-full bg-emerald-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-emerald-700 transition">Add Booking</button>
-                    </div>
+                                 if(booking && player) {
+                                     const remainingToPay = booking.revenue - booking.amountPaid;
+                                     return `
+                                      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center p-4 rounded-lg bg-amber-50 border-amber-200 border">
+                                          <div class="flex items-center md:col-span-2">
+                                              <img src="${player.image}" class="w-12 h-12 rounded-full mr-4" onerror="this.onerror=null;this.src='https://placehold.co/48x48/E0E0E0/333333?text=P';">
+                                              <div>
+                                                   <p class="font-bold text-gray-800">${player.name}</p>
+                                                   <p class="text-sm text-gray-500">${player.phone}</p>
+                                                   <p class="text-xs text-gray-500">${formatTime12Hour(slot)} - ${formatTime12Hour(nextHour)}</p>
+                                              </div>
+                                          </div>
+                                          <div class="flex items-center justify-end space-x-2">
+                                              ${remainingToPay <= 0 ? `
+                                                   <div class="p-2 rounded-md bg-green-100 text-green-800 font-semibold text-center">
+                                                       <p>Fully Paid</p>
+                                                       <p class="text-sm">${booking.revenue} EGP</p>
+                                                   </div>
+                                              ` : `
+                                                   <div>
+                                                       <p class="text-sm text-gray-600">Paid: <span class="font-bold text-gray-800">${booking.amountPaid} EGP</span></p>
+                                                       <p class="text-sm text-red-600">Due: <span class="font-bold">${remainingToPay} EGP</span></p>
+                                                   </div>
+                                              `}
+                                              <button data-action="cancel-booking" data-booking-id="${booking.id}" class="p-2 h-10 w-10 bg-red-100 text-red-600 rounded-md hover:bg-red-200 transition flex-shrink-0">
+                                                  <i class="fas fa-trash-alt"></i>
+                                              </button>
+                                          </div>
+                                      </div>
+                                      `;
+                                 } else {
+                                     return `
+                                      <div class="grid grid-cols-2 items-center p-4 rounded-lg bg-emerald-50 border-emerald-200 border">
+                                          <div class="font-semibold text-gray-800">${formatTime12Hour(slot)} - ${formatTime12Hour(nextHour)}</div>
+                                          <div class="text-right">
+                                              <span class="font-semibold text-emerald-800">Available</span>
+                                          </div>
+                                      </div>
+                                      `;
+                                 }
+                             }).join('')}
+                         </div>
+                     </div>
+                     <div class="bg-white p-6 rounded-xl card-shadow">
+                         <h2 class="text-xl font-bold text-gray-800 mb-4">Manual Booking</h2>
+                         <div class="space-y-4">
+                             <div class="relative">
+                                 <label class="block text-sm font-medium text-gray-600">Player Name</label>
+                                 <input type="text" id="manual-booking-name" value="${ownerAppState.manualBookingName}" placeholder="Search or type new name..." class="mt-1 p-2 w-full border rounded-md">
+                                 ${ownerAppState.playerSearchQuery ? `
+                                 <div class="search-results-container absolute w-full mt-1 border bg-white rounded-md max-h-48 overflow-y-auto z-10 shadow-lg">
+                                     ${filteredPlayers.length > 0 ? filteredPlayers.map(p => `
+                                         <div class="player-select-item flex items-center p-2 hover:bg-gray-100 cursor-pointer" data-player-id="${p.id}">
+                                             <img src="${p.image}" class="w-8 h-8 rounded-full mr-3" onerror="this.onerror=null;this.src='https://placehold.co/32x32/E0E0E0/333333?text=P';">
+                                             <div>
+                                                 <p class="font-semibold text-sm">${p.name}</p>
+                                                 <p class="text-xs text-gray-500">${p.phone}</p>
+                                             </div>
+                                         </div>
+                                     `).join('') : '<p class="p-2 text-sm text-gray-500">No players found. Type to add new.</p>'}
+                                 </div>
+                                 ` : ''}
+                             </div>
+                             <div>
+                                 <label class="block text-sm font-medium text-gray-600">Player Phone</label>
+                                 <input type="text" id="manual-booking-phone" value="${ownerAppState.manualBookingPhone}" placeholder="e.g., 012-2345-6789" class="mt-1 p-2 w-full border rounded-md">
+                             </div>
+                             <div>
+                                 <label class="block text-sm font-medium text-gray-600">Time Slot</label>
+                                 <select id="manual-booking-time" class="mt-1 p-2 w-full border rounded-md bg-white">
+                                     ${timeSlots.map(slot => {
+                                         let nextHourNumber = (parseInt(slot.split(':')[0]) + 1) % 24;
+                                         const nextHour = `${String(nextHourNumber).padStart(2, '0')}:00`;
+                                         return `<option value="${slot}">${formatTime12Hour(slot)} - ${formatTime12Hour(nextHour)}</option>`
+                                     }).join('')}
+                                 </select>
+                             </div>
+                         </div>
+                         <button id="add-booking-button" class="mt-6 w-full bg-emerald-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-emerald-700 transition">Add Booking</button>
+                     </div>
                  </div>
             `;
         }
@@ -396,41 +447,41 @@
             return `
                  <h1 class="text-3xl font-extrabold text-gray-900 mb-8">Revenue Reports</h1>
                  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                    <div class="bg-white p-6 rounded-xl card-shadow transition-shadow"><p class="text-sm font-medium text-gray-500">Total Revenue (Last 30d)</p><p class="text-3xl font-bold text-emerald-600">37,200 EGP</p></div>
-                    <div class="bg-white p-6 rounded-xl card-shadow transition-shadow"><p class="text-sm font-medium text-gray-500">Total Bookings (Last 30d)</p><p class="text-3xl font-bold text-emerald-600">124</p></div>
-                    <div class="bg-white p-6 rounded-xl card-shadow transition-shadow"><p class="text-sm font-medium text-gray-500">Avg. Booking Value</p><p class="text-3xl font-bold text-emerald-600">300 EGP</p></div>
+                     <div class="bg-white p-6 rounded-xl card-shadow transition-shadow"><p class="text-sm font-medium text-gray-500">Total Revenue (Last 30d)</p><p class="text-3xl font-bold text-emerald-600">37,200 EGP</p></div>
+                     <div class="bg-white p-6 rounded-xl card-shadow transition-shadow"><p class="text-sm font-medium text-gray-500">Total Bookings (Last 30d)</p><p class="text-3xl font-bold text-emerald-600">124</p></div>
+                     <div class="bg-white p-6 rounded-xl card-shadow transition-shadow"><p class="text-sm font-medium text-gray-500">Avg. Booking Value</p><p class="text-3xl font-bold text-emerald-600">300 EGP</p></div>
                  </div>
                  <div class="bg-white p-6 rounded-xl card-shadow transition-shadow mb-8">
-                     <h2 class="text-xl font-bold text-gray-800 mb-4">Daily Revenue (Last 7 Days)</h2>
-                     <canvas id="revenueChart"></canvas>
+                      <h2 class="text-xl font-bold text-gray-800 mb-4">Daily Revenue (Last 7 Days)</h2>
+                      <canvas id="revenueChart"></canvas>
                  </div>
                  <div class="bg-white p-6 rounded-xl card-shadow transition-shadow">
-                     <h2 class="text-xl font-bold text-gray-800 mb-4">Recent Transactions</h2>
-                     <div class="overflow-x-auto">
-                        <table class="w-full text-left">
-                            <thead>
-                                <tr class="border-b bg-gray-50">
-                                    <th class="p-3 font-semibold text-gray-600">Player</th>
-                                    <th class="p-3 font-semibold text-gray-600">Date</th>
-                                    <th class="p-3 font-semibold text-gray-600">Time</th>
-                                    <th class="p-3 font-semibold text-gray-600 text-right">Amount</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            ${ownerMockData.bookings.slice(0, 5).map(b => {
-                                const player = ownerMockData.allPlayers.find(p => p.id === b.playerId);
-                                return `
-                                <tr class="border-b">
-                                    <td class="p-3 flex items-center"><img src="${player.image}" class="w-8 h-8 rounded-full mr-3" onerror="this.onerror=null;this.src='https://placehold.co/32x32/E0E0E0/333333?text=P';">${player.name}</td>
-                                    <td class="p-3">${b.date}</td>
-                                    <td class="p-3">${formatTime12Hour(b.time)}</td>
-                                    <td class="p-3 text-right font-semibold">${b.revenue} EGP</td>
-                                </tr>
-                                `
-                            }).join('')}
-                            </tbody>
-                        </table>
-                     </div>
+                      <h2 class="text-xl font-bold text-gray-800 mb-4">Recent Transactions</h2>
+                      <div class="overflow-x-auto">
+                          <table class="w-full text-left">
+                              <thead>
+                                  <tr class="border-b bg-gray-50">
+                                      <th class="p-3 font-semibold text-gray-600">Player</th>
+                                      <th class="p-3 font-semibold text-gray-600">Date</th>
+                                      <th class="p-3 font-semibold text-gray-600">Time</th>
+                                      <th class="p-3 font-semibold text-gray-600 text-right">Amount</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                              ${ownerMockData.bookings.slice(0, 5).map(b => {
+                                  const player = ownerMockData.allPlayers.find(p => p.id === b.playerId);
+                                  return `
+                                  <tr class="border-b">
+                                      <td class="p-3 flex items-center"><img src="${player.image}" class="w-8 h-8 rounded-full mr-3" onerror="this.onerror=null;this.src='https://placehold.co/32x32/E0E0E0/333333?text=P';">${player.name}</td>
+                                      <td class="p-3">${b.date}</td>
+                                      <td class="p-3">${formatTime12Hour(b.time)}</td>
+                                      <td class="p-3 text-right font-semibold">${b.revenue} EGP</td>
+                                  </tr>
+                                  `
+                              }).join('')}
+                              </tbody>
+                          </table>
+                      </div>
                  </div>
             `;
         }
@@ -466,6 +517,16 @@
         }
 
         function attachOwnerEventListeners() {
+            // Profile dropdown logic
+            const profileButton = document.getElementById('profile-button');
+            const profileDropdown = document.getElementById('profile-dropdown');
+            if (profileButton && profileDropdown) {
+                profileButton.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    profileDropdown.classList.toggle('hidden');
+                });
+            }
+
             // Mobile menu toggle
             const mobileMenuButton = document.getElementById('mobile-menu-button');
             if (mobileMenuButton) {
@@ -476,26 +537,19 @@
                 });
             }
 
-            // Profile dropdown
-            const profileButton = document.getElementById('profile-button');
-            if (profileButton) {
-                profileButton.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    ownerAppState.isProfileDropdownOpen = !ownerAppState.isProfileDropdownOpen;
-                    renderOwnerPage();
-                });
-            }
+            // Global click handler to close menus
             document.body.addEventListener('click', (e) => {
                 let changed = false;
-                if (ownerAppState.isProfileDropdownOpen) {
-                    ownerAppState.isProfileDropdownOpen = false;
-                    changed = true;
+                if (profileDropdown && !profileDropdown.contains(e.target) && !e.target.closest('#profile-button')) {
+                    if (!profileDropdown.classList.contains('hidden')) {
+                        profileDropdown.classList.add('hidden');
+                        changed = true;
+                    }
                 }
                 if (ownerAppState.isSidebarOpen && !e.target.closest('#sidebar')) {
                     ownerAppState.isSidebarOpen = false;
                     changed = true;
                 }
-                // Close search results if clicking outside
                 const searchContainer = document.querySelector('.search-results-container');
                 if (searchContainer && !searchContainer.contains(e.target) && e.target.id !== 'manual-booking-name') {
                     ownerAppState.playerSearchQuery = '';
@@ -510,16 +564,7 @@
                     e.preventDefault();
                     e.stopPropagation();
                     const page = e.currentTarget.dataset.page;
-                    if(page === 'player-dashboard') {
-                        window.location.href = 'player-dashboard.html';
-                        return;
-                    }
-                     if(page === 'coach-dashboard') {
-                        window.location.href = 'coach-dashboard.html';
-                        return;
-                    }
                     ownerAppState.activePage = page;
-                    ownerAppState.isProfileDropdownOpen = false;
                     ownerAppState.isSidebarOpen = false;
                     window.scrollTo(0, 0);
                     renderOwnerPage();
@@ -534,20 +579,25 @@
                 });
 
                 const nameInput = document.getElementById('manual-booking-name');
-                nameInput.addEventListener('input', (e) => {
-                    ownerAppState.playerSearchQuery = e.target.value;
-                    ownerAppState.manualBookingName = e.target.value;
-                    if (!ownerMockData.allPlayers.some(p => p.name === e.target.value)) {
-                        ownerAppState.manualBookingPhone = '';
-                    }
-                    renderOwnerPage();
-                    document.getElementById('manual-booking-name').focus();
-                });
+                if (nameInput) {
+                    nameInput.addEventListener('input', (e) => {
+                        ownerAppState.playerSearchQuery = e.target.value;
+                        ownerAppState.manualBookingName = e.target.value;
+                        if (!ownerMockData.allPlayers.some(p => p.name === e.target.value)) {
+                            ownerAppState.manualBookingPhone = '';
+                        }
+                        renderOwnerPage();
+                        const newNameInput = document.getElementById('manual-booking-name');
+                        if (newNameInput) newNameInput.focus();
+                    });
+                }
 
                 const phoneInput = document.getElementById('manual-booking-phone');
-                phoneInput.addEventListener('input', (e) => {
-                    ownerAppState.manualBookingPhone = e.target.value;
-                });
+                if (phoneInput) {
+                    phoneInput.addEventListener('input', (e) => {
+                        ownerAppState.manualBookingPhone = e.target.value;
+                    });
+                }
 
                 document.querySelectorAll('.player-select-item').forEach(item => {
                     item.addEventListener('click', (e) => {
@@ -561,17 +611,19 @@
                 });
                 
                 const addBookingButton = document.getElementById('add-booking-button');
-                 addBookingButton.addEventListener('click', () => {
-                     const name = ownerAppState.manualBookingName;
-                     const phone = ownerAppState.manualBookingPhone;
-                     if(name && phone) {
-                        alert(`Booking for ${name} (${phone}) would be added in a real app.`);
-                     } else {
-                        alert('Please enter player name and phone number.');
-                     }
-                 });
+                if (addBookingButton) {
+                    addBookingButton.addEventListener('click', () => {
+                        const name = ownerAppState.manualBookingName;
+                        const phone = ownerAppState.manualBookingPhone;
+                        if(name && phone) {
+                            alert(`Booking for ${name} (${phone}) would be added in a real app.`);
+                        } else {
+                            alert('Please enter player name and phone number.');
+                        }
+                    });
+                }
 
-                 document.querySelectorAll('[data-action="cancel-booking"]').forEach(button => {
+                document.querySelectorAll('[data-action="cancel-booking"]').forEach(button => {
                     button.addEventListener('click', (e) => {
                         const bookingId = parseInt(e.currentTarget.dataset.bookingId);
                         const bookingIndex = ownerMockData.bookings.findIndex(b => b.id === bookingId);
@@ -587,7 +639,6 @@
         function renderOwnerPage() {
             const appContainer = document.getElementById('owner-app-container');
             appContainer.innerHTML = `
-                ${renderOwnerHeader()}
                 <div class="flex">
                     ${renderOwnerSidebar()}
                     <main class="flex-1 p-4 sm:p-6 md:p-10 bg-gray-50">
@@ -596,7 +647,6 @@
                         </div>
                     </main>
                 </div>
-                ${renderOwnerBottomNav()}
             `;
             renderMainOwnerContent();
             attachOwnerEventListeners();
@@ -627,6 +677,5 @@
 
         document.addEventListener('DOMContentLoaded', renderOwnerPage);
     </script>
-
 </body>
 </html>

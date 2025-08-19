@@ -8,16 +8,161 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts - Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         body {
             font-family: 'Inter', sans-serif;
             margin: 0;
             background-color: #f8fafc; /* Tailwind gray-50 */
         }
+        .enhanced-shadow {
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .enhanced-shadow:hover {
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1), 0 6px 12px -6px rgba(0, 0, 0, 0.08);
+            transform: translateY(-2px);
+        }
+        .nav-link-animated {
+            position: relative;
+            transition: all 0.3s ease;
+            padding-bottom: 4px;
+        }
+        .nav-link-animated::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            background-color: #10b981;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        .nav-link-animated:hover {
+            color: #059669;
+            transform: translateY(-2px);
+        }
+        .nav-link-animated:hover::after {
+            width: 100%;
+        }
     </style>
 </head>
 <body>
+    <header class="bg-white shadow-lg sticky top-0 z-50">
+  <nav class="container mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
+    <div class="flex-1 flex justify-start items-center">
+      <button id="mobile-menu-button" class="md:hidden text-gray-600 hover:text-emerald-600 focus:outline-none mr-4">
+        <i class="fas fa-bars fa-lg"></i>
+      </button>
+      <a href="index.html" class="flex items-center space-x-2">
+        <img src="images/logo/Sportiva logo.png" alt="Sportiva Logo" class="h-10 w-10" onerror="this.onerror=null;this.src='https://placehold.co/40x40/10b981/FFFFFF?text=S';">
+        <span class="text-3xl font-bold text-emerald-600">Sportiva</span>
+      </a>
+    </div>
+
+    <div class="hidden md:flex flex-1 justify-center items-center space-x-12 text-xl">
+      <a href="fields.html" class="nav-link-animated text-gray-700 font-semibold">Fields</a>
+      <a href="find.html" class="nav-link-animated text-gray-700 font-semibold">Find</a>
+      <a href="marketplace.html" class="nav-link-animated text-gray-700 font-semibold">Marketplace</a>
+    </div>
+
+    <div class="flex-1 flex justify-end">
+      <div class="relative">
+        <button id="profile-button" class="block rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">
+          <img src="images/people/people 1.png" alt="Your profile picture" class="w-10 h-10 rounded-full object-cover border-2 border-emerald-500 hover:border-emerald-600 transition" onerror="this.onerror=null;this.src='https://placehold.co/40x40/E0E0E0/333333?text=KA';">
+        </button>
+        <div id="profile-dropdown" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-md enhanced-shadow z-50 ring-1 ring-black ring-opacity-5">
+          <div class="px-4 py-3 border-b">
+            <p class="text-sm font-semibold text-gray-800">Karim Ahmed</p>
+            <p class="text-xs text-gray-500 truncate">karim.ahmed@example.com</p>
+          </div>
+          <div class="py-1 border-b">
+            <p class="px-4 pt-2 pb-1 text-xs font-semibold text-gray-400 uppercase">Switch Dashboard</p>
+            <a href="player-dashboard.html" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+              <i class="fas fa-user w-5 mr-2 text-gray-500"></i> Player
+            </a>
+            <a href="coach-dashboard.html" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+              <i class="fas fa-user-tie w-5 mr-2 text-gray-500"></i> Coach
+            </a>
+            <a href="field-owner-dashboard.html" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+              <i class="fas fa-map-marked-alt w-5 mr-2 text-gray-500"></i> Field Owner
+            </a>
+            <a href="marketplace-dashboard.html" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+              <i class="fas fa-store w-5 mr-2 text-gray-500"></i> Marketplace
+            </a>
+          </div>
+          <div class="py-1">
+            <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+              <i class="fas fa-cog w-5 mr-2 text-gray-500"></i> Settings
+            </a>
+            <a href="#" class="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+              <i class="fas fa-sign-out-alt w-5 mr-2"></i> Sign Out
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div id="mobile-menu" class="md:hidden hidden bg-white border-t border-gray-200">
+    <a href="fields.html" class="block py-3 px-4 text-lg text-gray-700 font-semibold hover:bg-gray-100">Fields</a>
+    <a href="find.html" class="block py-3 px-4 text-lg text-gray-700 font-semibold hover:bg-gray-100">Find</a>
+    <a href="marketplace.html" class="block py-3 px-4 text-lg text-gray-700 font-semibold hover:bg-gray-100">Marketplace</a>
+  </div>
+</header>
+
     <div id="app"></div>
+
+    <!-- New Footer -->
+    <footer class="bg-gray-900 text-white">
+        <div class="container mx-auto py-12 px-4 sm:px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-center md:text-left">
+                <div class="md:col-span-1">
+                    <h2 class="text-3xl font-bold text-emerald-500">Sportiva</h2>
+                    <p class="text-gray-400 mt-2">Your ultimate destination for sports.</p>
+                    <div class="flex justify-center md:justify-start space-x-4 mt-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-facebook-f fa-lg"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-twitter fa-lg"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-instagram fa-lg"></i></a>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="font-semibold tracking-wider uppercase">Dashboards</h3>
+                    <ul class="mt-4 space-y-2">
+                        <li><a href="player-dashboard.html" class="text-gray-400 hover:text-white">Player</a></li>
+                        <li><a href="coach-dashboard.html" class="text-gray-400 hover:text-white">Coach</a></li>
+                        <li><a href="field-owner-dashboard.html" class="text-gray-400 hover:text-white">Field Owner</a></li>
+                        <li><a href="marketplace-dashboard.html" class="text-gray-400 hover:text-white">Marketplace</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="font-semibold tracking-wider uppercase">Find</h3>
+                    <ul class="mt-4 space-y-2">
+                        <li><a href="find.html" class="text-gray-400 hover:text-white">Players</a></li>
+                        <li><a href="find.html" class="text-gray-400 hover:text-white">Teams</a></li>
+                        <li><a href="find.html" class="text-gray-400 hover:text-white">Coaches</a></li>
+                        <li><a href="find.html" class="text-gray-400 hover:text-white">Challenges</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="font-semibold tracking-wider uppercase">More</h3>
+                    <ul class="mt-4 space-y-2">
+                        <li><a href="fields.html" class="text-gray-400 hover:text-white">Fields</a></li>
+                        <li><a href="marketplace.html" class="text-gray-400 hover:text-white">Marketplace</a></li>
+                        <li><a href="about-us.html" class="text-gray-400 hover:text-white">About Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-6 text-center text-gray-500">
+                <p>&copy; 2025 Sportiva. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
 
     <script>
         // --- MOCK DATA ---
@@ -190,90 +335,6 @@
         }
 
         // --- PAGE RENDERING FUNCTIONS ---
-        function renderHeader() {
-            return `
-                <header class="bg-white shadow-sm sticky top-0 z-40">
-                    <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-                        <a href="index.html" class="text-3xl font-bold text-emerald-600">Sportiva</a>
-                        <div class="hidden md:flex items-center space-x-8">
-                            <a href="fields.html" class="relative text-gray-600 hover:text-emerald-600 transition group py-2">
-                                Fields
-                                <span class="absolute bottom-0 left-0 w-full h-0.5 bg-emerald-600 transform scale-x-100 transition-transform duration-300"></span>
-                            </a>
-                            <a href="community.html" class="relative text-gray-600 hover:text-emerald-600 transition group py-2">
-                                Find
-                                <span class="absolute bottom-0 left-0 w-full h-0.5 bg-emerald-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
-                            </a>
-                            <a href="marketplace.html" class="relative text-gray-600 hover:text-emerald-600 transition group py-2">
-                                Marketplace
-                                <span class="absolute bottom-0 left-0 w-full h-0.5 bg-emerald-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
-                            </a>
-                            <a href="dashboard.html" class="relative text-gray-600 hover:text-emerald-600 transition group py-2">
-                                Dashboard
-                                <span class="absolute bottom-0 left-0 w-full h-0.5 bg-emerald-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
-                            </a>
-                        </div>
-                        <div class="hidden md:flex items-center space-x-4">
-                            <a href="auth.html" class="bg-emerald-600 text-white font-semibold px-5 py-2 rounded-lg hover:bg-emerald-700 transition">Login</a>
-                        </div>
-                        <button id="mobile-menu-button" class="md:hidden text-gray-700 focus:outline-none">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-                        </button>
-                    </nav>
-                </header>
-            `;
-        }
-
-        function renderFooter() {
-            return `
-                <footer class="bg-gray-900 text-white py-12">
-                    <div class="container mx-auto px-6">
-                        <div class="grid md:grid-cols-4 gap-8 text-center md:text-left">
-                            <div class="col-span-1">
-                                <h3 class="text-3xl font-bold text-emerald-500 mb-4">Sportiva</h3>
-                                <p class="text-gray-400 text-sm">Connecting players and venues across Egypt.</p>
-                            </div>
-                            <div class="col-span-1">
-                                <h3 class="text-lg font-semibold text-white mb-4">Quick Links</h3>
-                                <ul class="space-y-2 text-gray-400">
-                                    <li><a href="index.html" class="hover:text-emerald-400 transition">Home</a></li>
-                                    <li><a href="fields.html" class="hover:text-emerald-400 transition">Book a Field</a></li>
-                                    <li><a href="community.html" class="hover:text-emerald-400 transition">Community</a></li>
-                                    <li><a href="marketplace.html" class="hover:text-emerald-400 transition">Marketplace</a></li>
-                                    <li><a href="dashboard.html" class="hover:text-emerald-400 transition">Dashboard</a></li>
-                                </ul>
-                            </div>
-                            <div class="col-span-1">
-                                <h3 class="text-lg font-semibold text-white mb-4">Support</h3>
-                                <ul class="space-y-2 text-gray-400">
-                                    <li><a href="#" class="hover:text-emerald-400 transition">FAQ</a></li>
-                                    <li><a href="#" class="hover:text-emerald-400 transition">Help Center</a></li>
-                                    <li><a href="#" class="hover:text-emerald-400 transition">Contact Us</a></li>
-                                </ul>
-                            </div>
-                            <div class="col-span-1">
-                                <h3 class="text-lg font-semibold text-white mb-4">Follow Us</h3>
-                                <div class="flex justify-center md:justify-start space-x-4 text-2xl">
-                                    <a href="#" class="text-gray-400 hover:text-emerald-400 transition">📘</a> <!-- Facebook -->
-                                    <a href="#" class="text-gray-400 hover:text-emerald-400 transition">🐦</a> <!-- Twitter -->
-                                    <a href="#" class="text-gray-400 hover:text-emerald-400 transition">📸</a> <!-- Instagram -->
-                                    <a href="#" class="text-gray-400 hover:text-emerald-400 transition">🔗</a> <!-- LinkedIn -->
-                                </div>
-                                <h3 class="text-lg font-semibold text-white mt-6 mb-4">Legal</h3>
-                                <ul class="space-y-2 text-gray-400">
-                                    <li><a href="#" class="hover:text-emerald-400 transition">Privacy Policy</a></li>
-                                    <li><a href="#" class="hover:text-emerald-400 transition">Terms of Service</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="mt-10 border-t border-gray-700 pt-8 text-center text-gray-500 text-sm">
-                            <p>&copy; ${new Date().getFullYear()} Sportiva. All Rights Reserved.</p>
-                        </div>
-                    </div>
-                </footer>
-            `;
-        }
-
         function renderBrowseFieldsPage() {
             const currentFilters = appState.filters;
             let filteredFields = mockFields.filter(f => {
@@ -982,9 +1043,6 @@
             let contentHtml = '';
             let pageToAttachListenersFor = appState.currentPage; // Store current page for listener attachment
 
-            // Always render header and footer
-            contentHtml += renderHeader();
-
             switch (appState.currentPage) {
                 case 'browse_fields':
                     contentHtml += renderBrowseFieldsPage();
@@ -1006,8 +1064,6 @@
                     pageToAttachListenersFor = 'browse_fields';
             }
 
-            contentHtml += renderFooter();
-
             // Render modal if content exists
             if (appState.modalContent) {
                 contentHtml += renderModal(appState.modalContent.title, appState.modalContent.message);
@@ -1027,6 +1083,43 @@
 
         // Initial render when the DOM is fully loaded
         document.addEventListener('DOMContentLoaded', () => {
+            // Get elements for dropdowns
+            const profileButton = document.getElementById('profile-button');
+            const profileDropdown = document.getElementById('profile-dropdown');
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            // --- Event Listener for Profile Dropdown ---
+            if (profileButton && profileDropdown) {
+                profileButton.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Prevent the body click from firing immediately
+                    profileDropdown.classList.toggle('hidden');
+                    mobileMenu.classList.add('hidden'); // Close mobile menu if open
+                });
+            }
+
+            // --- Event Listener for Mobile Menu ---
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Prevent the body click from firing immediately
+                    mobileMenu.classList.toggle('hidden');
+                    profileDropdown.classList.add('hidden'); // Close profile dropdown if open
+                });
+            }
+
+            // --- Global Click Listener to Close Menus ---
+            document.body.addEventListener('click', (e) => {
+                // Close profile dropdown if click is outside
+                if (profileDropdown && !profileDropdown.contains(e.target) && !e.target.closest('#profile-button')) {
+                    profileDropdown.classList.add('hidden');
+                }
+                // Close mobile menu if click is outside
+                if (mobileMenu && !mobileMenu.contains(e.target) && !e.target.closest('#mobile-menu-button')) {
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+
+            // Then, render the initial app page
             renderPage();
         });
     </script>

@@ -4,11 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sportiva - My Dashboard</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts - Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         body {
@@ -29,13 +26,13 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #9ca3af; /* gray-400 */
         }
-        /* Sidebar active link style (original emerald theme) */
+        /* Sidebar active link style */
         .sidebar-link-active {
             background-color: #ecfdf5; /* emerald-50 */
             color: #059669; /* emerald-600 */
             border-right: 3px solid #059669;
         }
-        /* Bottom nav active link style (new blue theme to match new nav) */
+        /* Bottom nav active link style */
         .bottom-nav-link-active {
             color: #2563eb; /* blue-600 */
         }
@@ -47,55 +44,97 @@
             transform: translateX(100%);
         }
         .card-shadow {
-             box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07);
         }
         .card-shadow:hover {
             box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.07), 0 4px 6px -4px rgb(0 0 0 / 0.07);
+        }
+        /* Animation for Nav Links */
+        .nav-link-animated {
+            position: relative;
+            transition: all 0.3s ease;
+            padding-bottom: 4px; /* Space for the underline */
+        }
+        .nav-link-animated::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            background-color: #10b981; /* emerald-500 */
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        .nav-link-animated:hover {
+            color: #059669; /* emerald-600 */
+            transform: translateY(-2px); /* Slight lift effect */
+        }
+        .nav-link-animated:hover::after {
+            width: 100%;
+        }
+        
+        /* Enhanced Shadow */
+        .enhanced-shadow {
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .enhanced-shadow:hover {
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1), 0 6px 12px -6px rgba(0, 0, 0, 0.08);
+            transform: translateY(-2px);
         }
     </style>
 </head>
 <body class="bg-gray-50 flex flex-col min-h-screen">
 
     <div id="app-container" class="flex-grow pb-20 md:pb-0">
-        <!-- App content will be rendered here by JavaScript -->
-    </div>
+        </div>
     
-    <!-- New Footer from Marketplace -->
-    <footer class="bg-gray-800 text-white">
+    <footer class="bg-gray-900 text-white">
         <div class="container mx-auto py-12 px-4 sm:px-6">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div>
-                    <h2 class="text-2xl font-bold">Sportiva</h2>
-                    <p class="text-gray-400 mt-2">Your one-stop shop for sports.</p>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-center md:text-left">
+                <div class="md:col-span-1">
+                    <h2 class="text-3xl font-bold text-emerald-500">Sportiva</h2>
+                    <p class="text-gray-400 mt-2">Your ultimate destination for sports.</p>
+                    <div class="flex justify-center md:justify-start space-x-4 mt-4">
+                            <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-facebook-f fa-lg"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-twitter fa-lg"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-instagram fa-lg"></i></a>
+                    </div>
                 </div>
+
                 <div>
-                    <h3 class="font-semibold tracking-wider">Dashboards</h3>
+                    <h3 class="font-semibold tracking-wider uppercase">Dashboards</h3>
                     <ul class="mt-4 space-y-2">
-                        <li><a href="player-dashboard.html" class="text-gray-400 hover:text-white">Player Dashboard</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Field Owner Dashboard</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Coach Dashboard</a></li>
-                        <li><a href="marketplace-dashboard.html" class="text-gray-400 hover:text-white">Marketplace Dashboard</a></li>
+                        <li><a href="player-dashboard.html" class="text-gray-400 hover:text-white">Player</a></li>
+                        <li><a href="coach-dashboard.html" class="text-gray-400 hover:text-white">Coach</a></li>
+                        <li><a href="field-owner-dashboard.html" class="text-gray-400 hover:text-white">Field Owner</a></li>
+                        <li><a href="marketplace-dashboard.html" class="text-gray-400 hover:text-white">Marketplace</a></li>
                     </ul>
                 </div>
+
                 <div>
-                    <h3 class="font-semibold tracking-wider">Support</h3>
+                    <h3 class="font-semibold tracking-wider uppercase">Find</h3>
                     <ul class="mt-4 space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-white">FAQ</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Help Center</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Contact Us</a></li>
+                        <li><a href="find.html" class="text-gray-400 hover:text-white">Players</a></li>
+                        <li><a href="find.html" class="text-gray-400 hover:text-white">Teams</a></li>
+                        <li><a href="find.html" class="text-gray-400 hover:text-white">Coaches</a></li>
+                        <li><a href="find.html" class="text-gray-400 hover:text-white">Challenges</a></li>
                     </ul>
                 </div>
+
                 <div>
-                     <h3 class="font-semibold tracking-wider">Follow Us</h3>
-                     <div class="flex space-x-4 mt-4">
-                         <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
-                         <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
-                         <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
-                     </div>
+                    <h3 class="font-semibold tracking-wider uppercase">More</h3>
+                    <ul class="mt-4 space-y-2">
+                        <li><a href="fields.html" class="text-gray-400 hover:text-white">Fields</a></li>
+                        <li><a href="marketplace.html" class="text-gray-400 hover:text-white">Marketplace</a></li>
+                        <li><a href="about-us.html" class="text-gray-400 hover:text-white">About Us</a></li>
+                    </ul>
                 </div>
             </div>
             <div class="border-t border-gray-700 mt-8 pt-6 text-center text-gray-500">
-                <p>&copy; 2025 Sportiva. All Rights Reserved.</p>
+                <p>© 2025 Sportiva. All Rights Reserved.</p>
             </div>
         </div>
     </footer>
@@ -110,7 +149,7 @@
             modalContent: null // To hold modal HTML content
         };
 
-        // --- MOCK DATA (EXPANDED FOR ALL SECTIONS) ---
+        // --- MOCK DATA ---
         const mockData = {
             user: {
                 name: "Karim Ahmed",
@@ -167,42 +206,65 @@
 
         // --- TEMPLATE RENDERING FUNCTIONS ---
 
-        // New Header Function from Marketplace, with original profile icon
         function renderHeader() {
+            // This function renders the sticky top navigation bar.
             return `
-                <header class="bg-white shadow-sm sticky top-0 z-50">
-                    <nav class="container mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
-                        <div class="flex items-center">
-                            <button id="mobile-menu-button" class="md:hidden text-gray-600 hover:text-blue-600 focus:outline-none mr-4">
-                                <i class="fas fa-bars fa-lg"></i>
-                            </button>
-                            <a href="index.html" class="flex items-center space-x-2">
-                                <img src="images/logo/Sportiva logo.png" alt="Sportiva Logo" class="h-10 w-10" onerror="this.onerror=null;this.src='https://placehold.co/40x40/10b981/FFFFFF?text=S';">
-                                <span class="text-3xl font-bold text-emerald-600">Sportiva</span>
-                            </a>
-                        </div>
-                        <div class="hidden md:flex items-center space-x-8">
-                             <a href="fields.html" class="text-gray-600 hover:text-emerald-600 transition">Fields</a>
-                             <a href="community.html" class="text-gray-600 hover:text-emerald-600 transition">Community</a>
-                             <a href="marketplace.html" class="text-gray-600 hover:text-emerald-600 transition">Marketplace</a>
-                             <a href="about-us.html" class="text-gray-600 hover:text-emerald-600 transition">About Us</a>
-                        </div>
+            <header class="bg-white shadow-lg sticky top-0 z-50">
+                <nav class="container mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
+                    <div class="flex-1 flex justify-start items-center">
+                        <button id="mobile-menu-button" class="md:hidden text-gray-600 hover:text-emerald-600 focus:outline-none mr-4">
+                            <i class="fas fa-bars fa-lg"></i>
+                        </button>
+                        <a href="index.html" class="flex items-center space-x-2">
+                            <img src="images/logo/Sportiva logo.png" alt="Sportiva Logo" class="h-10 w-10" onerror="this.onerror=null;this.src='https://placehold.co/40x40/10b981/FFFFFF?text=S';">
+                            <span class="text-3xl font-bold text-emerald-600">Sportiva</span>
+                        </a>
+                    </div>
+                    
+                    <div class="hidden md:flex flex-1 justify-center items-center space-x-12 text-xl">
+                        <a href="fields.html" class="nav-link-animated text-gray-700 font-semibold">Fields</a>
+                        <a href="find.html" class="nav-link-animated text-gray-700 font-semibold">Find</a>
+                        <a href="marketplace.html" class="nav-link-animated text-gray-700 font-semibold">Marketplace</a>
+                    </div>
+
+                    <div class="flex-1 flex justify-end">
                         <div class="relative">
-                            <button id="profile-button" class="block">
-                                <img src="${mockData.user.profileImage}" alt="Profile" class="w-10 h-10 rounded-full object-cover border-2 border-emerald-500 hover:border-emerald-600 transition" onerror="this.onerror=null;this.src='https://placehold.co/40x40/E0E0E0/333333?text=KA';">
+                            <button id="profile-button" class="block rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">
+                                <img src="${mockData.user.profileImage}" alt="Your profile picture" class="w-10 h-10 rounded-full object-cover border-2 border-emerald-500 hover:border-emerald-600 transition" onerror="this.onerror=null;this.src='https://placehold.co/40x40/E0E0E0/333333?text=KA';">
                             </button>
-                            <div id="profile-dropdown" class="${appState.isProfileDropdownOpen ? '' : 'hidden'} absolute right-0 mt-2 w-48 bg-white rounded-md shadow-xl z-50">
+                            <div id="profile-dropdown" class="${appState.isProfileDropdownOpen ? '' : 'hidden'} absolute right-0 mt-2 w-56 bg-white rounded-md shadow-xl z-50 ring-1 ring-black ring-opacity-5">
                                 <div class="px-4 py-3 border-b">
                                     <p class="text-sm font-semibold text-gray-800">${mockData.user.name}</p>
                                     <p class="text-xs text-gray-500 truncate">${mockData.user.email}</p>
                                 </div>
-                                <a href="#" data-page="overview" class="nav-link block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">My Dashboard</a>
-                                <a href="#" data-page="settings" class="nav-link block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
-                                <a href="#" data-page="signout" class="nav-link block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Sign Out</a>
+                                <div class="py-1 border-b">
+                                    <p class="px-4 pt-2 pb-1 text-xs font-semibold text-gray-400 uppercase">Switch Dashboard</p>
+                                    <a href="player-dashboard.html" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fas fa-user w-5 mr-2 text-gray-500"></i> Player
+                                    </a>
+                                    <a href="coach-dashboard.html" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fas fa-user-tie w-5 mr-2 text-gray-500"></i> Coach
+                                    </a>
+                                    <a href="field-owner-dashboard.html" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fas fa-map-marked-alt w-5 mr-2 text-gray-500"></i> Field Owner
+                                    </a>
+                                    <a href="marketplace-dashboard.html" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fas fa-store w-5 mr-2 text-gray-500"></i> Marketplace
+                                    </a>
+                                </div>
+                                <div class="py-1">
+                                    <a href="#" data-page="settings" class="nav-link flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fas fa-cog w-5 mr-2 text-gray-500"></i> Settings
+                                    </a>
+                                    <a href="#" data-page="signout" class="nav-link flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+                                        <i class="fas fa-sign-out-alt w-5 mr-2"></i> Sign Out
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                    </nav>
-                </header>
+                    </div>
+                </nav>
+            </header>
             `;
         }
 
@@ -217,7 +279,7 @@
             ];
 
             return `
-                <aside id="sidebar" class="fixed top-0 left-0 w-64 bg-white h-full shadow-lg transform ${appState.isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out z-50 md:sticky md:top-[72px] md:h-screen md:translate-x-0">
+                <aside id="sidebar" class="fixed top-0 left-0 w-64 bg-white h-full shadow-lg transform ${appState.isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out z-40 md:sticky md:top-[72px] md:h-screen md:translate-x-0">
                     <div class="p-6 text-center border-b">
                         <img src="${mockData.user.profileImage}" alt="User Profile" class="w-24 h-24 rounded-full mx-auto mb-3 border-4 border-emerald-200 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/96x96/E0E0E0/333333?text=KA';">
                         <h3 class="text-xl font-bold text-gray-800">${mockData.user.name}</h3>
@@ -236,7 +298,7 @@
         }
 
         function renderBottomNav() {
-             const navItems = [
+            const navItems = [
                 { id: 'overview', icon: 'fa-home', text: 'Home' },
                 { id: 'bookings', icon: 'fa-calendar-check', text: 'Bookings' },
                 { id: 'team', icon: 'fa-users', text: 'Team' },
@@ -260,8 +322,8 @@
             if (!appState.modalContent) return '';
             return `
                 <div id="modal-overlay" class="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50 p-4">
-                    <div class="bg-white rounded-lg shadow-xl max-w-md w-full relative p-6" onclick="event.stopPropagation()">
-                        <button onclick="closeModal()" class="absolute top-2 right-4 text-gray-500 hover:text-gray-800 text-3xl">&times;</button>
+                    <div class="bg-white rounded-lg enhanced-shadow max-w-md w-full relative p-6" onclick="event.stopPropagation()">
+                        <button onclick="closeModal()" class="absolute top-2 right-4 text-gray-500 hover:text-gray-800 text-3xl">×</button>
                         ${appState.modalContent}
                     </div>
                 </div>
@@ -269,20 +331,19 @@
         }
 
         // --- CONTENT AREA RENDER FUNCTIONS ---
-
         function renderOverviewContent() {
-             return `
+            return `
                 <h1 class="text-3xl font-extrabold text-gray-900 mb-2">Welcome back, ${mockData.user.name.split(' ')[0]}!</h1>
                 <p class="text-gray-600 mb-8">Here's your personal dashboard. Ready for the next match?</p>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-8">
-                    <div class="bg-white p-4 rounded-xl shadow-md flex flex-col justify-center items-center text-center"><div class="bg-emerald-100 text-emerald-600 p-3 rounded-full mb-2"><i class="fas fa-calendar-check fa-lg"></i></div><div><p class="text-2xl font-bold text-gray-900">${mockData.stats.bookings}</p><p class="text-xs font-medium text-gray-500">Bookings</p></div></div>
-                    <div class="bg-white p-4 rounded-xl shadow-md flex flex-col justify-center items-center text-center"><div class="bg-blue-100 text-blue-600 p-3 rounded-full mb-2"><i class="fas fa-shield-alt fa-lg"></i></div><div><p class="text-2xl font-bold text-gray-900">${mockData.stats.matches}</p><p class="text-xs font-medium text-gray-500">Matches</p></div></div>
-                    <div class="bg-white p-4 rounded-xl shadow-md flex flex-col justify-center items-center text-center"><div class="bg-orange-100 text-orange-600 p-3 rounded-full mb-2"><i class="fas fa-fire fa-lg"></i></div><div><p class="text-2xl font-bold text-gray-900">${mockData.stats.challenges}</p><p class="text-xs font-medium text-gray-500">Challenges</p></div></div>
-                    <div class="bg-white p-4 rounded-xl shadow-md flex flex-col justify-center items-center text-center"><div class="bg-purple-100 text-purple-600 p-3 rounded-full mb-2"><i class="fas fa-box fa-lg"></i></div><div><p class="text-2xl font-bold text-gray-900">${mockData.stats.orders}</p><p class="text-xs font-medium text-gray-500">Orders</p></div></div>
+                    <div class="bg-white p-4 rounded-xl enhanced-shadow flex flex-col justify-center items-center text-center"><div class="bg-emerald-100 text-emerald-600 p-3 rounded-full mb-2"><i class="fas fa-calendar-check fa-lg"></i></div><div><p class="text-2xl font-bold text-gray-900">${mockData.stats.bookings}</p><p class="text-xs font-medium text-gray-500">Bookings</p></div></div>
+                    <div class="bg-white p-4 rounded-xl enhanced-shadow flex flex-col justify-center items-center text-center"><div class="bg-blue-100 text-blue-600 p-3 rounded-full mb-2"><i class="fas fa-shield-alt fa-lg"></i></div><div><p class="text-2xl font-bold text-gray-900">${mockData.stats.matches}</p><p class="text-xs font-medium text-gray-500">Matches</p></div></div>
+                    <div class="bg-white p-4 rounded-xl enhanced-shadow flex flex-col justify-center items-center text-center"><div class="bg-orange-100 text-orange-600 p-3 rounded-full mb-2"><i class="fas fa-fire fa-lg"></i></div><div><p class="text-2xl font-bold text-gray-900">${mockData.stats.challenges}</p><p class="text-xs font-medium text-gray-500">Challenges</p></div></div>
+                    <div class="bg-white p-4 rounded-xl enhanced-shadow flex flex-col justify-center items-center text-center"><div class="bg-purple-100 text-purple-600 p-3 rounded-full mb-2"><i class="fas fa-box fa-lg"></i></div><div><p class="text-2xl font-bold text-gray-900">${mockData.stats.orders}</p><p class="text-xs font-medium text-gray-500">Orders</p></div></div>
                 </div>
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     <div class="lg:col-span-2 space-y-8">
-                        <div class="bg-white p-6 rounded-xl shadow-md">
+                        <div class="bg-white p-6 rounded-xl enhanced-shadow">
                             <h2 class="text-xl font-bold text-gray-800 mb-4">Upcoming Bookings</h2>
                             <div class="space-y-4">
                                 ${mockData.bookings.filter(b => b.status === 'Upcoming').map(b => `
@@ -299,7 +360,7 @@
                             </div>
                             <a href="fields.html" class="block text-center mt-6 w-full bg-emerald-600 text-white font-semibold py-3 rounded-lg hover:bg-emerald-700 transition">Book a New Field</a>
                         </div>
-                        <div class="bg-white p-6 rounded-xl shadow-md">
+                        <div class="bg-white p-6 rounded-xl enhanced-shadow">
                             <h2 class="text-xl font-bold text-gray-800 mb-4">Recent Marketplace Orders</h2>
                             <div class="divide-y divide-gray-200">
                                 ${mockData.orders.map(o => `
@@ -311,7 +372,7 @@
                         </div>
                     </div>
                     <div class="lg:col-span-1 space-y-8">
-                        <div class="bg-white p-6 rounded-xl shadow-md">
+                        <div class="bg-white p-6 rounded-xl enhanced-shadow">
                             <h2 class="text-xl font-bold text-gray-800 mb-4">My Team: ${mockData.team.name}</h2>
                             <div class="mb-4"><p class="text-sm font-semibold text-gray-600">Next Match:</p><p class="text-md text-gray-800">${mockData.team.nextMatch}</p><p class="text-sm text-gray-500">${mockData.team.matchDetails}</p></div>
                             <h3 class="text-lg font-semibold text-gray-700 mb-2">Team Members (${mockData.team.memberCount})</h3>
@@ -331,12 +392,12 @@
             const pastBookings = mockData.bookings.filter(b => b.status !== 'Upcoming');
             return `
                 <h1 class="text-3xl font-extrabold text-gray-900 mb-8">My Bookings</h1>
-                <div class="bg-white p-4 sm:p-6 rounded-xl shadow-md">
+                <div class="bg-white p-4 sm:p-6 rounded-xl enhanced-shadow">
                     <h2 class="text-xl font-bold text-gray-800 mb-4">Upcoming</h2>
                     ${upcomingBookings.length > 0 ? upcomingBookings.map(b => `
                     <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 bg-gray-50 rounded-lg mb-4">
                         <div class="flex items-center mb-3 sm:mb-0">
-                             <img src="${b.image}" alt="${b.field}" class="w-20 h-16 rounded-lg object-cover mr-4" onerror="this.onerror=null;this.src='https://placehold.co/80x64/E0E0E0/333333?text=Field';">
+                               <img src="${b.image}" alt="${b.field}" class="w-20 h-16 rounded-lg object-cover mr-4" onerror="this.onerror=null;this.src='https://placehold.co/80x64/E0E0E0/333333?text=Field';">
                             <div><p class="font-bold text-gray-800">${b.field}</p><p class="text-sm text-gray-500">${b.time}</p></div>
                         </div>
                         <div class="flex items-center space-x-2 self-end sm:self-center">
@@ -345,10 +406,8 @@
                         </div>
                     </div>`).join('') : '<p class="text-gray-500">No upcoming bookings.</p>'}
                 </div>
-                <div class="bg-white p-4 sm:p-6 rounded-xl shadow-md mt-8">
+                <div class="bg-white p-4 sm:p-6 rounded-xl enhanced-shadow mt-8">
                     <h2 class="text-xl font-bold text-gray-800 mb-4">History</h2>
-                    
-                    <!-- Mobile Card View -->
                     <div class="space-y-4 md:hidden">
                         ${pastBookings.map(b => `
                             <div class="bg-gray-50 rounded-lg p-4 shadow">
@@ -366,8 +425,6 @@
                             </div>
                         `).join('')}
                     </div>
-
-                    <!-- Desktop Table View -->
                     <div class="hidden md:block overflow-x-auto">
                         <table class="w-full text-left min-w-[600px]">
                             <thead><tr class="border-b text-sm text-gray-500"><th class="py-2 px-2">Field</th><th class="py-2 px-2">Date & Time</th><th class="py-2 px-2">Status</th><th class="py-2 px-2">Price</th></tr></thead>
@@ -385,7 +442,7 @@
             return `
                 <h1 class="text-3xl font-extrabold text-gray-900 mb-8">My Team</h1>
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <div class="lg:col-span-2 bg-white p-4 sm:p-6 rounded-xl shadow-md">
+                    <div class="lg:col-span-2 bg-white p-4 sm:p-6 rounded-xl enhanced-shadow">
                         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4">
                             <h2 class="text-2xl font-bold text-gray-800 mb-2 sm:mb-0">${mockData.team.name}</h2>
                             <div class="text-left sm:text-right"><p class="font-bold text-lg text-emerald-600">${mockData.team.record}</p><p class="text-sm text-gray-500">Current Record</p></div>
@@ -401,7 +458,7 @@
                         </div>
                     </div>
                     <div class="lg:col-span-1 space-y-8">
-                        <div class="bg-white p-6 rounded-xl shadow-md">
+                        <div class="bg-white p-6 rounded-xl enhanced-shadow">
                             <h3 class="text-xl font-bold text-gray-800 mb-4">Next Match</h3>
                             <p class="font-semibold text-lg text-gray-900">${mockData.team.nextMatch}</p><p class="text-gray-600">${mockData.team.matchDetails}</p>
                             <button data-action="view-match-details" class="mt-4 w-full bg-emerald-600 text-white font-semibold py-2 rounded-lg hover:bg-emerald-700 transition">Match Details</button>
@@ -412,9 +469,9 @@
         }
 
         function renderOrdersContent() {
-             return `
+            return `
                 <h1 class="text-3xl font-extrabold text-gray-900 mb-8">My Orders</h1>
-                <div class="bg-white rounded-xl shadow-md">
+                <div class="bg-white rounded-xl enhanced-shadow">
                     <div class="overflow-x-auto">
                         <table class="w-full text-left min-w-[700px]">
                             <thead class="border-b"><tr class="text-sm text-gray-500"><th class="p-4 font-medium">Product</th><th class="p-4 font-medium">Order ID</th><th class="p-4 font-medium">Date</th><th class="p-4 font-medium">Total</th><th class="p-4 font-medium">Status</th><th class="p-4 font-medium">Actions</th></tr></thead>
@@ -431,7 +488,7 @@
                         </table>
                     </div>
                 </div>
-               `;
+                `;
         }
 
         function renderChallengesContent() {
@@ -445,7 +502,7 @@
                 <h1 class="text-3xl font-extrabold text-gray-900 mb-8">My Challenges</h1>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 ${mockData.challenges.map(c => `
-                    <div class="bg-white p-6 rounded-xl shadow-md flex flex-col sm:flex-row sm:items-center justify-between">
+                    <div class="bg-white p-6 rounded-xl enhanced-shadow flex flex-col sm:flex-row sm:items-center justify-between">
                         <div class="mb-3 sm:mb-0">
                             <p class="font-bold text-lg text-gray-800">${c.name}</p>
                             <p class="text-sm ${statusStyles[c.statusColor].detail} font-medium">${c.details}</p>
@@ -463,7 +520,7 @@
                 <h1 class="text-3xl font-extrabold text-gray-900 mb-8">Settings</h1>
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     <div class="lg:col-span-2 space-y-8">
-                        <div class="bg-white p-6 rounded-xl shadow-md">
+                        <div class="bg-white p-6 rounded-xl enhanced-shadow">
                             <h2 class="text-xl font-bold text-gray-800 mb-4">Personal Information</h2>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div><label class="block text-sm font-medium text-gray-600">Full Name</label><input type="text" value="${mockData.user.name}" class="mt-1 p-2 w-full border rounded-md"></div>
@@ -473,18 +530,18 @@
                             </div>
                             <button class="mt-6 bg-emerald-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-emerald-700 transition">Save Changes</button>
                         </div>
-                        <div class="bg-white p-6 rounded-xl shadow-md">
-                             <h2 class="text-xl font-bold text-gray-800 mb-4">Change Password</h2>
-                             <div class="space-y-4">
-                                 <div><label class="block text-sm font-medium text-gray-600">Current Password</label><input type="password" placeholder="••••••••" class="mt-1 p-2 w-full border rounded-md"></div>
-                                 <div><label class="block text-sm font-medium text-gray-600">New Password</label><input type="password" placeholder="••••••••" class="mt-1 p-2 w-full border rounded-md"></div>
-                                 <div><label class="block text-sm font-medium text-gray-600">Confirm New Password</label><input type="password" placeholder="••••••••" class="mt-1 p-2 w-full border rounded-md"></div>
-                             </div>
-                             <button class="mt-6 bg-emerald-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-emerald-700 transition">Update Password</button>
+                        <div class="bg-white p-6 rounded-xl enhanced-shadow">
+                            <h2 class="text-xl font-bold text-gray-800 mb-4">Change Password</h2>
+                            <div class="space-y-4">
+                                <div><label class="block text-sm font-medium text-gray-600">Current Password</label><input type="password" placeholder="••••••••" class="mt-1 p-2 w-full border rounded-md"></div>
+                                <div><label class="block text-sm font-medium text-gray-600">New Password</label><input type="password" placeholder="••••••••" class="mt-1 p-2 w-full border rounded-md"></div>
+                                <div><label class="block text-sm font-medium text-gray-600">Confirm New Password</label><input type="password" placeholder="••••••••" class="mt-1 p-2 w-full border rounded-md"></div>
+                            </div>
+                            <button class="mt-6 bg-emerald-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-emerald-700 transition">Update Password</button>
                         </div>
                     </div>
                     <div class="lg:col-span-1">
-                        <div class="bg-white p-6 rounded-xl shadow-md">
+                        <div class="bg-white p-6 rounded-xl enhanced-shadow">
                             <h2 class="text-xl font-bold text-gray-800 mb-4">Notifications</h2>
                             <div class="space-y-4">
                                 <div class="flex items-center justify-between"><span class="text-gray-700">Booking Confirmations</span><label class="flex items-center cursor-pointer"><div class="relative"><input type="checkbox" class="sr-only toggle-checkbox"><div class="block bg-gray-200 w-10 h-5 rounded-full toggle-label transition"></div><div class="dot absolute left-0.5 top-0.5 bg-white w-4 h-4 rounded-full transition"></div></div></label></div>
@@ -499,7 +556,7 @@
         }
         
         function renderSignOutContent() {
-             return `
+            return `
                 <div class="text-center py-20">
                     <h1 class="text-3xl font-extrabold text-gray-900 mb-2">You have been signed out.</h1>
                     <p class="text-gray-600 mb-8">Thank you for using Sportiva. We hope to see you again soon!</p>
@@ -528,7 +585,7 @@
         function showCancelBookingModal(bookingId) {
             const booking = mockData.bookings.find(b => b.id === bookingId);
             if (!booking) return;
-             appState.modalContent = `
+            appState.modalContent = `
                 <h2 class="text-2xl font-bold text-gray-800 mb-2 text-center">Confirm Cancellation</h2>
                 <p class="text-center text-gray-600 mb-6">Are you sure you want to cancel your booking at <br><strong>${booking.field}</strong>?</p>
                 <div class="flex justify-center space-x-4">
@@ -565,7 +622,7 @@
                     <p><strong class="font-semibold text-gray-600">Total:</strong> ${order.price}</p>
                     <p><strong class="font-semibold text-gray-600">Status:</strong> <span class="font-medium px-2 py-1 rounded-full text-xs ${order.status === 'Pending' ? 'bg-orange-100 text-orange-700' : 'bg-green-100 text-green-700'}">${order.status}</span></p>
                 </div>
-                 <button onclick="closeModal()" class="mt-6 w-full bg-emerald-600 text-white font-semibold py-2 rounded-lg hover:bg-emerald-700 transition">Close</button>
+                   <button onclick="closeModal()" class="mt-6 w-full bg-emerald-600 text-white font-semibold py-2 rounded-lg hover:bg-emerald-700 transition">Close</button>
             `;
             render();
         }
@@ -668,16 +725,15 @@
                     changed = true;
                 }
                 if (appState.isSidebarOpen) {
-                    // Don't close sidebar if clicking on the sidebar itself
                     if (!e.target.closest('#sidebar')) {
-                         appState.isSidebarOpen = false;
-                         changed = true;
+                           appState.isSidebarOpen = false;
+                           changed = true;
                     }
                 }
                 if (changed) render();
             });
 
-            // Navigation links (sidebar, bottom nav, dropdown)
+            // Navigation links
             const navLinks = document.querySelectorAll('.nav-link');
             navLinks.forEach(link => {
                 link.addEventListener('click', (e) => {
@@ -688,13 +744,13 @@
                         appState.activePage = page;
                         appState.isProfileDropdownOpen = false;
                         appState.isSidebarOpen = false;
-                        window.scrollTo(0, 0); // Scroll to top on page change
+                        window.scrollTo(0, 0);
                         render();
                     }
                 });
             });
             
-            // Event delegation for action buttons inside main content
+            // Event delegation for action buttons
             const dashboardContent = document.getElementById('dashboard-content');
             if (dashboardContent) {
                 dashboardContent.addEventListener('click', e => {
@@ -721,14 +777,15 @@
 
         function render() {
             const appContainer = document.getElementById('app-container');
+            // The main render function now assembles the page structure.
+            // The header is always rendered at the top.
             appContainer.innerHTML = `
                 ${renderHeader()}
                 <div class="flex flex-1">
                     ${renderSidebar()}
                     <main class="flex-1 p-4 sm:p-6 md:p-10 bg-gray-50">
                         <div class="container mx-auto" id="dashboard-content">
-                            <!-- Main content is injected here -->
-                        </div>
+                            </div>
                     </main>
                 </div>
                 ${renderBottomNav()}
